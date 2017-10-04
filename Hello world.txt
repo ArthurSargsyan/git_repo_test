@@ -1,2 +1,2 @@
 print(Hello world!)
-prit(Hello everybady!)
+print(Hello everybady!)
