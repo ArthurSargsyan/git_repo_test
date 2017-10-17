@@ -2,7 +2,6 @@ package ShopProgram;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -16,24 +15,18 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-
-import Hibernate.AddToTable;
-import Hibernate.CheckAvailability;
 import Hibernate.ChooseProduct;
-import Hibernate.HibernateTest;
-import Hibernate.UpdateProduct;
-
 
 public class SearchGUI extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
 	
 	Buy shopBuy = new Buy();
 	Basket  basketName = new Basket();
 	
 	JButton searchButton;
 	JButton addButton;
-	
 	JTextField textBoxToEnterSearchName;
-	
 	JTextArea basketTestArea;
 
     	public SearchGUI(){
@@ -56,11 +49,8 @@ public class SearchGUI extends JFrame {
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         
         JPanel panelcenter = new JPanel();
-       
         panelcenter.setLayout(new BoxLayout(panelcenter,BoxLayout.Y_AXIS));
        
-        
-        
         searchButton = new JButton("Search");
         addButton = new JButton("Add");
         
@@ -68,8 +58,7 @@ public class SearchGUI extends JFrame {
         addButton.addActionListener(new AddButton(textBoxToEnterSearchName));
        
         JPanel panelBottom = new JPanel();
-        
-        
+                
         panelcenter.add(productName);
         panelcenter.add(textBoxToEnterSearchName);
         panelcenter.add(basket);
@@ -90,66 +79,46 @@ public class SearchGUI extends JFrame {
     	public class SearchButton implements ActionListener {
     	
     		JTextField searchInput;
-    		
-	   
+    			   
     		public SearchButton(JTextField textFieldForName){
     			searchInput = textFieldForName;	
-    		
     		}
 
     		@Override
     		public void actionPerformed(ActionEvent searchClicked) {
     			setVisible(true); 
-    			
-    			
     			System.out.println(basketTestArea.getSelectedText());
-    			
-    			
-    			
     			if (searchInput.getText().equals("")) {
     				JOptionPane.showMessageDialog(null, "Search Field Is Empty");
     				//System.out.println("Please Insert All Fields of Window");
     			} else { 
-    				
-    			
-		   String searchedListByString ="Name\t\tPRICE\tQUANTITY\n";
-		   
+    	   String searchedListByString ="Name\t\tPRICE\tQUANTITY\n";
 		   ChooseProduct choosenProduct = new ChooseProduct();
 		   searchedListByString = searchedListByString + choosenProduct.chooseProductListFilteringByString(searchInput.getText());
-		 
 		   basketTestArea.setText(searchedListByString);
-      }
-   }
-    			
-   }
-    	
-    	
+    			}
+    		}
+    	}
+        	
     	public class AddButton implements ActionListener {
         	
     		JTextField searchInput;
-    		
-	   
     		public AddButton(JTextField textFieldForSearch){
     			searchInput = textFieldForSearch;	
-    		
     		}
 
     		@Override
     		public void actionPerformed(ActionEvent searchClicked) {
     			setVisible(true); 
-    			
     			SoldProductGUI.textBoxToEnterName.setText(basketTestArea.getSelectedText());
     			System.out.println(basketTestArea.getSelectedText());
-    			
     		}
     			
-   }
-
+    	}
     	
-    	//public static void main(String[] args) {
-   		//SearchGUI searchGUI = new SearchGUI();
-   		//searchGUI.setVisible(true);
-        //System.out.println(searchGUI.searchButton.isSelected());
-    //}
-
+    	/*public static void main(String[] args) {
+   		SearchGUI searchGUI = new SearchGUI();
+   		searchGUI.setVisible(true);
+        System.out.println(searchGUI.searchButton.isSelected());
+    	}*/
 }

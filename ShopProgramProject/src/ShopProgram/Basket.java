@@ -3,8 +3,7 @@ package ShopProgram;
 import java.util.ArrayList;
 
 public class Basket {
-	
-	
+		
 	public static void main(String[] args) {
 		Basket bask = new Basket();
 		Product prod0  = new Product();
@@ -17,7 +16,6 @@ public class Basket {
 		prod2.setProductName("Sexan");
 		prod2.setQuantity(5);
 				
-		
 		bask.addToBasket(prod0);
 		bask.addToBasket(prod0);
 		bask.addToBasket(prod0);
@@ -36,9 +34,7 @@ public class Basket {
 		System.out.println(bask.basketsProductList(bask));
 	}
 	
-	
 	ArrayList<Product> basketList = new ArrayList<Product>();
-	//String basketsProdList="";
 		
 	public ArrayList<Product> getBasketList() {
 		return basketList;
@@ -47,8 +43,7 @@ public class Basket {
 	public void setBasketList(ArrayList<Product> basketList) {
 		this.basketList = basketList;
 	}
-
-		
+	
 	//Add product to the basket , if there is product like this it updates only quantity.
 	public void addToBasket(Product p) {    //sxal ka
 		System.out.println(" p + "+p.getQuantity());
@@ -92,20 +87,16 @@ public class Basket {
 			basketList.add(i,prod);
 		 }
 	}
-	 
-	
+
+	//Return  ArrayList<Product> of products.
 	public ArrayList<Product> basketsProductList(Basket basketName) { 
 		ArrayList<Product>  basketArray = new ArrayList<Product>();
-		//basketArray.clear();
 		int z =basketName.getBasketList().size();
 		for (int i = 0; i<z; i++) {
 	    	   Product prod = basketName.getBasketList().get(i);
-
 	    	   basketArray.add(prod);
 		}
 		return basketArray;
 	}
-
-	
 	
 }

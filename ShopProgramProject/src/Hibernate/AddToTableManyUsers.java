@@ -9,8 +9,7 @@ import ShopProgram.Product;
 public class AddToTableManyUsers {
 
 	public void addProduct() {
-		
-						
+					
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -23,15 +22,12 @@ public class AddToTableManyUsers {
 			product.setQuantity(Double.parseDouble(Double.toString(i+50)));
 			session.save(product);
 		}
-		
 		session.getTransaction().commit();
 		session.close();
 		}
 	
-	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		AddToTableManyUsers table = new AddToTableManyUsers();
 		table.addProduct();
-	}
-
+	}*/
 }

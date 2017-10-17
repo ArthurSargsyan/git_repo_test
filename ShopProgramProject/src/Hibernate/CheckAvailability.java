@@ -8,14 +8,6 @@ import ShopProgram.Product;
 
 public class CheckAvailability {
 	
-	
-	//public static void main(String[] args) {
-	//CheckAvailability newCheck = new CheckAvailability();
-	//newCheck.checkAvailability("Mom");
-	//System.out.println(newCheck.checkAvailability("Mom"));
-	//}
-	
-	
 	//Checking availability of product by name in warehouse. If there is this product return product id, else return 0.
 	public int checkAvailabilityByName(String prodName) {
 		
@@ -30,23 +22,18 @@ public class CheckAvailability {
 				Product checkedProduct = (Product) session.get(Product.class, i);
 				
 				if (checkedProduct.getProductName().equalsIgnoreCase(prodName)) {
-									
 				chechedId = i;
 				System.out.println("Have " + checkedProduct.getProductName() +" //Quantity is - " +checkedProduct.getQuantity());
-				
 				}
 			
 			} catch (Exception e) {
 				i=-1;
 				System.out.println("Checked All By Name");
 			}
-		
 		}
-				
 		session.getTransaction().commit();
 		session.close();
 		return chechedId;
-		
 	}
 	
 	//Checking availability of product by name and price in warehouse. If there is this product return product id, else return 0.
@@ -63,27 +50,23 @@ public class CheckAvailability {
 				Product checkedProduct = (Product) session.get(Product.class, i);
 				
 				if (checkedProduct.getProductName().equalsIgnoreCase(n)) {
-				//if (checkedProduct.getProductPrice()==p) {
-					
 				chechedId = i;
 				System.out.println("Have " + checkedProduct.getProductName() +" //Quantity is - " +checkedProduct.getQuantity());
-				//}
 				}
-			
 			} catch (Exception e) {
 				i=-1;
 				System.out.println("Checked All");
 			}
-		
 		}
-				
 		session.getTransaction().commit();
 		session.close();
 		return chechedId;
-		
 	}
-	
-	
-	
+
+	/*public static void main(String[] args) {
+	CheckAvailability newCheck = new CheckAvailability();
+	newCheck.checkAvailability("Mom");
+	System.out.println(newCheck.checkAvailability("Mom"));
+	}*/
 }
 

@@ -6,22 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
-import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-import javax.swing.SpringLayout.Constraints;
-
-import org.hibernate.hql.ast.tree.BooleanLiteralNode;
-
 import Hibernate.ChooseProduct;
 
 public class ShopOfProducts {
@@ -36,14 +28,11 @@ public class ShopOfProducts {
 		JButton addToWareHouse = new JButton("|                  Add To Warehouse                  |");
 		JButton saleProducts = new JButton("|                       Sale Products                       |");
 		JPanel shopPanel = new JPanel();
-		JPanel wareHouse = new JPanel();
 		shopPanel.setLayout(new BoxLayout(shopPanel, BoxLayout.Y_AXIS));
 		
 		addToWareHouse.addActionListener(new AddToWareHouseButton());
 		saleProducts.addActionListener(new SaleProducts());
-				
-		
-		        
+		       
 		wareHouseTable.setLineWrap(false);
 		wareHouseTable.setWrapStyleWord(true);
 		wareHouseTable.setFont(new Font("Tahoma", Font.ITALIC, 12));
@@ -52,11 +41,6 @@ public class ShopOfProducts {
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         wareHouseTable.setEditable(false);
 		wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+updateWarehouseInTable());
-		
-
-		
-		
-			
 		
 		frame.add(shopPanel, BorderLayout.CENTER);
 		frame.add(qScroller, BorderLayout.WEST);
@@ -68,19 +52,12 @@ public class ShopOfProducts {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
-		
 	}
-	
 	
 	public String updateWarehouseInTable() {
-		
 		ChooseProduct warehouseProduct = new ChooseProduct();
 		return warehouseProduct.chooseAllProductListForTextArea();
-			
 	}
-	
-	
 	
 	public class AddToWareHouseButton implements ActionListener {
 		boolean x = false;
@@ -99,7 +76,6 @@ public class ShopOfProducts {
 						addToWareHouse.setVisible(false);
 						frame.setVisible(true);
 						wareHouseTable.setText("                WAREHOUSE\nNAME\t\tQUANTITY\tPRICE\n"+updateWarehouseInTable());
-						
 						super.windowClosing(e);
 				}
 			});
@@ -128,13 +104,9 @@ public class ShopOfProducts {
 		}
 	}
 	
-	
 	public static void main(String[] args) {
 		ShopOfProducts shopOfProducts = new ShopOfProducts();
 		shopOfProducts.shopGUI();
-		
 	}
-
-
 }
 

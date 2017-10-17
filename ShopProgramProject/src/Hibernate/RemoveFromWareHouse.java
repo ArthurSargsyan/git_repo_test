@@ -8,11 +8,6 @@ import ShopProgram.Product;
 
 public class RemoveFromWareHouse {
 	
-	    //public static void main(String[] args) {
-		//RemoveFromWareHouse newRemove = new RemoveFromWareHouse();
-		//newRemove.removeFromWareHouse(4, "5");
-	    //}
-	
 	public void removeFromWareHouse(int id,String removeQuantity) {
 		double newQuantity;
 			
@@ -27,8 +22,10 @@ public class RemoveFromWareHouse {
 		
 		session.getTransaction().commit();
 		session.close();
-		
-		
 	}
+	/*public static void main(String[] args) {
+		RemoveFromWareHouse newRemove = new RemoveFromWareHouse();
+		newRemove.removeFromWareHouse(4, "5");
+	}*/
 }
 

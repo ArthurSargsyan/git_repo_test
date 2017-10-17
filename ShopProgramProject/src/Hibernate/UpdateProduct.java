@@ -10,20 +10,12 @@ import ShopProgram.Product;
 
 public class UpdateProduct {
 	
-	    //public static void main(String[] args) {
-		//UpdateProduct newUpdate = new UpdateProduct();
-		//newUpdate.updateProduct(3, 5);
-	    //}
-	
+	//Formating Double by digits after point.
 	static public double customFormat(String pattern, double value ) {
 	      DecimalFormat myFormatter = new DecimalFormat(pattern);
 	      String output = myFormatter.format(value);
 	      return Double.parseDouble(output);
 	   }
-	
-	
-	
-	
 	
 	//Update product quantity in warehouse using id and added quantity, plus update product price with average price.
 	public void updateProduct(int id,String addedQuantity,double p) {
@@ -38,26 +30,20 @@ public class UpdateProduct {
 		Product updatedProduct = (Product) session.get(Product.class, id);
 		
 		if (updatedProduct.getProductPrice()==p) {
-			
 		} else {
 			averagePrice = (updatedProduct.getProductPrice()*updatedProduct.getQuantity()+Double.parseDouble(addedQuantity)*p)/(updatedProduct.getQuantity()+Double.parseDouble(addedQuantity));
 			averagePrice = customFormat("###.#", averagePrice );
 		}
 		newQuantity=updatedProduct.getQuantity()+Double.parseDouble(addedQuantity);
 		updatedProduct.setQuantity(newQuantity);
-				
-			
+					
 		updatedProduct.setProductPrice(averagePrice);
-		
 		session.update(updatedProduct);
 		
 		session.getTransaction().commit();
 		session.close();
-		
-		
 	}
-	
-	
+		
 	//Update product quantity in warehouse using id and added quantity.
 		public void updateProduct(int id,String addedQuantity) {
 			double newQuantity;
@@ -65,7 +51,6 @@ public class UpdateProduct {
 			SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-				
 			
 			Product updatedProduct = (Product) session.get(Product.class, id);
 			newQuantity=updatedProduct.getQuantity()+Double.parseDouble(addedQuantity);
@@ -75,11 +60,11 @@ public class UpdateProduct {
 			
 			session.getTransaction().commit();
 			session.close();
-			
-			
 		}
-
-
-
+		
+		/*public static void main(String[] args) {
+			UpdateProduct newUpdate = new UpdateProduct();
+			newUpdate.updateProduct(3, 5);
+		}*/
 }
 

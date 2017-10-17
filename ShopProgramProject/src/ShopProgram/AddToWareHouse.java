@@ -18,12 +18,12 @@ import javax.swing.WindowConstants;
 
 import Hibernate.AddToTable;
 import Hibernate.CheckAvailability;
-import Hibernate.HibernateTest;
 import Hibernate.UpdateProduct;
-
 
 public class AddToWareHouse extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+			
 	JButton submit;
 	JTextArea wareHouseTable = new JTextArea(10,30);
 	JTextField textBoxToEnterName;
@@ -40,22 +40,18 @@ public class AddToWareHouse extends JFrame {
         textBoxToEnterName = new JTextField(20);
         textBoxToEnterPrice = new JTextField(20);
         textBoxToEnterQuantity = new JTextField(20);
-        
-        
+                
         JPanel panelEast = new JPanel();
         JPanel panelWest = new JPanel();
         panelEast.setLayout(new BoxLayout(panelEast,BoxLayout.Y_AXIS));
         panelWest.setLayout(new BoxLayout(panelWest,BoxLayout.Y_AXIS));
-    
-        
+            
         panelEast.add(productName);
         panelEast.add(textBoxToEnterName);
         panelEast.add(productPrice);
         panelEast.add(textBoxToEnterPrice);
         panelEast.add(productQuatity);
         panelEast.add(textBoxToEnterQuantity);
-        
-        
         
         wareHouseTable.setLineWrap(false);
 		wareHouseTable.setWrapStyleWord(true);
@@ -65,12 +61,8 @@ public class AddToWareHouse extends JFrame {
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         wareHouseTable.setEditable(false);
         
-        
 		wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+shop.updateWarehouseInTable());
 		
-		
-		
-        
         submit = new JButton("Add");
         
         submit.addActionListener(new SubmitButton(textBoxToEnterName,textBoxToEnterPrice,textBoxToEnterQuantity));
@@ -82,7 +74,6 @@ public class AddToWareHouse extends JFrame {
         add(panelBottom, BorderLayout.SOUTH);
         add(qScroller, BorderLayout.WEST);
         
-
         setTitle("Add To Warehouse");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -110,35 +101,27 @@ public class AddToWareHouse extends JFrame {
     	   JOptionPane.showMessageDialog(null, "Please Insert Fields Of Window");
     	   System.out.println("Please Insert All Fields of Window");
 			
-	} else {
-       
+       } else {
             CheckAvailability check = new CheckAvailability();
             int y = check.checkAvailability(nameInput.getText(),Double.parseDouble(priceInput.getText()));
             if (y == 0) {
             	AddToTable addProd= new AddToTable();
                 addProd.addProduct(nameInput.getText(),priceInput.getText(),quantityInput.getText());
-                
             } else {
-            	      	
-            	
-            	UpdateProduct update = new UpdateProduct();
+               	UpdateProduct update = new UpdateProduct();
             	update.updateProduct(y, quantityInput.getText(),Double.parseDouble(priceInput.getText()));
-            	
             }
        textBoxToEnterName.setText(""); 
        textBoxToEnterPrice.setText("");
        textBoxToEnterQuantity.setText("");
-                     
-       	}
+        }
        wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+shop.updateWarehouseInTable());
 	   }
-	  	   
-   }
-
-//    public static void main(String[] args) {
-//    	AddToWareHouse addToWareHouse = new AddToWareHouse();
-//    	addToWareHouse.setVisible(true);
-//        System.out.println(addToWareHouse.submit.isSelected());
-//    }
-
+	}
+  
+    /*public static void main(String[] args) {
+		AddToWareHouse addToWareHouse = new AddToWareHouse();
+		addToWareHouse.setVisible(true);
+   	System.out.println(addToWareHouse.submit.isSelected());
+  	}*/
 }

@@ -18,8 +18,7 @@ public class Product {
 	private String productName;
 	@Column (name="QUANTITY")
 	private double quantity;
-	
-	
+		
 	public double getQuantity() {
 		return quantity;
 	}
@@ -44,7 +43,4 @@ public class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	
-	
-
 }
