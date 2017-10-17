@@ -1,5 +1,0 @@
-print(Hello world!:)
-print(Hello everybady!:)
-print(Hello!:)
-print(Hello my dear friend!:)
-print(Glad to see you!:)
