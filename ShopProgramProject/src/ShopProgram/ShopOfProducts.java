@@ -1,49 +1,73 @@
 package ShopProgram;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 import Hibernate.ChooseProduct;
 
 public class ShopOfProducts {
 	
-	
-	JTextArea wareHouseTable = new JTextArea(10,40);
 	JFrame frame = new JFrame();
-	
+	JTable table;
+	DefaultTableModel model;
+	JLabel Warehouse = new JLabel("Warehouse");
+		
 	private void shopGUI () {
 		
 		
-		JButton addToWareHouse = new JButton("|                  Add To Warehouse                  |");
+		model = new DefaultTableModel();
+		model.addColumn("ID");
+		model.addColumn("Name");
+		model.addColumn("Price");
+		model.addColumn("Quantity");
+				
+		table = new JTable(model);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.setSize(50,150);
+		table.setEnabled(false);
+		table.setIntercellSpacing(new Dimension(5, 0));
+				
+		ChooseProduct prod = new ChooseProduct();
+		ArrayList<Product> prodList = prod.chooseAllProductArrayList();
+		model.setRowCount(0);
+		for (int i=0; i<prodList.size(); i++) {
+		model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
+		}
+	    
+		JButton addToWareHouse = new JButton("|                  Add To Warehouse                   |");
 		JButton saleProducts = new JButton("|                       Sale Products                       |");
 		JPanel shopPanel = new JPanel();
+		JPanel warehousePanel = new JPanel();
 		shopPanel.setLayout(new BoxLayout(shopPanel, BoxLayout.Y_AXIS));
+		warehousePanel.setLayout(new BoxLayout(warehousePanel, BoxLayout.Y_AXIS));
 		
 		addToWareHouse.addActionListener(new AddToWareHouseButton());
 		saleProducts.addActionListener(new SaleProducts());
-		       
-		wareHouseTable.setLineWrap(false);
-		wareHouseTable.setWrapStyleWord(true);
-		wareHouseTable.setFont(new Font("Tahoma", Font.ITALIC, 12));
-		JScrollPane qScroller = new JScrollPane(wareHouseTable);
+		
+		JScrollPane qScroller = new JScrollPane(table);                   
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        wareHouseTable.setEditable(false);
-		wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+updateWarehouseInTable());
-		
+        warehousePanel.add(Warehouse);
+        warehousePanel.add(qScroller);
+       
 		frame.add(shopPanel, BorderLayout.CENTER);
-		frame.add(qScroller, BorderLayout.WEST);
+		frame.add(warehousePanel, BorderLayout.WEST);
+		frame.add(Warehouse, BorderLayout.NORTH);
 		shopPanel.add(addToWareHouse);
 		shopPanel.add(saleProducts);
 		frame.setTitle("SHOP OF PRODUCTS");
@@ -53,12 +77,7 @@ public class ShopOfProducts {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-	
-	public String updateWarehouseInTable() {
-		ChooseProduct warehouseProduct = new ChooseProduct();
-		return warehouseProduct.chooseAllProductListForTextArea();
-	}
-	
+		
 	public class AddToWareHouseButton implements ActionListener {
 		boolean x = false;
 		@Override
@@ -68,14 +87,22 @@ public class ShopOfProducts {
 			AddToWareHouse addToWareHouse = new AddToWareHouse();
 			frame.setVisible(false);
 			addToWareHouse.setVisible(true);
-							
+			
+								
 			addToWareHouse.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
 					//System.out.println("Return to ShopOfProducts Window");
 						addToWareHouse.setVisible(false);
 						frame.setVisible(true);
-						wareHouseTable.setText("                WAREHOUSE\nNAME\t\tQUANTITY\tPRICE\n"+updateWarehouseInTable());
+						
+						
+						ChooseProduct prod = new ChooseProduct();
+						ArrayList<Product> prodList = prod.chooseAllProductArrayList();
+						model.setRowCount(0);
+						for (int i=0; i<prodList.size(); i++) {
+						model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
+						}
 						super.windowClosing(e);
 				}
 			});
@@ -84,8 +111,8 @@ public class ShopOfProducts {
 	
 	public class SaleProducts implements ActionListener {
 		
-		@Override
-		public void actionPerformed(ActionEvent addToWareHouseClicked) {
+	@Override
+	public void actionPerformed(ActionEvent addToWareHouseClicked) {
 			System.out.println("SaleProducts is clicked");
 			frame.setVisible(false);
 			SoldProductGUI soldProductGUI = new SoldProductGUI();
@@ -96,11 +123,16 @@ public class ShopOfProducts {
 				public void windowClosing(WindowEvent e) {
 					soldProductGUI.setVisible(false);
 					frame.setVisible(true);
-					wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+updateWarehouseInTable());
+					
+					ChooseProduct prod = new ChooseProduct();
+					ArrayList<Product> prodList = prod.chooseAllProductArrayList();
+					model.setRowCount(0);
+					for (int i=0; i<prodList.size(); i++) {
+					model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
+					}
 					super.windowClosing(e); //  --------------------------
 				}
 			});
-			
 		}
 	}
 	

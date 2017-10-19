@@ -4,36 +4,6 @@ import java.util.ArrayList;
 
 public class Basket {
 		
-	public static void main(String[] args) {
-		Basket bask = new Basket();
-		Product prod0  = new Product();
-		prod0.setProductName("Gtal");
-		prod0.setQuantity(5);
-		Product prod1 = new Product();
-		prod1.setProductName("Kilikia");
-		prod1.setQuantity(5);
-		Product prod2 = new Product();
-		prod2.setProductName("Sexan");
-		prod2.setQuantity(5);
-				
-		bask.addToBasket(prod0);
-		bask.addToBasket(prod0);
-		bask.addToBasket(prod0);
-		bask.addToBasket(prod0);
-		bask.addToBasket(prod1);
-		bask.addToBasket(prod2);
-		bask.addToBasket(prod2);
-		bask.addToBasket(prod2);
-		bask.addToBasket(prod2);
-		
-		bask.removeFromBasket(prod2,2.5);
-				
-		for (int i=0; i<bask.getBasketList().size(); i++) {
-			System.out.println(bask.getBasketList().get(i).getQuantity());
-		}
-		System.out.println(bask.basketsProductList(bask));
-	}
-	
 	ArrayList<Product> basketList = new ArrayList<Product>();
 		
 	public ArrayList<Product> getBasketList() {
@@ -98,5 +68,34 @@ public class Basket {
 		}
 		return basketArray;
 	}
+
+	/*public static void main(String[] args) {
+		Basket bask = new Basket();
+		Product prod0  = new Product();
+		prod0.setProductName("Gtal");
+		prod0.setQuantity(5);
+		Product prod1 = new Product();
+		prod1.setProductName("Kilikia");
+		prod1.setQuantity(5);
+		Product prod2 = new Product();
+		prod2.setProductName("Sexan");
+		prod2.setQuantity(5);
+			
+		bask.addToBasket(prod0);
+		bask.addToBasket(prod0);
+		bask.addToBasket(prod0);
+		bask.addToBasket(prod0);
+		bask.addToBasket(prod1);
+		bask.addToBasket(prod2);
+		bask.addToBasket(prod2);
+		bask.addToBasket(prod2);
+		bask.addToBasket(prod2);
 	
+		bask.removeFromBasket(prod2,2.5);
+			
+		for (int i=0; i<bask.getBasketList().size(); i++) {
+			System.out.println(bask.getBasketList().get(i).getQuantity());
+		}
+		System.out.println(bask.basketsProductList(bask));
+		}*/
 }

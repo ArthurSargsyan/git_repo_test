@@ -45,26 +45,26 @@ public class UpdateProduct {
 	}
 		
 	//Update product quantity in warehouse using id and added quantity.
-		public void updateProduct(int id,String addedQuantity) {
-			double newQuantity;
+	public void updateProduct(int id,String addedQuantity) {
+		double newQuantity;
 				
-			SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-			Session session = sessionFactory.openSession();
-			session.beginTransaction();
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
 			
-			Product updatedProduct = (Product) session.get(Product.class, id);
-			newQuantity=updatedProduct.getQuantity()+Double.parseDouble(addedQuantity);
-			updatedProduct.setQuantity(newQuantity);
+		Product updatedProduct = (Product) session.get(Product.class, id);
+		newQuantity=updatedProduct.getQuantity()+Double.parseDouble(addedQuantity);
+		updatedProduct.setQuantity(newQuantity);
 					
-			session.update(updatedProduct);
+		session.update(updatedProduct);
 			
-			session.getTransaction().commit();
-			session.close();
-		}
+		session.getTransaction().commit();
+		session.close();
+	}
 		
-		/*public static void main(String[] args) {
-			UpdateProduct newUpdate = new UpdateProduct();
-			newUpdate.updateProduct(3, 5);
-		}*/
+	/*public static void main(String[] args) {
+		UpdateProduct newUpdate = new UpdateProduct();
+		newUpdate.updateProduct(3, 5);
+	}*/
 }
 

@@ -1,12 +1,12 @@
 package ShopProgram;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.text.DecimalFormat;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,10 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 
 public class SoldProductGUI extends JFrame {
@@ -33,11 +34,26 @@ public class SoldProductGUI extends JFrame {
 	JButton search;
 	static JTextField textBoxToEnterName;
 	JTextField textBoxToEnterPrice;
-	JTextField textBoxToEnterQuantity;
-	JTextArea basketTestArea;
+	static JTextField textBoxToEnterQuantity;
+	DefaultTableModel model;
+	JTable basketTable;
 
-    	public SoldProductGUI(){
+    public SoldProductGUI(){
 
+    		
+    	model= new DefaultTableModel();
+    	model.addColumn("ID");
+    	model.addColumn("Name");
+    	model.addColumn("Price");
+    	model.addColumn("Quantity");
+    	model.addColumn("Total");
+    		
+    	basketTable = new JTable(model);
+    	basketTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    	basketTable.setSize(50, 150);
+    	basketTable.setEnabled(false);
+    	basketTable.setIntercellSpacing(new Dimension(5,0));
+    	
     	JLabel productName = new JLabel("  Name:  ");
         JLabel productQuatity = new JLabel("  Quantity:  ");
         JLabel productPrice= new JLabel("  Total Amount:  ");
@@ -48,15 +64,8 @@ public class SoldProductGUI extends JFrame {
         textBoxToEnterPrice = new JTextField(20);
         textBoxToEnterPrice.setEditable(false);
         
-        basketTestArea = new JTextArea(10,30);
-        basketTestArea.setEditable(false);
-        basketTestArea.setText("NAME\tQUANTITY\tPRICE\tTOTAL\nBasket Is Empty");
-                
-        basketTestArea.setLineWrap(false);
-        basketTestArea.setWrapStyleWord(true);
-        basketTestArea.setFont(new Font("Tahoma", Font.ITALIC, 12));
         
-        JScrollPane qScroller = new JScrollPane(basketTestArea);
+        JScrollPane qScroller = new JScrollPane(basketTable);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         
@@ -103,11 +112,33 @@ public class SoldProductGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
     }
-
-    	public class addButton implements ActionListener {
     	
-    		JTextField nameInput;
-    		JTextField quantityInput;
+    //Do Update of Basket and refresh table.
+    public void updateBasket() {
+    	model.setRowCount(0);
+ 		int i;
+ 		double y=0;
+ 		for (i=0;i<basketName.getBasketList().size(); i++) { 		  
+ 			   model.addRow(new Object[]{i+1,basketName.getBasketList().get(i).getProductName(),
+ 					   					Double.toString(basketName.getBasketList().get(i).getProductPrice()),
+ 					   					Double.toString(basketName.getBasketList().get(i).getQuantity()),
+ 					   				    Double.toString(customFormat("###.##",basketName.getBasketList().get(i).getProductPrice()*basketName.getBasketList().get(i).getQuantity()))});  
+ 			   y=y+basketName.getBasketList().get(i).getProductPrice()*basketName.getBasketList().get(i).getQuantity();
+ 		}
+ 		 model.addRow(new Object[]{"","","","",""});
+ 		 model.addRow(new Object[]{"","","","Total Amount",Double.toString(customFormat("###.##",y))});
+    }
+    	
+    //Formating Double by digits after point.
+    private double customFormat(String pattern, double value ) {
+    	DecimalFormat myFormatter = new DecimalFormat(pattern);
+    	String output = myFormatter.format(value);
+    	return Double.parseDouble(output);
+    }
+    	
+    public class addButton implements ActionListener {
+    	JTextField nameInput;
+    	JTextField quantityInput;
 	   
     		public addButton(JTextField textFieldForName,JTextField textFieldForQuantity){
     			nameInput = textFieldForName;	
@@ -129,90 +160,67 @@ public class SoldProductGUI extends JFrame {
     				textBoxToEnterName.setText(""); 
     			}
 		   textBoxToEnterQuantity.setText("");
-		   	   
-		   String basketListByString ="NAME\tQUANTITY\tPRICE\tTOTAL\n";
-		   for (int i=0; i < basketName.getBasketList().size(); i++) {
-			   Product prod= basketName.getBasketList().get(i);
-			   basketListByString = basketListByString + prod.getProductName() + "\t" + prod.getQuantity() + "\t" + prod.getProductPrice()+"\t" +prod.getQuantity()*prod.getProductPrice()+"\n"; 
-		   }
-		   basketListByString = basketListByString +"\t\t\t--------\n\t\t\t"+shopBuy.calculateAllProductsPriceInBasket(basketName); 
-		   basketTestArea.setText(basketListByString);
-      }
-   }
+		    updateBasket();
+	 }
+    	}
 
-    	public class RemoveButton implements ActionListener {
-    		JTextField nameInput;
-    		JTextField quantityInput;
+    public class RemoveButton implements ActionListener {
+    	JTextField nameInput;
+    	JTextField quantityInput;
 	   
-    		public RemoveButton(JTextField textFieldForName,JTextField textFieldForQuantity ){
-    			nameInput = textFieldForName;
-    			quantityInput = textFieldForQuantity; 
-    		}
+    	public RemoveButton(JTextField textFieldForName,JTextField textFieldForQuantity ){
+    		nameInput = textFieldForName;
+    		quantityInput = textFieldForQuantity; 
+    	}
 
-    		@Override
-    		public void actionPerformed(ActionEvent removeClicked) {
-    			setVisible(true);  
-		        if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
-		        	JOptionPane.showMessageDialog(null, "Please Insert Fields Of Window");
-		   			//System.out.println("Please Insert Field Name in Window");
-			    } else {  
-			    	shopBuy.excludeFromBasket(nameInput.getText(), Double.parseDouble(quantityInput.getText()), basketName);
-			    }
-            
-		       textBoxToEnterName.setText("");
-		       textBoxToEnterQuantity.setText("");
-		       
-		       String basketListByString ="NAME\tQUANTITY\tPRICE\tTOTAL\n";
-			   for (int i=0; i < basketName.getBasketList().size(); i++) {
-				   if (nameInput.getText().equals(basketName.getBasketList().get(i).getProductName())) {
-					   Product prodY= basketName.getBasketList().get(i);
-					   basketListByString = basketListByString + prodY.getProductName() + "\t" + prodY.getQuantity() + "\t" + prodY.getProductPrice()+"\t" +prodY.getQuantity()*prodY.getProductPrice()+"\n"; 
-				   }else {
-				   Product prod= basketName.getBasketList().get(i);
-				   basketListByString = basketListByString + prod.getProductName() + "\t" + prod.getQuantity() + "\t" + prod.getProductPrice()+"\t" +prod.getQuantity()*prod.getProductPrice()+"\n"; 
-				   }
-			   }
-			   basketListByString = basketListByString +"\t\t\t--------\n\t\t\t"+shopBuy.calculateAllProductsPriceInBasket(basketName);
-			   basketTestArea.setText(basketListByString);
-		     
-      	   }
+    	@Override
+    	public void actionPerformed(ActionEvent removeClicked) {
+    		setVisible(true);  
+    		if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
+    			JOptionPane.showMessageDialog(null, "Please Insert Fields Of Window");
+    			//System.out.println("Please Insert Field Name in Window");
+    		} else {  
+    			shopBuy.excludeFromBasket(nameInput.getText(), Double.parseDouble(quantityInput.getText()), basketName);
+    		}
+    		textBoxToEnterName.setText("");
+    		textBoxToEnterQuantity.setText("");
+    		updateBasket();
     	}
+    }
     	    	
-    	public class CalculateButton implements ActionListener {  
-    		@Override
-    		public void actionPerformed(ActionEvent CalculateClicked) {
-    		   setVisible(true);
-    		   if (shopBuy.calculateAllProductsPriceInBasket(basketName)>0){
-    			   textBoxToEnterPrice.setText(Double.toString(shopBuy.calculateAllProductsPriceInBasket(basketName)));   
-    		   }else {
-    			  JOptionPane.showMessageDialog(null, "Basket Is Empty");
-    		   }
-    		}
-       }
-         
-    	public class SearchButton implements ActionListener {
-    		
-    		@Override
-    		public void actionPerformed(ActionEvent addToWareHouseClicked) {
-    			System.out.println("SearchProducts is clicked");
-    			setVisible(true);
-    			SearchGUI searchGUI = new SearchGUI();
-    			searchGUI.setVisible(true);
-    			
-    			searchGUI.addWindowListener(new WindowAdapter() {
-    				@Override
-    				public void windowClosing(WindowEvent e) {
-    					
-    					searchGUI.setVisible(false);
-        				super.windowClosing(e);
-    				}
-    			});
+    public class CalculateButton implements ActionListener {  
+    	@Override
+    	public void actionPerformed(ActionEvent CalculateClicked) {
+    		setVisible(true);
+    		if (shopBuy.calculateAllProductsPriceInBasket(basketName)>0){
+    			 textBoxToEnterPrice.setText(Double.toString(shopBuy.calculateAllProductsPriceInBasket(basketName)));   
+    		}else {
+    		JOptionPane.showMessageDialog(null, "Basket Is Empty");
     		}
     	}
+   }
+         
+    public class SearchButton implements ActionListener {
     	
-    	/*public static void main(String[] args) {
-    		SoldProductGUI soldProductGUI = new SoldProductGUI();
-    		soldProductGUI.setVisible(true);
-        	System.out.println(soldProductGUI.addButton.isSelected());
-    	}*/
+    	@Override
+    	public void actionPerformed(ActionEvent addToWareHouseClicked) {
+    		System.out.println("SearchProducts is clicked");
+    		setVisible(true);
+    		SearchGUIwithTable searchGUIwithTable = new SearchGUIwithTable();
+    		searchGUIwithTable.setVisible(true);
+    		searchGUIwithTable.addWindowListener(new WindowAdapter() {
+    			@Override
+    			public void windowClosing(WindowEvent e) {
+    				searchGUIwithTable.setVisible(false);
+    				super.windowClosing(e);
+    			}
+    		});
+    	}
+    }
+    	
+    /*public static void main(String[] args) {
+    	SoldProductGUI soldProductGUI = new SoldProductGUI();
+    	soldProductGUI.setVisible(true);
+        System.out.println(soldProductGUI.addButton.isSelected());
+    }*/
 }

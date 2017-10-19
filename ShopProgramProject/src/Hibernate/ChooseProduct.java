@@ -1,5 +1,7 @@
 package Hibernate;
 
+import java.util.ArrayList;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -95,6 +97,40 @@ public class ChooseProduct {
 		return allProductList;
 	}
 	
+	
+	
+	//return ArrayList of products in which name  have string s string.
+	public ArrayList<Product> ProductListFilteringByString(String s) {
+		
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+	
+		ArrayList<Product> allProductList = new ArrayList<Product>();
+		int i;
+		try {
+			for (  i=1;i>0; i++) {
+				Product searchingProduct =  (Product) session.get(Product.class, i);
+				String searchingtext = searchingProduct.getProductName();
+					if (searchingtext.toLowerCase().contains(s.toLowerCase())) {
+						allProductList.add(searchingProduct);
+					}
+			}
+		} catch (Exception e) {
+			i=0;
+		}
+		session.getTransaction().commit();
+		session.close();
+		return allProductList;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	public int productQuantityInWareHouse() {
 			
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -116,11 +152,36 @@ public class ChooseProduct {
 		return y;
 	}
 
-	/*public static void main(String[] args) {
+	public ArrayList<Product> chooseAllProductArrayList() {
+		
+		ArrayList<Product> listOfProducts = new ArrayList<Product>();
+		
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		 int i;
+		try {
+			for (i=1;i>0; i++) {
+		Product prod = (Product) session.get(Product.class, i);
+		prod.getProductName();    //That throws Exception
+		listOfProducts.add(prod);
+		System.out.println(i);
+		}
+		} catch (Exception e) {
+			i=0;
+		}
+		session.getTransaction().commit();
+		session.close();
+		return listOfProducts;
+	}
+	
+	public static void main(String[] args) {
 	ChooseProduct newChoose = new ChooseProduct();
-	System.out.println(newChoose.chooseProductId("Mom"));
-	System.out.println(newChoose.chooseProduct(2));
-	System.out.println(newChoose.chooseProductListFilteringByString("res"));
-	}*/
+	newChoose.chooseAllProductArrayList();
+	//System.out.println(newChoose.chooseAllProductArrayList().size());
+	//System.out.println(newChoose.chooseProductId("Mom"));
+	//System.out.println(newChoose.chooseProduct(2));
+	//System.out.println(newChoose.chooseProductListFilteringByString("res"));
+	}
 }
 
