@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -15,13 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import Hibernate.ChooseProduct;
+
 
 public class SearchGUIwithTable extends JFrame {
 	
@@ -34,7 +34,7 @@ public class SearchGUIwithTable extends JFrame {
 	JTable table;
 	DefaultTableModel model;
 	
-    	public SearchGUIwithTable(){
+    public SearchGUIwithTable(){
     		    		
     		model = new DefaultTableModel();
     		model.addColumn("ID");
@@ -50,65 +50,70 @@ public class SearchGUIwithTable extends JFrame {
     		
     		table.setIntercellSpacing(new Dimension(5, 0));
     		table.setCellSelectionEnabled(true);
-    	    ListSelectionModel cellSelectionModel = table.getSelectionModel();
-    	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-    	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-    	    public void valueChanged(ListSelectionEvent e) {
-    	        String selectedData="";
-
-    	        int[] selectedRow = table.getSelectedRows();
-    	        
-
-    	        for (int i = 0; i < selectedRow.length; i++) {
-    	         
-    	            selectedData = (String) table.getValueAt(selectedRow[i], 1/*selectedColumns[1]*/);
-    	        }
-    	        	        
-    	        SoldProductGUI.textBoxToEnterName.setText(selectedData);
-    	        SoldProductGUI.textBoxToEnterQuantity.setText("");
-    	        System.out.println("Selected: " + selectedData);
-    	      }
-
-    	    });
-    	    
+    		
+    		JLabel productName = new JLabel("Search");
+            JLabel basket = new JLabel("Searched List");
+            
+            textBoxToEnterSearchName = new JTextField(20);
+            
+            
+            JScrollPane qScroller = new JScrollPane(table);
+            qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+            
+            JPanel panelcenter = new JPanel();
+            panelcenter.setLayout(new BoxLayout(panelcenter,BoxLayout.Y_AXIS));
+           
+            searchButton = new JButton("Search");
+            
+            
+            searchButton.addActionListener(new SearchButton(textBoxToEnterSearchName));
+            
+           
+            JPanel panelBottom = new JPanel();
+                    
+            panelcenter.add(productName);
+            panelcenter.add(textBoxToEnterSearchName);
+            panelcenter.add(basket);
+            panelcenter.add(qScroller);
+            panelBottom.add(searchButton);
+            
+           
+            add(panelBottom, BorderLayout.SOUTH);
+            add(panelcenter, BorderLayout.CENTER);
+           
+            setTitle("Search Products");
+            setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            //setResizable(false);
+            pack();
+            setLocationRelativeTo(null);
+    		
+    		    	   
+    		table.addMouseListener(new java.awt.event.MouseAdapter() {
+        	    @Override
+        	    public void mouseClicked(java.awt.event.MouseEvent evt) {
+        	        int row = table.rowAtPoint(evt.getPoint());
+        	       String selectedData="";
+        	       selectedData = (String) table.getValueAt(row, 1);
+        	     
+        	        
+        	        SoldProductGUI.textBoxToEnterName.setText(selectedData);
+        	        SoldProductGUI.textBoxToEnterQuantity.setText("");
+        	        System.out.println("Selected: " + selectedData);
+        	    
+       	        		
+       	    	 addWindowListener(new WindowAdapter() {
+       	    		 @Override
+       	    		 public void windowClosing(WindowEvent e) {
+       	    			 setVisible(false);
+       	    			 super.windowClosing(e); //  --------------------------
+       	    		 }
+       	    	 });
+        	    
+        	    }
+        	});
     	   
-    	JLabel productName = new JLabel("Search");
-        JLabel basket = new JLabel("Searched List");
-        
-        textBoxToEnterSearchName = new JTextField(20);
-        
-        
-        JScrollPane qScroller = new JScrollPane(table);
-        qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        
-        JPanel panelcenter = new JPanel();
-        panelcenter.setLayout(new BoxLayout(panelcenter,BoxLayout.Y_AXIS));
-       
-        searchButton = new JButton("Search");
-        
-        
-        searchButton.addActionListener(new SearchButton(textBoxToEnterSearchName));
-        
-       
-        JPanel panelBottom = new JPanel();
-                
-        panelcenter.add(productName);
-        panelcenter.add(textBoxToEnterSearchName);
-        panelcenter.add(basket);
-        panelcenter.add(qScroller);
-        panelBottom.add(searchButton);
-        
-       
-        add(panelBottom, BorderLayout.SOUTH);
-        add(panelcenter, BorderLayout.CENTER);
-       
-        setTitle("Search Products");
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        //setResizable(false);
-        pack();
-        setLocationRelativeTo(null);
+    	
     }
 
     	public class SearchButton implements ActionListener {

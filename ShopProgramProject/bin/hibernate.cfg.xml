@@ -27,6 +27,7 @@
 
 <property name="connection.pool_size">1</property>
 
+
 <!-- SQL dialect -->
 
 
@@ -51,6 +52,9 @@
 
 
 <mapping class="ShopProgram.Product"/>
+<mapping class="ShopProgram.Project"/>
+<mapping class="ShopProgram.ChoosenProduct"/>
+
 
 
 </session-factory>

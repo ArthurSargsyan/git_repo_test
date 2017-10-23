@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ShopProgram.Product;
+import ShopProgram.Project;
 
 public class AddToTableManyUsers {
 
@@ -17,17 +18,18 @@ public class AddToTableManyUsers {
 		for (int i=1;i<1000; i++) {
 			
 			Product product = new Product();
-			product.setProductName("User"+" "+i);
+			product.setProductName("Product"+" "+i);
 			product.setProductPrice(Double.parseDouble(Double.toString(i*10)));
 			product.setQuantity(Double.parseDouble(Double.toString(i+50)));
 			session.save(product);
+			
 		}
 		session.getTransaction().commit();
 		session.close();
 		}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		AddToTableManyUsers table = new AddToTableManyUsers();
 		table.addProduct();
-	}*/
+	}
 }

@@ -97,8 +97,6 @@ public class ChooseProduct {
 		return allProductList;
 	}
 	
-	
-	
 	//return ArrayList of products in which name  have string s string.
 	public ArrayList<Product> ProductListFilteringByString(String s) {
 		
@@ -123,14 +121,7 @@ public class ChooseProduct {
 		session.close();
 		return allProductList;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public int productQuantityInWareHouse() {
 			
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

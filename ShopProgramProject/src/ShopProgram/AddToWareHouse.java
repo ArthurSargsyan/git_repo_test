@@ -29,14 +29,13 @@ public class AddToWareHouse extends JFrame {
 	private static final long serialVersionUID = 1L;
 			
 	JButton add;
-	//JTextArea wareHouseTable = new JTextArea(10,30);
 	JTextField textBoxToEnterName;
 	JTextField textBoxToEnterPrice;
 	JTextField textBoxToEnterQuantity;
 	ShopOfProducts shop = new ShopOfProducts();
 	DefaultTableModel model;
 	JTable table;
-	//JLabel Warehouse = new JLabel("Warehouse");
+	
 
     public AddToWareHouse(){
     	
@@ -83,16 +82,11 @@ public class AddToWareHouse extends JFrame {
         panelEast.add(productQuatity);
         panelEast.add(textBoxToEnterQuantity);
         
-        //wareHouseTable.setLineWrap(false);
-		//wareHouseTable.setWrapStyleWord(true);
-		//wareHouseTable.setFont(new Font("Tahoma", Font.ITALIC, 12));
+        
 		JScrollPane qScroller = new JScrollPane(table);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        //wareHouseTable.setEditable(false);
-        
-		//wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+shop.updateWarehouseInTable());
-		
+       
         add = new JButton("Add");
         
         add.addActionListener(new AddButton(textBoxToEnterName,textBoxToEnterPrice,textBoxToEnterQuantity));
@@ -141,23 +135,19 @@ public class AddToWareHouse extends JFrame {
                	UpdateProduct update = new UpdateProduct();
             	update.updateProduct(y, quantityInput.getText(),Double.parseDouble(priceInput.getText()));
             }
+         	
+            ChooseProduct prod = new ChooseProduct();
+           	ArrayList<Product> prodList = prod.chooseAllProductArrayList();
+           	model.setRowCount(0);
+       		for (int i=0; i<prodList.size(); i++) {
+       		model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
+       	   }
        }     
             
        textBoxToEnterName.setText(""); 
        textBoxToEnterPrice.setText("");
        textBoxToEnterQuantity.setText("");
-       
-        
-       	ChooseProduct prod = new ChooseProduct();
-       	ArrayList<Product> prodList = prod.chooseAllProductArrayList();
-       	model.setRowCount(0);
-   		for (int i=0; i<prodList.size(); i++) {
-   		model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
-   	
-        }
-      
-       //wareHouseTable.setText("                WAREHOUSE\nNAME\t\tPRICE\tQUANTITY\n"+shop.updateWarehouseInTable());
-	   }
+      }
 	}
   
     /*public static void main(String[] args) {

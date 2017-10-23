@@ -20,13 +20,14 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import Hibernate.ChooseProduct;
 
+
 public class ShopOfProducts {
 	
 	JFrame frame = new JFrame();
 	JTable table;
 	DefaultTableModel model;
 	JLabel Warehouse = new JLabel("Warehouse");
-		
+	
 	private void shopGUI () {
 		
 		
@@ -51,6 +52,7 @@ public class ShopOfProducts {
 	    
 		JButton addToWareHouse = new JButton("|                  Add To Warehouse                   |");
 		JButton saleProducts = new JButton("|                       Sale Products                       |");
+		JButton projects = new JButton("|                            Projects                             |");
 		JPanel shopPanel = new JPanel();
 		JPanel warehousePanel = new JPanel();
 		shopPanel.setLayout(new BoxLayout(shopPanel, BoxLayout.Y_AXIS));
@@ -58,6 +60,7 @@ public class ShopOfProducts {
 		
 		addToWareHouse.addActionListener(new AddToWareHouseButton());
 		saleProducts.addActionListener(new SaleProducts());
+		projects.addActionListener(new Projects());
 		
 		JScrollPane qScroller = new JScrollPane(table);                   
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -70,9 +73,11 @@ public class ShopOfProducts {
 		frame.add(Warehouse, BorderLayout.NORTH);
 		shopPanel.add(addToWareHouse);
 		shopPanel.add(saleProducts);
+		shopPanel.add(projects);
+		
 		frame.setTitle("SHOP OF PRODUCTS");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -135,6 +140,36 @@ public class ShopOfProducts {
 			});
 		}
 	}
+	
+	
+	public class Projects implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent addToWareHouseClicked) {
+				System.out.println("Projects is clicked");
+				frame.setVisible(false);
+				ProjectsGUI projectsGUI = new ProjectsGUI();
+		   		projectsGUI.setVisible(true);
+				
+		   		
+		   		
+		   		projectsGUI.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosing(WindowEvent e) {
+						projectsGUI.setVisible(false);
+						frame.setVisible(true);
+						
+						ChooseProduct prod = new ChooseProduct();
+						ArrayList<Product> prodList = prod.chooseAllProductArrayList();
+						model.setRowCount(0);
+						for (int i=0; i<prodList.size(); i++) {
+						model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
+						}
+						super.windowClosing(e); //  --------------------------
+					}
+				});
+			}
+		}
 	
 	public static void main(String[] args) {
 		ShopOfProducts shopOfProducts = new ShopOfProducts();

@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
+import java.util.Date;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,20 +22,24 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import Hibernate.UpdateProject;
+
 
 public class SoldProductGUI extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-		
+	
+	boolean showing = true;
 	Buy shopBuy = new Buy();
 	Basket  basketName = new Basket();
 	
 	JButton addButton;
 	JButton removeButton;
-	JButton calculateButton;
+	JButton commit;
 	JButton search;
 	static JTextField textBoxToEnterName;
-	JTextField textBoxToEnterPrice;
+	JTextField textBoxToEnterProjectName;
+	JTextField textBoxToEnterPersonName;
 	static JTextField textBoxToEnterQuantity;
 	DefaultTableModel model;
 	JTable basketTable;
@@ -54,15 +60,17 @@ public class SoldProductGUI extends JFrame {
     	basketTable.setEnabled(false);
     	basketTable.setIntercellSpacing(new Dimension(5,0));
     	
-    	JLabel productName = new JLabel("  Name:  ");
-        JLabel productQuatity = new JLabel("  Quantity:  ");
-        JLabel productPrice= new JLabel("  Total Amount:  ");
-        JLabel basket = new JLabel("Basket");
+    	JLabel productName = new JLabel("  Product Name:  ");
+        JLabel productQuatity = new JLabel("  Product Quantity:  ");
+        JLabel projectName= new JLabel("  Project Name:  ");
+        JLabel personName= new JLabel("  Person Name:  ");
+        JLabel basket = new JLabel("List Of Products Using In The Specified Project ");
         
         textBoxToEnterName = new JTextField(20);
         textBoxToEnterQuantity = new JTextField(20);
-        textBoxToEnterPrice = new JTextField(20);
-        textBoxToEnterPrice.setEditable(false);
+        textBoxToEnterProjectName = new JTextField(20);
+        textBoxToEnterProjectName.setEditable(true);
+        textBoxToEnterPersonName = new JTextField(20);
         
         
         JScrollPane qScroller = new JScrollPane(basketTable);
@@ -80,26 +88,28 @@ public class SoldProductGUI extends JFrame {
         panelcenter.add(textBoxToEnterName);
         panelcenter.add(productQuatity);
         panelcenter.add(textBoxToEnterQuantity);
-        panelcenter.add(productPrice);
-        panelcenter.add(textBoxToEnterPrice);
+        panelcenter.add(projectName);
+        panelcenter.add(textBoxToEnterProjectName);
+        panelcenter.add(personName);
+        panelcenter.add(textBoxToEnterPersonName);
         panelEast.add(basket);
         panelEast.add(qScroller);
         
         addButton = new JButton("Add");
         removeButton = new JButton("Remove");
-        calculateButton = new JButton("Calculate Price");
+        commit = new JButton("Confirm");
         search = new JButton("Search");
         
         addButton.addActionListener(new addButton(textBoxToEnterName,textBoxToEnterQuantity));
         removeButton.addActionListener(new RemoveButton(textBoxToEnterName,textBoxToEnterQuantity));
-        calculateButton.addActionListener(new CalculateButton());
+        commit.addActionListener(new ConfirmButton());
         search.addActionListener(new SearchButton());
             
         JPanel panelBottom = new JPanel();
         
         panelBottom.add(addButton);
         panelBottom.add(removeButton);
-        panelBottom.add(calculateButton);
+        panelBottom.add(commit);
         panelBottom.add(search);
         
         add(panelEast, BorderLayout.EAST);
@@ -111,6 +121,7 @@ public class SoldProductGUI extends JFrame {
         setResizable(false);
         pack();
         setLocationRelativeTo(null);
+        updateBasket();
     }
     	
     //Do Update of Basket and refresh table.
@@ -134,6 +145,7 @@ public class SoldProductGUI extends JFrame {
     	DecimalFormat myFormatter = new DecimalFormat(pattern);
     	String output = myFormatter.format(value);
     	return Double.parseDouble(output);
+    	
     }
     	
     public class addButton implements ActionListener {
@@ -150,7 +162,7 @@ public class SoldProductGUI extends JFrame {
     			setVisible(true); 
     			
     			if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
-    				JOptionPane.showMessageDialog(null, "Please Insert Fields Of Window");
+    				JOptionPane.showMessageDialog(null, "Please Fill in Product Name And Product Quantity Fields");
     			} else {  
     				shopBuy.moveToBasket(nameInput.getText(), quantityInput.getText(),basketName);
     			}
@@ -177,8 +189,7 @@ public class SoldProductGUI extends JFrame {
     	public void actionPerformed(ActionEvent removeClicked) {
     		setVisible(true);  
     		if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
-    			JOptionPane.showMessageDialog(null, "Please Insert Fields Of Window");
-    			//System.out.println("Please Insert Field Name in Window");
+    			JOptionPane.showMessageDialog(null, "Please Fill in Product Name And Product Quantity Fields");
     		} else {  
     			shopBuy.excludeFromBasket(nameInput.getText(), Double.parseDouble(quantityInput.getText()), basketName);
     		}
@@ -188,14 +199,32 @@ public class SoldProductGUI extends JFrame {
     	}
     }
     	    	
-    public class CalculateButton implements ActionListener {  
+    public class ConfirmButton implements ActionListener {  
     	@Override
     	public void actionPerformed(ActionEvent CalculateClicked) {
     		setVisible(true);
-    		if (shopBuy.calculateAllProductsPriceInBasket(basketName)>0){
-    			 textBoxToEnterPrice.setText(Double.toString(shopBuy.calculateAllProductsPriceInBasket(basketName)));   
+    		if (textBoxToEnterProjectName.getText().equals("")||textBoxToEnterPersonName.getText().equals("")){
+    			JOptionPane.showMessageDialog(null, "Please fill in Project Name and Person Name Fileds");	   
     		}else {
-    		JOptionPane.showMessageDialog(null, "Basket Is Empty");
+    			Project project = new Project();
+    			project.setProjectName(textBoxToEnterProjectName.getText());
+    			project.setPersonName(textBoxToEnterPersonName.getText());
+    			project.setDate(new Date());
+    			
+    			for (int i=0;i<basketName.getBasketList().size(); i++) {
+    				ChoosenProduct choosenProd = new ChoosenProduct();
+    				choosenProd.setProductName(basketName.getBasketList().get(i).getProductName());
+    				choosenProd.setProductPrice((basketName.getBasketList().get(i).getProductPrice()));
+    				choosenProd.setQuantity((basketName.getBasketList().get(i).getQuantity()));
+    				
+    				project.getProductList().add(choosenProd);
+    			}
+    			UpdateProject updateProj = new UpdateProject();
+				updateProj.addProject(project);
+				textBoxToEnterProjectName.setText("");
+				textBoxToEnterPersonName.setText("");
+				model.setRowCount(0);
+				basketName.basketList.clear();
     		}
     	}
    }
@@ -203,18 +232,23 @@ public class SoldProductGUI extends JFrame {
     public class SearchButton implements ActionListener {
     	
     	@Override
-    	public void actionPerformed(ActionEvent addToWareHouseClicked) {
+    	public void actionPerformed(ActionEvent searchClicked) {
     		System.out.println("SearchProducts is clicked");
-    		setVisible(true);
-    		SearchGUIwithTable searchGUIwithTable = new SearchGUIwithTable();
-    		searchGUIwithTable.setVisible(true);
-    		searchGUIwithTable.addWindowListener(new WindowAdapter() {
-    			@Override
-    			public void windowClosing(WindowEvent e) {
-    				searchGUIwithTable.setVisible(false);
-    				super.windowClosing(e);
-    			}
-    		});
+    		if (showing) {
+    			showing = false;
+    			System.out.println(showing);
+    			SearchGUIwithTable searchGUIwithTable = new SearchGUIwithTable();
+        		searchGUIwithTable.setVisible(true);	
+        		
+        		searchGUIwithTable.addWindowListener(new WindowAdapter() {
+        			@Override
+        			public void windowClosing(WindowEvent e) {
+        				searchGUIwithTable.setVisible(false);
+        				showing = true;
+        				super.windowClosing(e);
+        			}
+        		});
+    		} 
     	}
     }
     	
