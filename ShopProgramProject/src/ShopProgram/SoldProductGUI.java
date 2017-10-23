@@ -22,6 +22,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import Hibernate.ChooseProduct;
+import Hibernate.RemoveFromWareHouse;
 import Hibernate.UpdateProject;
 
 
@@ -224,8 +226,17 @@ public class SoldProductGUI extends JFrame {
 				textBoxToEnterProjectName.setText("");
 				textBoxToEnterPersonName.setText("");
 				model.setRowCount(0);
+								
+				for (int k=0;k<basketName.basketList.size();k++) {
+					ChooseProduct chooseP = new ChooseProduct();
+					int choosenid=chooseP.chooseProductId(basketName.basketList.get(k).getProductName());
+								
+					RemoveFromWareHouse  remove = new RemoveFromWareHouse();
+					remove.removeFromWareHouse(choosenid, Double.toHexString(basketName.basketList.get(k).getQuantity()));
+				}
 				basketName.basketList.clear();
-    		}
+				updateBasket();
+			}
     	}
    }
          

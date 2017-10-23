@@ -36,7 +36,7 @@ public class ShopOfProducts {
 		model.addColumn("Name");
 		model.addColumn("Price");
 		model.addColumn("Quantity");
-				
+			
 		table = new JTable(model);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setSize(50,150);

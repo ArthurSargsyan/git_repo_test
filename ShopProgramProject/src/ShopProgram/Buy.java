@@ -26,8 +26,8 @@ public class Buy {
 			System.out.println("******add to basket******");
 			System.out.println("Quantity is "+ choosenProduct.getQuantity());
 				
-			RemoveFromWareHouse  remove = new RemoveFromWareHouse();
-			remove.removeFromWareHouse(choosenid, prodQuantity);
+			//RemoveFromWareHouse  remove = new RemoveFromWareHouse();
+			//remove.removeFromWareHouse(choosenid, prodQuantity);
 		} else {
 			JOptionPane.showMessageDialog(null, "Quantity Isn't Enough In Warehouse\nQuantity Is   "+choosenProduct.getQuantity());
 			if (choosenProduct.getQuantity()>0) {
@@ -46,7 +46,7 @@ public class Buy {
 		for (int i=0;i<basketName.getBasketList().size();i++) {
 			if (basketName.getBasketList().get(i).getProductName().equals(prodName)) {
 				
-				CheckAvailability check = new CheckAvailability();
+				/*CheckAvailability check = new CheckAvailability();
 				int y = check.checkAvailabilityByName(prodName);
 				if(y == 0) {
 					AddToTable add = new AddToTable();
@@ -56,9 +56,9 @@ public class Buy {
 					System.out.println(basketName.getBasketList().get(i).getProductName()+ "/ is added /" +basketName.getBasketList().get(i).getQuantity() + " pices ");
 				} else {
 					UpdateProduct update = new UpdateProduct();
-					update.updateProduct(y,Double.toString(excludedQuantity /*basketName.getBasketList().get(i).getQuantity())*/));
+					update.updateProduct(y,Double.toString(excludedQuantity ));
 					System.out.println(basketName.getBasketList().get(i).getProductName()+ "/ is updated /" +basketName.getBasketList().get(i).getQuantity() + " pices too ");
-				}
+				}*/
 				basketName.removeFromBasket(basketName.getBasketList().get(i),excludedQuantity);
 			}
 		}
