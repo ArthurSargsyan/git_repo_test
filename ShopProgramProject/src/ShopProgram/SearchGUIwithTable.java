@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -33,8 +34,19 @@ public class SearchGUIwithTable extends JFrame {
 	JTextField textBoxToEnterSearchName;
 	JTable table;
 	DefaultTableModel model;
+	MouseListener m1;
 	
-    public SearchGUIwithTable(){
+	 
+	 
+    public MouseListener getM1() {
+		return m1;
+	}
+
+	public void setM1(MouseListener m1) {
+		this.m1 = m1;
+	}
+
+	public SearchGUIwithTable(){
     		    		
     		model = new DefaultTableModel();
     		model.addColumn("ID");
@@ -88,8 +100,8 @@ public class SearchGUIwithTable extends JFrame {
             pack();
             setLocationRelativeTo(null);
     		
-    		    	   
-    		table.addMouseListener(new java.awt.event.MouseAdapter() {
+    		    	
+             m1 = new java.awt.event.MouseAdapter() {
         	    @Override
         	    public void mouseClicked(java.awt.event.MouseEvent evt) {
         	        int row = table.rowAtPoint(evt.getPoint());
@@ -111,7 +123,10 @@ public class SearchGUIwithTable extends JFrame {
        	    	 });
         	    
         	    }
-        	});
+        	};
+            
+            
+    		table.addMouseListener(m1);
     	   
     	
     }

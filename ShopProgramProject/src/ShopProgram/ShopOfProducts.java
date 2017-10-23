@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
@@ -42,6 +43,8 @@ public class ShopOfProducts {
 		table.setSize(50,150);
 		table.setEnabled(false);
 		table.setIntercellSpacing(new Dimension(5, 0));
+		
+		
 				
 		ChooseProduct prod = new ChooseProduct();
 		ArrayList<Product> prodList = prod.chooseAllProductArrayList();
@@ -50,9 +53,12 @@ public class ShopOfProducts {
 		model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
 		}
 	    
+		
+		
 		JButton addToWareHouse = new JButton("|                  Add To Warehouse                   |");
 		JButton saleProducts = new JButton("|                       Sale Products                       |");
 		JButton projects = new JButton("|                            Projects                             |");
+		JButton search = new JButton("|                      Search Product                     |");
 		JPanel shopPanel = new JPanel();
 		JPanel warehousePanel = new JPanel();
 		shopPanel.setLayout(new BoxLayout(shopPanel, BoxLayout.Y_AXIS));
@@ -61,6 +67,7 @@ public class ShopOfProducts {
 		addToWareHouse.addActionListener(new AddToWareHouseButton());
 		saleProducts.addActionListener(new SaleProducts());
 		projects.addActionListener(new Projects());
+		search.addActionListener(new SearchProduct());
 		
 		JScrollPane qScroller = new JScrollPane(table);                   
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -74,6 +81,7 @@ public class ShopOfProducts {
 		shopPanel.add(addToWareHouse);
 		shopPanel.add(saleProducts);
 		shopPanel.add(projects);
+		shopPanel.add(search);
 		
 		frame.setTitle("SHOP OF PRODUCTS");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -171,6 +179,31 @@ public class ShopOfProducts {
 			}
 		}
 	
+	public class SearchProduct implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent addToWareHouseClicked) {
+				System.out.println("SearchProduct is clicked");
+				SearchGUIwithTable searchProductGUI = new SearchGUIwithTable();
+				searchProductGUI.setVisible(true);
+				searchProductGUI.table.setCellSelectionEnabled(true);
+				searchProductGUI.table.setEnabled(false);
+				
+				
+				searchProductGUI.table.removeMouseListener(searchProductGUI.getM1());
+				
+				searchProductGUI.addWindowListener(new WindowAdapter() {
+      	    		 @Override
+      	    		 public void windowClosing(WindowEvent e) {
+      	    			searchProductGUI.setVisible(false);
+      	    			 super.windowClosing(e); //  --------------------------
+      	    		 }
+      	    	 });
+       	    
+			}
+		}
+	
+		
 	public static void main(String[] args) {
 		ShopOfProducts shopOfProducts = new ShopOfProducts();
 		shopOfProducts.shopGUI();

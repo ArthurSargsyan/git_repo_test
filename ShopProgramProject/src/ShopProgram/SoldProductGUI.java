@@ -124,7 +124,19 @@ public class SoldProductGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
         updateBasket();
-    }
+        
+        basketTable.addMouseListener(new java.awt.event.MouseAdapter() {
+    	    @Override
+    	    public void mouseClicked(java.awt.event.MouseEvent evt) {
+    	        int row = basketTable.rowAtPoint(evt.getPoint());
+    	       String selectedData="";
+    	       selectedData = (String) basketTable.getValueAt(row, 1);
+    	      
+    	       SoldProductGUI.textBoxToEnterName.setText(selectedData);
+    	       SoldProductGUI.textBoxToEnterQuantity.setText("");
+    	  }
+    	});
+   }
     	
     //Do Update of Basket and refresh table.
     public void updateBasket() {

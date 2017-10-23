@@ -126,6 +126,6 @@ public class ProjectsGUI extends JFrame {
     	/*public static void main(String[] args) {
    		ProjectsGUI projectsGUI = new ProjectsGUI();
    		projectsGUI.setVisible(true);
-        System.out.println(projectsGUI.viewButton.isSelected());
+        //System.out.println(projectsGUI.viewButton.isSelected());
     	}*/
 }
