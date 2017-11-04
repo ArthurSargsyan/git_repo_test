@@ -1,17 +1,17 @@
 package ShopProgram;
 
 import javax.swing.JOptionPane;
-import Hibernate.ChooseProduct;
+import Hibernate.WareHouse;
 
 
 public class Buy {
 	
 	boolean checkIsSmallInWarehouse = false;
-	
+		
 	//Move product to the specific basket by name and quantity. Correcting warehouse data.  	
-	public void moveToBasket(String prodName,String prodQuantity,Basket basketName) {
+	public void buyProduct(String prodName,String prodQuantity,Basket basketName) {
 		try {
-		ChooseProduct chooseP = new ChooseProduct();
+		WareHouse chooseP = new WareHouse();
 		int choosenid=chooseP.chooseProductId(prodName);
 				
 		Product choosenProduct = chooseP.chooseProduct(choosenid);
@@ -35,7 +35,7 @@ public class Buy {
 	}
 	
 	//Exclude product from specific basket by name and return to warehouse.
-	public void excludeFromBasket(String prodName,double excludedQuantity, Basket basketName) {
+	public void returnProduct(String prodName,double excludedQuantity, Basket basketName) {
 		for (int i=0;i<basketName.getBasketList().size();i++) {
 			if (basketName.getBasketList().get(i).getProductName().equals(prodName)) {
 				basketName.removeFromBasket(basketName.getBasketList().get(i),excludedQuantity);
@@ -43,32 +43,20 @@ public class Buy {
 		}
 	}
 
-	//Calculate basket's products price and return common price.
-	public double calculateAllProductsPriceInBasket(Basket basketName) {
 		
-		double basketProdsPrice = 0;
-		for (int i=0; i<basketName.getBasketList().size(); i++) {
-			Product y = basketName.getBasketList().get(i);
-			double basketProdPrice = y.getQuantity()*y.getProductPrice();
-			basketProdsPrice = basketProdsPrice + basketProdPrice;
-		}
-		System.out.println(Double.toString(basketProdsPrice));
-		return basketProdsPrice;
-	}
-	
 	/*public static void main(String[] args) {
 	Buy buy = new Buy();
 	Basket basketToBuy = new  Basket();
 	basketToBuy.basketList.clear();
-	buy.moveToBasket("Kotaik", "5",basketToBuy);
-	buy.moveToBasket("Kotaik", "5",basketToBuy);
-	buy.moveToBasket("Sexan  ", "2",basketToBuy);
-	buy.moveToBasket("Sexan  ", "2",basketToBuy);
-	buy.moveToBasket("Gtal", "3",basketToBuy);
-	buy.moveToBasket("Gtal", "2",basketToBuy);
-	buy.moveToBasket("Gtal", "5",basketToBuy);
-	buy.moveToBasket("Gtal", "5",basketToBuy);
-	buy.excludeFromBasket("Gtal",5,basketToBuy);
+	buy.buyProduct("Kotaik", "5",basketToBuy);
+	buy.buyProduct("Kotaik", "5",basketToBuy);
+	buy.buyProduct("Sexan  ", "2",basketToBuy);
+	buy.buyProduct("Sexan  ", "2",basketToBuy);
+	buy.buyProduct("Gtal", "3",basketToBuy);
+	buy.buyProduct("Gtal", "2",basketToBuy);
+	buy.buyProduct("Gtal", "5",basketToBuy);
+	buy.buyProduct("Gtal", "5",basketToBuy);
+	buy.returnProduct("Gtal",5,basketToBuy);
 	
 	System.out.println(basketToBuy.getBasketList());
 	System.out.println(basketToBuy.getBasketList().size());
@@ -78,7 +66,5 @@ public class Buy {
 	System.out.println(basketToBuy.getBasketList().get(i).getProductId());
 	System.out.println(basketToBuy.getBasketList().get(i).getQuantity());
 	}
-	  double p = buy.calculateAllProductsPriceInBasket(basketToBuy);
-    System.out.println(Double.toString(p));
 	}*/
 }

@@ -14,7 +14,8 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import Hibernate.ReadDataFromProjects;
+import Hibernate.WareHouse;
+
 
 public class ProjectsGUI extends JFrame {
 	
@@ -71,7 +72,7 @@ public class ProjectsGUI extends JFrame {
         setLocationRelativeTo(null);
     	   
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ReadDataFromProjects readProjectsData = new ReadDataFromProjects();
+		WareHouse readProjectsData = new WareHouse();
 		ArrayList<Project> readePprojectList= readProjectsData.chooseAllProjectsArrayList();
 			
     	model.setRowCount(0);
@@ -93,7 +94,7 @@ public class ProjectsGUI extends JFrame {
     	        ProjectDataGUI projectDataGUI = new  ProjectDataGUI();
     	        projectDataGUI.setVisible(true);
     	                	    	        
-   	    	 ReadDataFromProjects readProductsList = new ReadDataFromProjects();
+    	     WareHouse readProductsList = new WareHouse();
    	    	 ArrayList<ProjectData>  choosenList= readProductsList.projectDataFilteringByProjectName(selectedProjectName);
    	    	    			     
    	    	projectDataGUI.model.setRowCount(0);

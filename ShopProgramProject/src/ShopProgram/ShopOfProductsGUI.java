@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,14 +14,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import Hibernate.ChooseProduct;
+
+import Hibernate.WareHouse;
 
 
-public class ShopOfProducts {
+
+public class ShopOfProductsGUI {
 	
 	JFrame frame = new JFrame();
 	JTable table;
@@ -30,8 +30,7 @@ public class ShopOfProducts {
 	JLabel Warehouse = new JLabel("Warehouse");
 	
 	private void shopGUI () {
-		
-		
+			
 		model = new DefaultTableModel();
 		model.addColumn("ID");
 		model.addColumn("Name");
@@ -46,14 +45,13 @@ public class ShopOfProducts {
 		
 		
 				
-		ChooseProduct prod = new ChooseProduct();
+		WareHouse prod = new WareHouse();
 		ArrayList<Product> prodList = prod.chooseAllProductArrayList();
 		model.setRowCount(0);
 		for (int i=0; i<prodList.size(); i++) {
 		model.addRow(new Object[]{i+1,prodList.get(i).getProductName(),Double.toString(prodList.get(i).getProductPrice()),Double.toString(prodList.get(i).getQuantity())});
 		}
-	    
-		
+	   
 		
 		JButton addToWareHouse = new JButton("|                  Add To Warehouse                   |");
 		JButton saleProducts = new JButton("|                       Sale Products                       |");
@@ -97,7 +95,7 @@ public class ShopOfProducts {
 		public void actionPerformed(ActionEvent addToWareHouseClicked) {
 			 
 			System.out.println(" AddToWareHouseButton is clicked");
-			AddToWareHouse addToWareHouse = new AddToWareHouse();
+			AddToWareHouseGUI addToWareHouse = new AddToWareHouseGUI();
 			frame.setVisible(false);
 			addToWareHouse.setVisible(true);
 			
@@ -110,7 +108,7 @@ public class ShopOfProducts {
 						frame.setVisible(true);
 						
 						
-						ChooseProduct prod = new ChooseProduct();
+						WareHouse prod = new WareHouse();
 						ArrayList<Product> prodList = prod.chooseAllProductArrayList();
 						model.setRowCount(0);
 						for (int i=0; i<prodList.size(); i++) {
@@ -137,7 +135,7 @@ public class ShopOfProducts {
 					soldProductGUI.setVisible(false);
 					frame.setVisible(true);
 					
-					ChooseProduct prod = new ChooseProduct();
+					WareHouse prod = new WareHouse();
 					ArrayList<Product> prodList = prod.chooseAllProductArrayList();
 					model.setRowCount(0);
 					for (int i=0; i<prodList.size(); i++) {
@@ -148,8 +146,7 @@ public class ShopOfProducts {
 			});
 		}
 	}
-	
-	
+		
 	public class Projects implements ActionListener {
 		
 		@Override
@@ -159,15 +156,13 @@ public class ShopOfProducts {
 				ProjectsGUI projectsGUI = new ProjectsGUI();
 		   		projectsGUI.setVisible(true);
 				
-		   		
-		   		
 		   		projectsGUI.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent e) {
 						projectsGUI.setVisible(false);
 						frame.setVisible(true);
 						
-						ChooseProduct prod = new ChooseProduct();
+						WareHouse prod = new WareHouse();
 						ArrayList<Product> prodList = prod.chooseAllProductArrayList();
 						model.setRowCount(0);
 						for (int i=0; i<prodList.size(); i++) {
@@ -184,7 +179,7 @@ public class ShopOfProducts {
 		@Override
 		public void actionPerformed(ActionEvent addToWareHouseClicked) {
 				System.out.println("SearchProduct is clicked");
-				SearchGUIwithTable searchProductGUI = new SearchGUIwithTable();
+				SearchGUI searchProductGUI = new SearchGUI();
 				searchProductGUI.setVisible(true);
 				searchProductGUI.table.setCellSelectionEnabled(true);
 				searchProductGUI.table.setEnabled(false);
@@ -202,10 +197,9 @@ public class ShopOfProducts {
        	    
 			}
 		}
-	
-		
+			
 	public static void main(String[] args) {
-		ShopOfProducts shopOfProducts = new ShopOfProducts();
+		ShopOfProductsGUI shopOfProducts = new ShopOfProductsGUI();
 		shopOfProducts.shopGUI();
 	}
 }

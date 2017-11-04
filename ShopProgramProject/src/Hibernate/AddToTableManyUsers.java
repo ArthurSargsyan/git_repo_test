@@ -3,9 +3,7 @@ package Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
 import ShopProgram.Product;
-import ShopProgram.Project;
 
 public class AddToTableManyUsers {
 

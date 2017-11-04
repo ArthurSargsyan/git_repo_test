@@ -3,10 +3,8 @@ package ShopProgram;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.crypto.Data;
 
 
 @Entity
@@ -28,14 +25,8 @@ public class Project {
     pkColumnValue="EMP_ID", 
     allocationSize=1)
 
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE, generator="empGen")
-	
-	
-	
-	
-	//@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column (name="PROJECT_ID")
 	private int projectId;
 	@Column (name = "PROJECT_NAME")
@@ -47,8 +38,6 @@ public class Project {
 	
 	@ElementCollection
 	private Collection<ChoosenProduct> productList = new ArrayList<ChoosenProduct>();
-	
-	
 	
 	public String getPersonName() {
 		return personName;

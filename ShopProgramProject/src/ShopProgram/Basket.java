@@ -2,6 +2,8 @@ package ShopProgram;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Basket {
 		
 	ArrayList<Product> basketList = new ArrayList<Product>();
@@ -13,9 +15,8 @@ public class Basket {
 	public void setBasketList(ArrayList<Product> basketList) {
 		this.basketList = basketList;
 	}
-	
 	//Add product to the basket , if there is product like this it updates only quantity.
-	public void addToBasket(Product p) {    //sxal ka
+	public void addToBasket(Product p) {    
 		System.out.println(" p + "+p.getQuantity());
 	
 		if (basketList.isEmpty()) {
@@ -43,7 +44,6 @@ public class Basket {
 		}
 		
 	}
-	
 	//Remove product from the basket by removed quantity.
 	public void removeFromBasket(Product p,double removedQuantity) {
 		 
@@ -51,13 +51,16 @@ public class Basket {
 			Product prod = basketList.get(i);
 			if (prod.getProductName().equals(p.getProductName())) {
 				double x = prod.getQuantity() - removedQuantity;
+				if (x<0) {
+					JOptionPane.showMessageDialog(null, "Removed Quantity Is More Then In Basket");
+				}else {
 				prod.setQuantity(x);
+				}
 			}
 			basketList.remove(i);
 			basketList.add(i,prod);
 		 }
 	}
-
 	//Return  ArrayList<Product> of products.
 	public ArrayList<Product> basketsProductList(Basket basketName) { 
 		ArrayList<Product>  basketArray = new ArrayList<Product>();
@@ -68,7 +71,20 @@ public class Basket {
 		}
 		return basketArray;
 	}
-
+	//Calculate basket's products price and return common price.
+	public double calculateAllProductsPriceInBasket(Basket basketName) {
+			
+			double basketProdsPrice = 0;
+			for (int i=0; i<basketName.getBasketList().size(); i++) {
+				Product y = basketName.getBasketList().get(i);
+				double basketProdPrice = y.getQuantity()*y.getProductPrice();
+				basketProdsPrice = basketProdsPrice + basketProdPrice;
+			}
+			System.out.println(Double.toString(basketProdsPrice));
+			return basketProdsPrice;
+		}
+	
+	
 	/*public static void main(String[] args) {
 		Basket bask = new Basket();
 		Product prod0  = new Product();

@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.DecimalFormat;
 import java.util.Date;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,9 +20,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-import Hibernate.ChooseProduct;
-import Hibernate.RemoveFromWareHouse;
-import Hibernate.UpdateProject;
+import Hibernate.WareHouse;
+
 
 
 public class SoldProductGUI extends JFrame {
@@ -147,21 +144,13 @@ public class SoldProductGUI extends JFrame {
  			   model.addRow(new Object[]{i+1,basketName.getBasketList().get(i).getProductName(),
  					   					Double.toString(basketName.getBasketList().get(i).getProductPrice()),
  					   					Double.toString(basketName.getBasketList().get(i).getQuantity()),
- 					   				    Double.toString(customFormat("###.##",basketName.getBasketList().get(i).getProductPrice()*basketName.getBasketList().get(i).getQuantity()))});  
+ 					   				    Double.toString(PresentationOfDouble.customFormat("###.##",basketName.getBasketList().get(i).getProductPrice()*basketName.getBasketList().get(i).getQuantity()))});  
  			   y=y+basketName.getBasketList().get(i).getProductPrice()*basketName.getBasketList().get(i).getQuantity();
  		}
  		 model.addRow(new Object[]{"","","","",""});
- 		 model.addRow(new Object[]{"","","","Total Amount",Double.toString(customFormat("###.##",y))});
+ 		 model.addRow(new Object[]{"","","","Total Amount",Double.toString(PresentationOfDouble.customFormat("###.##",y))});
     }
-    	
-    //Formating Double by digits after point.
-    private double customFormat(String pattern, double value ) {
-    	DecimalFormat myFormatter = new DecimalFormat(pattern);
-    	String output = myFormatter.format(value);
-    	return Double.parseDouble(output);
-    	
-    }
-    	
+   	
     public class addButton implements ActionListener {
     	JTextField nameInput;
     	JTextField quantityInput;
@@ -178,7 +167,7 @@ public class SoldProductGUI extends JFrame {
     			if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
     				JOptionPane.showMessageDialog(null, "Please Fill in Product Name And Product Quantity Fields");
     			} else {  
-    				shopBuy.moveToBasket(nameInput.getText(), quantityInput.getText(),basketName);
+    				shopBuy.buyProduct(nameInput.getText(), quantityInput.getText(),basketName);
     			}
     			if (shopBuy.checkIsSmallInWarehouse) {
     				textBoxToEnterName.setText(nameInput.getText());
@@ -205,7 +194,7 @@ public class SoldProductGUI extends JFrame {
     		if (nameInput.getText().equals("")||quantityInput.getText().equals("")) {
     			JOptionPane.showMessageDialog(null, "Please Fill in Product Name And Product Quantity Fields");
     		} else {  
-    			shopBuy.excludeFromBasket(nameInput.getText(), Double.parseDouble(quantityInput.getText()), basketName);
+    			shopBuy.returnProduct(nameInput.getText(), Double.parseDouble(quantityInput.getText()), basketName);
     		}
     		textBoxToEnterName.setText("");
     		textBoxToEnterQuantity.setText("");
@@ -233,17 +222,17 @@ public class SoldProductGUI extends JFrame {
     				
     				project.getProductList().add(choosenProd);
     			}
-    			UpdateProject updateProj = new UpdateProject();
+    			WareHouse updateProj = new WareHouse();
 				updateProj.addProject(project);
 				textBoxToEnterProjectName.setText("");
 				textBoxToEnterPersonName.setText("");
 				model.setRowCount(0);
 								
 				for (int k=0;k<basketName.basketList.size();k++) {
-					ChooseProduct chooseP = new ChooseProduct();
+					WareHouse chooseP = new WareHouse();
 					int choosenid=chooseP.chooseProductId(basketName.basketList.get(k).getProductName());
 								
-					RemoveFromWareHouse  remove = new RemoveFromWareHouse();
+					WareHouse  remove = new WareHouse();
 					remove.removeFromWareHouse(choosenid, Double.toHexString(basketName.basketList.get(k).getQuantity()));
 				}
 				basketName.basketList.clear();
@@ -260,7 +249,7 @@ public class SoldProductGUI extends JFrame {
     		if (showing) {
     			showing = false;
     			System.out.println(showing);
-    			SearchGUIwithTable searchGUIwithTable = new SearchGUIwithTable();
+    			SearchGUI searchGUIwithTable = new SearchGUI();
         		searchGUIwithTable.setVisible(true);	
         		
         		searchGUIwithTable.addWindowListener(new WindowAdapter() {

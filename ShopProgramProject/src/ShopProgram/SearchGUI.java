@@ -8,7 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,10 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-import Hibernate.ChooseProduct;
+
+import Hibernate.WareHouse;
 
 
-public class SearchGUIwithTable extends JFrame {
+
+public class SearchGUI extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -36,8 +37,6 @@ public class SearchGUIwithTable extends JFrame {
 	DefaultTableModel model;
 	MouseListener m1;
 	
-	 
-	 
     public MouseListener getM1() {
 		return m1;
 	}
@@ -46,15 +45,14 @@ public class SearchGUIwithTable extends JFrame {
 		this.m1 = m1;
 	}
 
-	public SearchGUIwithTable(){
+	public SearchGUI(){
     		    		
     		model = new DefaultTableModel();
     		model.addColumn("ID");
     		model.addColumn("Name");
     		model.addColumn("Price");
     		model.addColumn("Quantity");
-    		
-    		
+    		    		
     		table = new JTable(model);
     		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
     		
@@ -67,8 +65,7 @@ public class SearchGUIwithTable extends JFrame {
             JLabel basket = new JLabel("Searched List");
             
             textBoxToEnterSearchName = new JTextField(20);
-            
-            
+                        
             JScrollPane qScroller = new JScrollPane(table);
             qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -77,11 +74,9 @@ public class SearchGUIwithTable extends JFrame {
             panelcenter.setLayout(new BoxLayout(panelcenter,BoxLayout.Y_AXIS));
            
             searchButton = new JButton("Search");
-            
-            
+                        
             searchButton.addActionListener(new SearchButton(textBoxToEnterSearchName));
-            
-           
+                       
             JPanel panelBottom = new JPanel();
                     
             panelcenter.add(productName);
@@ -89,8 +84,7 @@ public class SearchGUIwithTable extends JFrame {
             panelcenter.add(basket);
             panelcenter.add(qScroller);
             panelBottom.add(searchButton);
-            
-           
+                       
             add(panelBottom, BorderLayout.SOUTH);
             add(panelcenter, BorderLayout.CENTER);
            
@@ -99,7 +93,6 @@ public class SearchGUIwithTable extends JFrame {
             //setResizable(false);
             pack();
             setLocationRelativeTo(null);
-    		
     		    	
              m1 = new java.awt.event.MouseAdapter() {
         	    @Override
@@ -107,13 +100,11 @@ public class SearchGUIwithTable extends JFrame {
         	        int row = table.rowAtPoint(evt.getPoint());
         	       String selectedData="";
         	       selectedData = (String) table.getValueAt(row, 1);
-        	     
-        	        
+        	       
         	        SoldProductGUI.textBoxToEnterName.setText(selectedData);
         	        SoldProductGUI.textBoxToEnterQuantity.setText("");
         	        System.out.println("Selected: " + selectedData);
-        	    
-       	        		
+        	    		
        	    	 addWindowListener(new WindowAdapter() {
        	    		 @Override
        	    		 public void windowClosing(WindowEvent e) {
@@ -124,14 +115,10 @@ public class SearchGUIwithTable extends JFrame {
         	    
         	    }
         	};
-            
-            
-    		table.addMouseListener(m1);
-    	   
-    	
-    }
+        	table.addMouseListener(m1);
+	}
 
-    	public class SearchButton implements ActionListener {
+    public class SearchButton implements ActionListener {
     	
     		JTextField searchInput;
     			   
@@ -147,7 +134,7 @@ public class SearchGUIwithTable extends JFrame {
     				JOptionPane.showMessageDialog(null, "Search Field Is Empty");
     			} else {
     				
-    				ChooseProduct prod = new ChooseProduct();
+    				WareHouse prod = new WareHouse();
     	    		ArrayList<Product> prodList = prod.ProductListFilteringByString(searchInput.getText());
     	    		model.setRowCount(0);
     	    		for (int i=0; i<prodList.size(); i++) {

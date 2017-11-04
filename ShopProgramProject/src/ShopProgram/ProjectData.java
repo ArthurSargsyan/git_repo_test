@@ -10,6 +10,8 @@ public class ProjectData {
 	private String personName;
 	private double productPrice;
 	private Date date;
+	
+	
 	public String getProductName() {
 		return productName;
 	}
