@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    
+
+</head>
+<body>
+<div style="background-color:red">
+<form name="form" onsubmit="func();return false;">
+   FirstName:  <input id="fn" type="text" ><br/>
+   LastName:  <input id="ln" type="text" value=""><br/>
+   Age:  <input id="age" type="text" value=""><br/>
+    <input type="submit" value="SUBMIT" id="mysubmit">
+</form>
+</div>
+
+<p id="par"></p>
+
+<script>
+	
+	function func(){
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var text = "**";
+		var firstName = document.getElementById("fn").value;
+		var lastName = document.getElementById("ln").value;
+		var age = document.getElementById("age").value;
+		var req = new XMLHttpRequest();
+		console.log("OK");
+		//req.open("GET", "http://localhost:8080/Ajax_servlet/reg?firstName=" + firstName + "&lastName=" + lastName + "&age=" + age, true); 
+		req.open("GET", "http://localhost:8080/Ajax_servlet/history.json", true); 
+		//req.open("POST", "http://localhost:8080/Ajax_servlet/reg", true); 
+		debugger;
+		req.onreadystatechange = function (oEvent) {
+			if (req.readyState === 4) {
+				if (req.status === 200) {
+					var resp = JSON.parse( req.responseText );
+					for(var i=0; i < resp.searches.length ; i++){
+                    
+						try{
+                            text += resp.searches[i].data[0].text + "*_____________*" + new Date(resp.searches[i].timestamp*1000).getDate() + " of " + months[new Date(resp.searches[i].timestamp*1000).getMonth()] + "___" + new Date(resp.searches[i].timestamp*1000).getSeconds() +  "</br>";
+                        }catch(err){
+                            i++;
+                        }
+                    }
+                    document.getElementById("par").innerHTML = text;
+			
+					}
+				}
+			}
+		req.send();
+		//req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		//req.send("firstName=" + firstName + "&lastName=" + lastName + "&age=" + age);
+	}
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

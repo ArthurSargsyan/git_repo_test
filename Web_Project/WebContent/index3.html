@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  
+    <title>Hello, world!</title>
+  	</head>
+  	<body>
+  	
+  	
+	  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  		<a class="navbar-brand" href="#">Navbar</a>
+	  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	  			<span class="navbar-toggler-icon"></span>
+	  		</button>
+	
+	 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    		<ul class="navbar-nav mr-auto">
+	    			<li class="nav-item active">
+	       				<a class="nav-link disabled" href="#">Home <span class="sr-only">(current)</span></a>
+	      			</li>
+	      			<li class="nav-item dropdown">
+	        			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	         				Dropdown
+	        			</a>
+	        			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	          				<a class="dropdown-item" href="#">Action</a>
+	          				<a class="dropdown-item" href="#">Another action</a>
+	          				<div class="dropdown-divider"></div>
+	          				<a class="dropdown-item" href="#">Something else here</a>
+	        			</div>
+	      			</li>
+	      		</ul>
+	    		<form class="form-inline my-2 my-lg-0">
+	      			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+	      			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+	    		</form>
+	  		</div>
+		</nav>
+		
+				
+		<div class="row">
+	  		<div class="col-md-2 col-sm-12">
+	    		<div class="list-group" id="list-tab" role="tablist">
+	      			<a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Stock</a>
+	      			<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile</a>
+	      			<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
+	    		</div>
+	  		</div>
+	  		<div class="col-md-9 col-sm-12"> 
+		  	 	<div class="tab-content" id="nav-tabContent">
+		    		<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+		      				<nav>
+							  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+							    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-Income" role="tab" aria-controls="nav-home" aria-selected="true">Income</a>
+							    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-MoveToShop" role="tab" aria-controls="nav-profile" aria-selected="false">Move To Shop</a>
+							    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-Statistics" role="tab" aria-controls="nav-contact" aria-selected="false">Statistics</a>
+							  </div>
+							</nav>
+							<div class="tab-content" id="nav-tabContent">
+							  <div class="tab-pane fade show active" id="nav-Income" role="tabpanel" aria-labelledby="nav-home-tab">
+							  	<form>
+							  		<div class="row">
+										<div class="form-group col-md-3">
+										    <label for="Income date">Date</label>
+										    <input type="date" class="form-control" id="Income date" placeholder="Data">
+										</div>
+										<div class="form-group col-md-3">
+										    <label for="Invoice No">Invoice No.</label>
+										    <input type="text" class="form-control" id="invoice no" placeholder="Invoice No">
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Currency">Currency</label>
+											<select class="form-control" id="exampleFormControlSelect1">
+										      <option>USD</option>
+										      <option>EUR</option>
+										      <option>RUB</option>
+										      <option>AMD</option>
+										    </select>										 
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-md-4">
+										    <label for="Vender">Vender</label>
+										    <input type="text" class="form-control" id="vender" placeholder="Vender">
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Vender Code">Vender Code</label>
+										    <input type="text" class="form-control" id="vender code" placeholder="Vender Code">
+										</div>
+										<div class="form-group col-md-3">
+										    <label for="Category">Category</label>
+											<select class="form-control" id="exampleFormControlSelect1">
+										    <option>Add Category</option>
+										    <option>Category 1</option>
+										    <option>Category 2</option>
+										    <option>Category 3</option>
+										   	</select>									  
+										</div>
+									</div>
+									<div class="row">
+								 		<div class="form-group col-md-4">
+										    <label for="Item Name">Item Name</label>
+										    <input type="text" class="form-control" id="item Name" placeholder="Item Name">
+										</div>
+								 		<div class="form-group col-md-2">
+										    <label for="Quantity">Quantity</label>
+										    <input type="text" class="form-control" id="quantity" placeholder="Quantity">
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Unit">Unit</label>
+											<select class="form-control" id="exampleFormControlSelect1">
+										    <option>pcs</option>
+											<option>m2</option>
+										    <option>kg</option>
+										    <option>list</option>
+										    <option>m</option>
+										    </select>										
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Price">Price</label>
+										    <input type="text" class="form-control" id="price" placeholder="Price">
+										</div>
+										
+									</div>
+									<div class="row">
+										<div class="form-group col-md-12">
+										    <label for="Description">Description</label>
+										    <input type="text" class="form-control" id="description" placeholder="Description">
+										</div>
+									</div>
+									<button class="btn btn-primary" type="submit">Submit</button>
+								</form>
+							  </div>
+							  <div class="tab-pane fade" id="nav-MoveToShop" role="tabpanel" aria-labelledby="nav-profile-tab">
+							  	<form>
+							  		<div class="row">
+										<div class="form-group col-md-3">
+										    <label for="Income date">Date</label>
+										    <input type="date" class="form-control" id="Income date" placeholder="Data">
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Category">Category</label>
+											<select class="form-control" id="exampleFormControlSelect1">
+										    <option>Add Category</option>
+										    <option>Category 1</option>
+										    <option>Category 2</option>
+										    <option>Category 3</option>
+										   	</select>									  
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Item Name">Item Name</label>
+										    <input type="text" class="form-control" id="item Name" placeholder="Item Name">
+										</div>
+										<div class="form-group col-md-2">
+										    <label for="Vender Code">Vender Code</label>
+										    <input type="text" class="form-control" id="vender code" placeholder="Vender Code">
+										</div>
+								 		<div class="form-group col-md-2">
+										    <label for="Quantity">Quantity</label>
+										    <input type="text" class="form-control" id="quantity" placeholder="Quantity">
+										</div>
+										<div class="form-group col-md-1">
+										    <label for="Unit">Unit</label>
+											<input type="text" class="form-control" id="unit" placeholder="Unit" disabled>
+										</div>
+									</div>
+									<div class="row">
+										<div class="form-group col-md-12">
+										    <label for="Description">Description</label>
+										    <input type="text" class="form-control" id="description" placeholder="Description" disabled>
+										</div>
+									</div>
+									<button class="btn btn-primary" type="submit">Add To List</button>
+									<hr>
+									<table class="table table-bordered">
+									  <thead>
+									    <tr>
+									      <th scope="col">#</th>
+									      <th scope="col">Date</th>
+									      <th scope="col">Invoice No.</th>
+									      <th scope="col">Vender</th>
+									      <th scope="col">Vender Code</th>
+									      <th scope="col">Category</th>
+									      <th scope="col">Quantity</th>
+									      <th scope="col">Unit</th>
+									      <th scope="col">Price</th>
+									      <th scope="col">Currency</th>
+									      <th scope="col">Description</th>
+									    </tr>
+									  </thead>
+									  <tbody>
+									    <tr>
+									      <th scope="row">1</th>
+									      <td>Date</td>
+									      <td>Invoice No.</td>
+									      <td>Vender</td>
+									      <td>Vender Code</td>
+									      <td>Category</td>
+									      <td>Quantity</td>
+									      <td>Unit</td>
+									      <td>Price</td>
+									      <td>Currency</td>
+									      <td>Description</td>
+									    </tr>
+									    <tr>
+									      <th scope="row">2</th>
+									      <td>Date</td>
+									      <td>Invoice No.</td>
+									      <td>Vender</td>
+									      <td>Vender Code</td>
+									      <td>Category</td>
+									      <td>Quantity</td>
+									      <td>Unit</td>
+									      <td>Price</td>
+									      <td>Currency</td>
+									      <td>Description</td>
+									    </tr>
+									  </tbody>
+									</table>
+									<button class="btn btn-primary" type="submit">Submit</button>
+								
+								</form>
+							 </div>
+							 <div class="tab-pane fade" id="nav-Statistics" role="tabpanel" aria-labelledby="nav-contact-tab">
+							 	<form>
+							  		<div class="row">
+										<div class="form-group col-md-3">
+										    <label for="Search Category">Search Category</label>
+											<select class="form-control" id="search category" onclick="selectClicked()">
+										    	<option value="" selected disabled hidden>Choose here</option>
+										    	<option value="1">Date Duration</option>
+										    	<option value="2">Item Name</option>
+										    	<option value="3">Vender Code</option>
+										    	<option value="4">Invoice No</option>
+										   	</select>									  
+										</div>
+										<div class="form-group col-md-3" id="div date from" style="display: none" >
+										    <label for="Income date from">Date From</label>
+										    <input type="date" class="form-control" id="Statistic date from" placeholder="Data Fromo">
+										</div>
+										<div class="form-group col-md-3" id="div date to" style="display: none" >
+										    <label for="Income date to">Date To</label>
+										    <input type="date" class="form-control" id="Statistic date to" placeholder="Data To">
+										</div>
+										<div class="form-group col-md-2" id="div vender code" style="display: none">
+										    <label for="Vender Code">Vender Code</label>
+										    <input type="text" class="form-control" id="Statistic vender code" placeholder="Vender Code">
+										</div>
+										<div class="form-group col-md-3" id="div invoice no" style="display: none">
+										    <label for="Invoice No">Invoice No</label>
+										    <input type="text" class="form-control" id="Statistic invoice no" placeholder="Invoice No">
+										</div>
+										<div class="form-group col-md-3" id="div item name" style="display: none">
+										    <label for="Item Name">Item Name</label>
+										    <input type="text" class="form-control" id="Statistic item name" placeholder="Item Name">
+										</div>
+									</div>	
+								 	<button class="btn btn-primary" type="submit">Filter</button>
+									<hr>
+									<table class="table table-bordered">
+									  <thead>
+									    <tr>
+									      <th scope="col">#</th>
+									      <th scope="col">Date</th>
+									      <th scope="col">Invoice No.</th>
+									      <th scope="col">Vender</th>
+									      <th scope="col">Vender Code</th>
+									      <th scope="col">Category</th>
+									      <th scope="col">Quantity</th>
+									      <th scope="col">Unit</th>
+									      <th scope="col">Price</th>
+									      <th scope="col">Currency</th>
+									      <th scope="col">Description</th>
+									    </tr>
+									  </thead>
+									  <tbody>
+									    <tr>
+									      <th scope="row">1</th>
+									      <td>Date</td>
+									      <td>Invoice No.</td>
+									      <td>Vender</td>
+									      <td>Vender Code</td>
+									      <td>Category</td>
+									      <td>Quantity</td>
+									      <td>Unit</td>
+									      <td>Price</td>
+									      <td>Currency</td>
+									      <td>Description</td>
+									    </tr>
+									    <tr>
+									      <th scope="row">2</th>
+									      <td>Date</td>
+									      <td>Invoice No.</td>
+									      <td>Vender</td>
+									      <td>Vender Code</td>
+									      <td>Category</td>
+									      <td>Quantity</td>
+									      <td>Unit</td>
+									      <td>Price</td>
+									      <td>Currency</td>
+									      <td>Description</td>
+									    </tr>
+									  </tbody>
+									</table>
+								</form>								
+							</div>
+						</div>
+		      	</div>
+	      			<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+	      				<nav>
+						  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+						    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home1</a>
+						    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile1</a>
+						    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact1</a>
+						  </div>
+						</nav>
+						<div class="tab-content" id="nav-tabContent">
+						  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">.ASDADSADA..</div>
+						  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">.##%#%..</div>
+						  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">..7238317.</div>
+						</div>
+					</div>	
+	      			<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+						<nav>
+						  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+						    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home2</a>
+						    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile2</a>
+						    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact2</a>
+						  </div>
+						</nav>
+						<div class="tab-content" id="nav-tabContent">
+						  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">.ASDADSADA..</div>
+						  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">.##%#%..</div>
+						  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">..7238317.</div>
+						</div>      			
+					</div>	
+	      			
+	    		</div>
+	  		</div>
+  		</div>
+
+	<script type="text/javascript">
+
+		function selectClicked(){
+			var selectedValue = document.getElementById("search category").value;
+			if(selectedValue === "1"){
+			    document.getElementById("div date from").style.display = "inline-block"; 
+			    document.getElementById("div date to").style.display = "inline-block"; 
+			    document.getElementById("div vender code").style.display = "none"; 
+			    document.getElementById("div invoice no").style.display = "none"; 
+			    document.getElementById("div item name").style.display = "none"; 
+		
+			}else if(selectedValue === "2"){
+				document.getElementById("div date from").style.display = "none"; 
+			    document.getElementById("div date to").style.display = "none"; 
+			    document.getElementById("div vender code").style.display = "none"; 
+			    document.getElementById("div invoice no").style.display = "none"; 
+			    document.getElementById("div item name").style.display = "inline-block"; 
+		
+			}else if(selectedValue === "3"){
+				document.getElementById("div date from").style.display = "none"; 
+			    document.getElementById("div date to").style.display = "none"; 
+			    document.getElementById("div vender code").style.display = "inline-block"; 
+			    document.getElementById("div invoice no").style.display = "none"; 
+			    document.getElementById("div item name").style.display = "none"; 
+				
+			}else if(selectedValue === "4"){
+				document.getElementById("div date from").style.display = "none"; 
+			    document.getElementById("div date to").style.display = "none"; 
+			    document.getElementById("div vender code").style.display = "none"; 
+			    document.getElementById("div invoice no").style.display = "inline-block"; 
+			}
+		}
+		</script>
+	
+	
+	</body>
+</html>
