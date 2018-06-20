@@ -22,13 +22,14 @@
 <script>
 	
 	function func(){
+		debugger;
 		var firstName = document.getElementById("fn").value;
 		var lastName = document.getElementById("ln").value;
 		var age = document.getElementById("age").value;
 		var req = new XMLHttpRequest();
 		console.log("OK");
-		req.open("GET", "http://localhost:8080/Ajax_servlet/reg?firstName=" + firstName + "&lastName=" + lastName + "&age=" + age, true); 
-		//req.open("POST", "http://localhost:8080/Ajax_servlet/reg", true); 
+		req.open("GET", "http://localhost:8080/Web_Project/reg?firstName=" + firstName + "&lastName=" + lastName + "&age=" + age, true); 
+		//req.open("POST", "http://localhost:8080/Web_Project/reg", true); 
 
 		req.onreadystatechange = function (oEvent) {
 			if (req.readyState === 4) {
