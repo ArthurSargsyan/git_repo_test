@@ -67,7 +67,6 @@ public class DataBase {
 		t.commit();
 		session.close();
 		
-		
 	}
 	
 	public List<Item> searchInDB(Session session,String propertyName ,String property) {
