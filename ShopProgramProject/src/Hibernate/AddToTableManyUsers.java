@@ -13,7 +13,7 @@ public class AddToTableManyUsers {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		for (int i=1;i<1000; i++) {
+		for (int i=1;i<50000; i++) {
 			
 			Product product = new Product();
 			product.setProductName("Product"+" "+i);
