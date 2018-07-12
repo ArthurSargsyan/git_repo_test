@@ -66,7 +66,7 @@ public class DataBase {
 		}
 		t.commit();
 		session.close();
-	
+	  /////////////
 		
 	}
 	
