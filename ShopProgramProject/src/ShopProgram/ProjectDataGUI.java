@@ -2,7 +2,10 @@ package ShopProgram;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,10 +20,13 @@ public class ProjectDataGUI extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
+	String projectName;
 	Buy shopBuy = new Buy();
 	Basket  basketName = new Basket();
 	JTable table;
 	DefaultTableModel model;
+	JButton report;
+	JButton sendReportByEmail;
 	
 	
     public ProjectDataGUI(){
@@ -45,10 +51,18 @@ public class ProjectDataGUI extends JFrame {
     	table.setEnabled(false);
     	    	
         JLabel basket = new JLabel("Products List");
+        report = new JButton("Report");
+        sendReportByEmail = new JButton("Send Report By Email");
                
         JScrollPane qScroller = new JScrollPane(table);
         qScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        
+        report.addActionListener(new Report());
+        report.setAlignmentX(CENTER_ALIGNMENT);
+        
+        sendReportByEmail.addActionListener(new SendReportByEmail());
+        sendReportByEmail.setAlignmentX(CENTER_ALIGNMENT);
         
         JPanel panelcenter = new JPanel();
         panelcenter.setLayout(new BoxLayout(panelcenter,BoxLayout.Y_AXIS));
@@ -57,6 +71,8 @@ public class ProjectDataGUI extends JFrame {
                 
         panelcenter.add(basket);
         panelcenter.add(qScroller);
+        panelcenter.add(report);
+        panelcenter.add(sendReportByEmail);
                
         add(panelBottom, BorderLayout.SOUTH);
         add(panelcenter, BorderLayout.CENTER);
@@ -68,7 +84,29 @@ public class ProjectDataGUI extends JFrame {
         setLocationRelativeTo(null);
        
     }
+    
+    public class Report implements ActionListener{
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			ExcelFileUpdate update = new ExcelFileUpdate();
+			update.exelUpdate(table);
+			update.openFile();
+		}
+	}
+
+    public class SendReportByEmail implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			SendAttachmentInEmail sendEmail = new SendAttachmentInEmail();
+			sendEmail.mailing("sargsyanartur5989@gmail.com", "Report", "Report For Your Company", "D:\\Reports\\report2.xlsx");
+			
+			
+		}
+	}
     	
     	/*public static void main(String[] args) {
    		ProjectDataGUI projectsGUI = new ProjectDataGUI();
