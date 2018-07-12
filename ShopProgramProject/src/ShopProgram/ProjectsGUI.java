@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import Hibernate.WareHouse;
+import net.sf.ehcache.constructs.nonstop.concurrency.ExplicitLockingContextThreadLocal;
 
 
 public class ProjectsGUI extends JFrame {
@@ -27,6 +31,8 @@ public class ProjectsGUI extends JFrame {
 	Basket  basketName = new Basket();
 	JTable table;
 	DefaultTableModel model;
+	public String selectedProjectName;
+ 
 		
     public ProjectsGUI(){
     		    		
@@ -73,11 +79,11 @@ public class ProjectsGUI extends JFrame {
     	   
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		WareHouse readProjectsData = new WareHouse();
-		ArrayList<Project> readePprojectList= readProjectsData.chooseAllProjectsArrayList();
-			
+		ArrayList<Project> readProjectList= readProjectsData.chooseAllProjectsArrayList();
+		System.out.println(readProjectList.size());	
     	model.setRowCount(0);
-    	for (int i=0; i<readePprojectList.size(); i++) {
-    	model.addRow(new Object[]{i+1,readePprojectList.get(i).getProjectName(),readePprojectList.get(i).getDate(),readePprojectList.get(i).getPersonName()});
+    	for (int i=0; i<readProjectList.size(); i++) {
+    	model.addRow(new Object[]{i+1,readProjectList.get(i).getProjectName(),readProjectList.get(i).getDate(),readProjectList.get(i).getPersonName()});
     	}
     	    
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,10 +94,11 @@ public class ProjectsGUI extends JFrame {
     	    	if (showing) {
     	    		showing = false;
     	       int row = table.rowAtPoint(evt.getPoint());
-    	       String selectedProjectName="";
+    	        selectedProjectName="";
     	        selectedProjectName = (String) table.getValueAt(row, 1);
     	     
     	        ProjectDataGUI projectDataGUI = new  ProjectDataGUI();
+    	        projectDataGUI.projectName=selectedProjectName;
     	        projectDataGUI.setVisible(true);
     	                	    	        
     	     WareHouse readProductsList = new WareHouse();
@@ -105,7 +112,7 @@ public class ProjectsGUI extends JFrame {
    	    	 }
    	    	projectDataGUI.model.addRow(new Object[]{"","","","","","",""});
 	    	projectDataGUI.model.addRow(new Object[]{"","","","","","Total Price",Double.toString(totalPrice)});
-    	    
+    	    	    	
    	        		
    	    	projectDataGUI.addWindowListener(new WindowAdapter() {
    	    		 @Override
