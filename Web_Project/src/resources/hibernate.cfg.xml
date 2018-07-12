@@ -14,10 +14,12 @@
 
         <property name="show_sql">true</property>
         <!--<property name="format_sql">true</&#45;&#45;property>-->
+        
+        <property name="hibernate.id.new_generator_mappings">false</property>
 
         <mapping resource="resources/Item.hbm.xml"/>
+        <mapping resource="resources/ItemInShop.hbm.xml"/>
         <mapping resource="resources/Invoice.hbm.xml"/>
-
-
+        
     </session-factory>
 </hibernate-configuration>

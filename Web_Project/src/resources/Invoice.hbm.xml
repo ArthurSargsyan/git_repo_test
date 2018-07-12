@@ -4,8 +4,10 @@
 <hibernate-mapping>
     <class name="beans.Invoice" table="invoicetable" schema="webproject">
         <id name="invoiceID" column="invoiceID">
-            <generator class="identity"/>
-        </id>
+               <generator class="sequence">
+               		<param name="sequence">invoice_sequence</param> 
+               </generator>
+         </id>      
         <property name="invoiceNo" column="invoiceNo"/>
         <property name="vender" column="vender"/>
         <property name="currancy" column="currancy"/>

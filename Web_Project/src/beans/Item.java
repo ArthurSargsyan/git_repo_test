@@ -13,7 +13,7 @@ public class Item {
 	
 	public Item() {
 	}
-	public Item(String itemName, String itemCategory, String venderCode, String unit, int quantity, String description,
+	public Item( String itemName, String itemCategory, String venderCode, String unit, int quantity, String description,
 			double price) {
 		this.itemName = itemName;
 		this.itemCategory = itemCategory;

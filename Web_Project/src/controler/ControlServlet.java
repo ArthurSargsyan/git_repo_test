@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import Listeners.MyContextListener;
 import Model.DataBase;
 import beans.Invoice;
 import beans.Item;
@@ -16,25 +18,20 @@ import beans.Item;
 /**
  * Servlet implementation class ControlServlet
  */
-@WebServlet("/ControlServlet")
+@WebServlet(value="/ControlServlet",loadOnStartup=1)
 public class ControlServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	int i=0;
 	
-	Configuration config=null;
-	SessionFactory sf=null;
 	Session session=null;
 	
 	@Override
 	public void init() throws ServletException {
-		config = new Configuration();
-		config.configure("resources/hibernate.cfg.xml");
-		sf = config.buildSessionFactory();
-		session = sf.openSession();
+		session = MyContextListener.sf.openSession();
 		}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 	 String incomeDate = req.getParameter("incomeDate");
 	 String invoiceNo = req.getParameter("invoiceNo");
@@ -58,24 +55,12 @@ public class ControlServlet extends HttpServlet {
 	 }else {
 		 price = Double.parseDouble(req.getParameter("price"));
 	 }
-	 
 	 Item item = new Item(itemName, itemCategory, venderCode, unit, quantity, description, price);
 	 Invoice invoice = new Invoice(invoiceNo, vender, incomeCurrency, incomeDate);
 	
 	 DataBase db = new DataBase();
 	 db.addInvoiceToDB(session, invoice);
-	 db.addItemToDB(session, item);
-
-	 /*System.out.println(incomeDate);
-	 System.out.println(invoiceNo);
-	 System.out.println(incomeCurrency);
-	 System.out.println(vender);
-	 System.out.println(venderCode);
-	 System.out.println(itemName);
-	 System.out.println(quantity);
-	 System.out.println(unit);
-	 System.out.println(price);
-	 System.out.println(description);*/
+	 db.addItemToDB(MyContextListener.sf, item);
 	  
 	 resp.getWriter().println("SUCCESSS!");
 	} 
@@ -83,7 +68,6 @@ public class ControlServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 		session.close();
-		sf.close();
 	}
 	
 	

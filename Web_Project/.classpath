@@ -48,5 +48,6 @@
 	<classpathentry kind="lib" path="D:/java/hibernate-distribution-3.6.4.Final-dist/hibernate-distribution-3.6.4.Final/lib/required/javassist-3.12.0.GA.jar"/>
 	<classpathentry kind="lib" path="D:/java/hibernate-distribution-3.6.4.Final-dist/hibernate-distribution-3.6.4.Final/lib/required/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="D:/java/hibernate-distribution-3.6.4.Final-dist/hibernate-distribution-3.6.4.Final/lib/required/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/java/org.json.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
