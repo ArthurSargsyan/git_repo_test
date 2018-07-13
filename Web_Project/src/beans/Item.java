@@ -10,6 +10,8 @@ public class Item {
 	private int quantity=0;
 	private String description="";
 	private double price=0.0;
+	private Invoice invoice=null;
+	
 	
 	public Item() {
 	}
@@ -24,6 +26,27 @@ public class Item {
 		this.price = price;
 	}
 		
+	
+	
+	public Invoice getInvoice() {
+		return invoice;
+	}
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+	public String getItemCategory() {
+		return itemCategory;
+	}
+	public void setItemCategory(String itemCategory) {
+		this.itemCategory = itemCategory;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public int getItemID() {
 		return itemID;
 	}

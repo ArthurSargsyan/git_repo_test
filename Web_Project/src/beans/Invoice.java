@@ -8,6 +8,7 @@ public class Invoice {
 	private String vender="";
 	private String currancy="";
 	private String date=null;
+	private Item item=null;
 	
 	public Invoice(String invoiceNo, String vender, String currancy, String date) {
 		this.invoiceNo = invoiceNo;
@@ -18,6 +19,13 @@ public class Invoice {
 	public Invoice() {
 	}
 	
+	
+	public Item getItem() {
+		return item;
+	}
+	public void setItem(Item item) {
+		this.item = item;
+	}
 	public int getInvoiceID() {
 		return invoiceID;
 	}

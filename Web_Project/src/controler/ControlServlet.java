@@ -57,10 +57,10 @@ public class ControlServlet extends HttpServlet {
 	 }
 	 Item item = new Item(itemName, itemCategory, venderCode, unit, quantity, description, price);
 	 Invoice invoice = new Invoice(invoiceNo, vender, incomeCurrency, incomeDate);
+	 invoice.setItem(item);
 	
 	 DataBase db = new DataBase();
 	 db.addInvoiceToDB(session, invoice);
-	 db.addItemToDB(MyContextListener.sf, item);
 	  
 	 resp.getWriter().println("SUCCESSS!");
 	} 

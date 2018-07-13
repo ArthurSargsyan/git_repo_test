@@ -1,6 +1,7 @@
 package Model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +41,7 @@ public class DataBase {
 		Transaction t = session.beginTransaction();
 		session.save(invoice);
 		t.commit();
+	
 	}
 	
 	public void addItemForShopToDB(SessionFactory sessionFactory, ItemInShop itemInShop) {
@@ -70,20 +72,57 @@ public class DataBase {
 		
 	}
 	
-	public List<Item> searchInDB(Session session,String propertyName ,String property) {
+	public List<Item> returnItemsDepONIDs(Session session,ArrayList<Integer> iDs){
+		List<Item> itemList= new ArrayList<>();
 		Criteria c = session.createCriteria(Item.class);
-		System.out.println(property);
-
-		Criterion cr = Restrictions.eq(propertyName, property);
-		c.add(cr);
+		List<Item> items = c.list();
+		for (Item item : items) {
+			for (int i : iDs) {
+				if(item.getItemID()==i) {
+					itemList.add(item);
+				}
+			}
+		}
+		return itemList;
+	}	
+	
+	public List<Invoice> returnInvoices(Session session){
 		
-		
-		List<Item> itemList = (List<Item>) c.list();  
-		
-		
-		System.out.println("Item recived");
-		System.out.println(itemList);
-				
+		Criteria c = session.createCriteria(Invoice.class);
+		List<Invoice> invoiceList = c.list();
+		return invoiceList;
+	}
+	
+	
+	public List<Item> searchInDB(SessionFactory sf,String propertyName ,String property) {
+		List<Item> itemList = null;
+		if(propertyName.equals("invoiceNo")){
+			itemList = new ArrayList<>();
+			Session session = sf.openSession();
+			Criteria c = session.createCriteria(Invoice.class);
+			Criterion cr = Restrictions.eq(propertyName, property);
+			c.add(cr);
+			Invoice invoice = (Invoice) c.uniqueResult();
+			if(invoice!=null){
+				int invoiceID=invoice.getInvoiceID();
+				Item item = session.load(Item.class, invoiceID);
+				itemList.add(item);
+			}
+			session.close();
+		}else {
+			Session session = sf.openSession();
+			Criteria c = session.createCriteria(Item.class);
+			System.out.println(property);
+	
+			Criterion cr = Restrictions.eq(propertyName, property);
+			c.add(cr);
+			
+			itemList = (List<Item>) c.list();  
+			
+			System.out.println("Item recived");
+			System.out.println(itemList);
+			session.close();
+		}		
 		return itemList;
 	}
 	

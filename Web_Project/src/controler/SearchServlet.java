@@ -29,41 +29,44 @@ public class SearchServlet extends HttpServlet {
 		session = MyContextListener.sf.openSession();
 	}
 	
+	boolean requestCount = false;
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String itemName = request.getParameter("itemName");
 		String venderCode = request.getParameter("venderCode");			System.out.println("******"+venderCode+"/////");
 		String quantity = request.getParameter("quantity");
-		if(quantity=="")quantity="0";
-
+		int venderCodeCount=0;
 		String result = null;
 		String venderCodes = "";
 		List<Item> itemList = null;
-		
 		DataBase db = new DataBase();
 		
-		if(venderCode.equals("")) {
-			itemList = db.searchInDB(session, "itemName", itemName);
-			for(int i = 0; i<itemList.size(); i++) {
-				venderCodes = venderCodes + itemList.get(i).getVenderCode() + "/ ";
+		
+		itemList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
+		for(int i = 0; i<itemList.size(); i++) {
+			venderCodes = venderCodes + itemList.get(i).getVenderCode() + "/ ";
+			venderCodeCount++;
+		}
+		if(venderCodeCount>1) {
+			result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";	
+			if(requestCount) {
+				itemList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 			}
-		}else {
-			itemList = db.searchInDB(session, "venderCode", venderCode);
+			requestCount = true;
 		}
 		
 		if(itemList.size() == 0) {
 			result = "{ \"searchResult\":\"No such item\"}";			
 		}else {
 			if(itemList.size() == 1) {
+				if(quantity=="")	quantity="0";
 				if(itemList.get(0).getQunatity()>Integer.parseInt(quantity)) {
 					result = "{ \"searchResult\":\"" + itemList.get(0).getItemName() + "\",\"unit\":\"" + itemList.get(0).getUnit() + "\",\"category\":\"" + itemList.get(0).getCategory() + "\",\"venderCode\":\"" + itemList.get(0).getVenderCode() + "\",\"description\":\"" +itemList.get(0).getDescription()+ "\",\"price\":\"" +itemList.get(0).getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
 				}else {
 					result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+itemList.get(0).getQunatity()+"\"}";		
 				}
-				
-			}else {
-				result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";	
+				requestCount = false;
 			}
 		}
 		response.getWriter().println(result);   

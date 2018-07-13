@@ -15,6 +15,7 @@
         <property name="qunatity" column="qunatity"/>
         <property name="description" column="description"/>
         <property name="price" column="price"/>
+        <one-to-one name="invoice" class="beans.Invoice"></one-to-one>
        
     </class>
 </hibernate-mapping>
