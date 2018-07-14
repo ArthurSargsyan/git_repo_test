@@ -41,11 +41,12 @@ public class StatisticsServlet extends HttpServlet {
 		String result = "{ \"SearchResult\":[";
 		
 		if(argName2.equals("") & argValue2.equals("")) {
-			List<Item>  list= db.searchInDB(MyContextListener.sf, argName1, argValue1);
+			List<Invoice>  list= db.searchInDB(MyContextListener.sf, argName1, argValue1);
 			
-			for (Item item : list) {
+			for (Invoice invoice : list) {
+				for(Item item:invoice.getItems())
 				
-				result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + item.getInvoice().getInvoiceNo() + "\",\"vender\":\"" + item.getInvoice().getVender() + "\",\"currancy\":\"" + item.getInvoice().getCurrancy() + "\",\"date\":\"" + item.getInvoice().getDate() +"\"},";                
+				result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + invoice.getInvoiceNo() + "\",\"vender\":\"" + invoice.getVender() + "\",\"currancy\":\"" + invoice.getCurrancy() + "\",\"date\":\"" + invoice.getDate() +"\"},";                
 				
 			}
 			
@@ -75,10 +76,10 @@ public class StatisticsServlet extends HttpServlet {
 					}
 				}
 				
-				List<Item> itemList = db.returnItemsDepONIDs(session, iDList);
-				for (Item item : itemList) {
-					
-					result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + item.getInvoice().getInvoiceNo() + "\",\"vender\":\"" + item.getInvoice().getVender() + "\",\"currancy\":\"" + item.getInvoice().getCurrancy() + "\",\"date\":\"" + item.getInvoice().getDate() +"\"},";                
+				List<Invoice> List = db.returnItemsDepONIDs(session, iDList);
+				for (Invoice invoice : List) {
+					for(Item item:invoice.getItems())
+					result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + invoice.getInvoiceNo() + "\",\"vender\":\"" + invoice.getVender() + "\",\"currancy\":\"" + invoice.getCurrancy() + "\",\"date\":\"" + invoice.getDate() +"\"},";                
 					
 				}
 				

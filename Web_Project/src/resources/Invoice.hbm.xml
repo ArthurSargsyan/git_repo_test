@@ -4,18 +4,23 @@
 <hibernate-mapping>
     <class name="beans.Invoice" table="invoicetable" schema="webproject">
         <id name="invoiceID" column="invoiceID"> 
-             <!--   <generator class="sequence">  -->
-             <!--   	<param name="sequence">invoice_sequence</param>  -->
-             <!--   </generator> -->
+             <generator class="sequence">
+               	<param name="sequence">invoice_sequence</param>
+             </generator>
               
-              <generator class="foreign"> 
-              		<param name="property">item</param> 
-              </generator>
+             <!--   <generator class="foreign"> -->
+             <!--   		<param name="property">item</param> --> 
+             <!--   </generator> -->
          </id>      
         <property name="invoiceNo" column="invoiceNo"/>
         <property name="vender" column="vender"/>
         <property name="currancy" column="currancy"/>
-        <property name="date" column="date"/>
-        <one-to-one name="item" class="beans.Item" />
+        <property name="date" column="date"/> 
+        <set name="items" cascade="all">
+        	<key column="invoiceID"/>
+        	<one-to-many class="beans.Item"/>
+        </set>
+        
+        <!-- <one-to-one name="item" class="beans.Item" /> --> 
     </class>
 </hibernate-mapping>

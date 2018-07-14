@@ -36,10 +36,25 @@ public class DataBase {
 		t.commit();
 		session.close();
 	}
-	
+
 	public void addInvoiceToDB(Session session, Invoice invoice) {
 		Transaction t = session.beginTransaction();
-		session.save(invoice);
+		
+		Query<Invoice> q = session.createQuery  ("from Invoice where invoiceNo=\'"+invoice.getInvoiceNo()+"\'");
+		Invoice returnedInvoice = q.uniqueResult();
+		if(returnedInvoice!=null) {
+			System.out.println("have invoice");
+		int invoicereeturnedID = returnedInvoice.getInvoiceID();
+		
+		
+		returnedInvoice=  session.load(Invoice.class, invoicereeturnedID);
+		returnedInvoice.getItems().addAll(invoice.getItems());
+		}else {
+			System.out.println("have no invoice");
+			returnedInvoice = invoice;
+		}
+		session.saveOrUpdate(returnedInvoice);
+		System.out.println("before commit");
 		t.commit();
 	
 	}
@@ -72,18 +87,18 @@ public class DataBase {
 		
 	}
 	
-	public List<Item> returnItemsDepONIDs(Session session,ArrayList<Integer> iDs){
-		List<Item> itemList= new ArrayList<>();
-		Criteria c = session.createCriteria(Item.class);
-		List<Item> items = c.list();
-		for (Item item : items) {
+	public List<Invoice> returnItemsDepONIDs(Session session,ArrayList<Integer> iDs){
+		List<Invoice> invoiceList= new ArrayList<>();
+		Criteria c = session.createCriteria(Invoice.class);
+		List<Invoice> invoices = c.list();
+		for (Invoice invoice : invoices) {
 			for (int i : iDs) {
-				if(item.getItemID()==i) {
-					itemList.add(item);
+				if(invoice.getInvoiceID()==i) {
+					invoiceList.add(invoice);
 				}
 			}
 		}
-		return itemList;
+		return invoiceList;
 	}	
 	
 	public List<Invoice> returnInvoices(Session session){
@@ -94,36 +109,35 @@ public class DataBase {
 	}
 	
 	
-	public List<Item> searchInDB(SessionFactory sf,String propertyName ,String property) {
-		List<Item> itemList = null;
+	public List<Invoice> searchInDB(SessionFactory sf,String propertyName ,String property) {
+		List<Invoice> invoiceList = new ArrayList<>();;
+		Session session = sf.openSession();
+		Criteria c = session.createCriteria(Invoice.class);
+		
 		if(propertyName.equals("invoiceNo")){
-			itemList = new ArrayList<>();
-			Session session = sf.openSession();
-			Criteria c = session.createCriteria(Invoice.class);
-			Criterion cr = Restrictions.eq(propertyName, property);
+		Criterion cr = Restrictions.eq(propertyName, property);
 			c.add(cr);
 			Invoice invoice = (Invoice) c.uniqueResult();
 			if(invoice!=null){
-				int invoiceID=invoice.getInvoiceID();
-				Item item = session.load(Item.class, invoiceID);
-				itemList.add(item);
+				invoiceList.add(invoice);
 			}
 			session.close();
 		}else {
-			Session session = sf.openSession();
-			Criteria c = session.createCriteria(Item.class);
+			invoiceList = (List<Invoice>) c.list();  
+			for(Invoice invoice : invoiceList) {
+				for(Item item :invoice.getItems()) {
+					if(item.getItemName().equals(propertyName)||item.getVenderCode().equals(propertyName)) {
+						invoiceList.add(invoice);
+					}
+				}
+			}
+			
 			System.out.println(property);
-	
-			Criterion cr = Restrictions.eq(propertyName, property);
-			c.add(cr);
-			
-			itemList = (List<Item>) c.list();  
-			
 			System.out.println("Item recived");
-			System.out.println(itemList);
+			System.out.println(invoiceList);
 			session.close();
-		}		
-		return itemList;
+		}
+	return invoiceList;
 	}
 	
 

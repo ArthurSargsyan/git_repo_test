@@ -1,5 +1,8 @@
 package beans;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Invoice {
 
@@ -8,23 +11,25 @@ public class Invoice {
 	private String vender="";
 	private String currancy="";
 	private String date=null;
-	private Item item=null;
+	private Set<Item> items=null;
 	
-	public Invoice(String invoiceNo, String vender, String currancy, String date) {
+	
+	public Invoice( String invoiceNo, String vender, String currancy, String date, Set<Item> items) {
 		this.invoiceNo = invoiceNo;
 		this.vender = vender;
 		this.currancy = currancy;
 		this.date = date;
+		this.items = items;
 	}
+
 	public Invoice() {
 	}
 	
-	
-	public Item getItem() {
-		return item;
+	public Set<Item> getItems() {
+		return items;
 	}
-	public void setItem(Item item) {
-		this.item = item;
+	public void setItems(Set<Item> items) {
+		this.items = items;
 	}
 	public int getInvoiceID() {
 		return invoiceID;

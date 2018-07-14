@@ -10,13 +10,13 @@ public class Item {
 	private int quantity=0;
 	private String description="";
 	private double price=0.0;
-	private Invoice invoice=null;
-	
+		
 	
 	public Item() {
 	}
-	public Item( String itemName, String itemCategory, String venderCode, String unit, int quantity, String description,
-			double price) {
+	
+	public Item( String itemName, String itemCategory, String venderCode, String unit, int quantity,
+			String description, double price) {
 		this.itemName = itemName;
 		this.itemCategory = itemCategory;
 		this.venderCode = venderCode;
@@ -25,15 +25,7 @@ public class Item {
 		this.description = description;
 		this.price = price;
 	}
-		
-	
-	
-	public Invoice getInvoice() {
-		return invoice;
-	}
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
+
 	public String getItemCategory() {
 		return itemCategory;
 	}

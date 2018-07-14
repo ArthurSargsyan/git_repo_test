@@ -15,6 +15,7 @@ import org.hibernate.cfg.Configuration;
 
 import Listeners.MyContextListener;
 import Model.DataBase;
+import beans.Invoice;
 import beans.Item;
 
 
@@ -39,32 +40,38 @@ public class SearchServlet extends HttpServlet {
 		int venderCodeCount=0;
 		String result = null;
 		String venderCodes = "";
-		List<Item> itemList = null;
+		List<Invoice> invoiceList = null;
 		DataBase db = new DataBase();
 		
 		
-		itemList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
-		for(int i = 0; i<itemList.size(); i++) {
-			venderCodes = venderCodes + itemList.get(i).getVenderCode() + "/ ";
+		invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
+		for(int i = 0; i<invoiceList.size(); i++) {
+			for(Item item:invoiceList.get(i).getItems()) {
+			venderCodes = venderCodes + item.getVenderCode() + "/ ";
 			venderCodeCount++;
+			}
 		}
 		if(venderCodeCount>1) {
 			result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";	
 			if(requestCount) {
-				itemList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
+				invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 			}
 			requestCount = true;
 		}
 		
-		if(itemList.size() == 0) {
+		if(invoiceList.size() == 0) {
 			result = "{ \"searchResult\":\"No such item\"}";			
 		}else {
-			if(itemList.size() == 1) {
+			if(invoiceList.size() == 1) {
 				if(quantity=="")	quantity="0";
-				if(itemList.get(0).getQunatity()>Integer.parseInt(quantity)) {
-					result = "{ \"searchResult\":\"" + itemList.get(0).getItemName() + "\",\"unit\":\"" + itemList.get(0).getUnit() + "\",\"category\":\"" + itemList.get(0).getCategory() + "\",\"venderCode\":\"" + itemList.get(0).getVenderCode() + "\",\"description\":\"" +itemList.get(0).getDescription()+ "\",\"price\":\"" +itemList.get(0).getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
-				}else {
-					result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+itemList.get(0).getQunatity()+"\"}";		
+				
+				for(Item item : invoiceList.get(0).getItems()){
+				
+					if(item.getQunatity()>Integer.parseInt(quantity)) {
+						result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
+					}else {
+						result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";		
+					}
 				}
 				requestCount = false;
 			}

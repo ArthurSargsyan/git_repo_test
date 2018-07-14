@@ -1,6 +1,9 @@
 package controler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,9 +59,10 @@ public class ControlServlet extends HttpServlet {
 		 price = Double.parseDouble(req.getParameter("price"));
 	 }
 	 Item item = new Item(itemName, itemCategory, venderCode, unit, quantity, description, price);
-	 Invoice invoice = new Invoice(invoiceNo, vender, incomeCurrency, incomeDate);
-	 invoice.setItem(item);
-	
+	 HashSet<Item> itemsSet = new HashSet<>();
+	 itemsSet.add(item);
+	 Invoice invoice = new Invoice(invoiceNo, vender, incomeCurrency, incomeDate, itemsSet);
+	 	
 	 DataBase db = new DataBase();
 	 db.addInvoiceToDB(session, invoice);
 	  
