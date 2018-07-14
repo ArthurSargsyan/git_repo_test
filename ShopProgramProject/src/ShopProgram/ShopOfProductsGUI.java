@@ -17,14 +17,13 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
-
 import Hibernate.WareHouse;
 
 
 
 public class ShopOfProductsGUI {
 	
-	JFrame frame = new JFrame();
+	 JFrame frame = new JFrame();
 	JTable table;
 	DefaultTableModel model;
 	JLabel Warehouse = new JLabel("Warehouse");
@@ -106,8 +105,7 @@ public class ShopOfProductsGUI {
 					//System.out.println("Return to ShopOfProducts Window");
 						addToWareHouse.setVisible(false);
 						frame.setVisible(true);
-						
-						
+												
 						WareHouse prod = new WareHouse();
 						ArrayList<Product> prodList = prod.chooseAllProductArrayList();
 						model.setRowCount(0);
