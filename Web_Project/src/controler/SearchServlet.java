@@ -30,51 +30,74 @@ public class SearchServlet extends HttpServlet {
 		session = MyContextListener.sf.openSession();
 	}
 	
-	boolean requestCount = false;
+	private static String requestVenderCode ="";
+	private static String requestItemName ="";
+	private static int requestQuantity = 0;
+	boolean isRequest = false;
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String itemName = request.getParameter("itemName");
 		String venderCode = request.getParameter("venderCode");			System.out.println("******"+venderCode+"/////");
 		String quantity = request.getParameter("quantity");
-		int venderCodeCount=0;
 		String result = null;
-		String venderCodes = "";
-		List<Invoice> invoiceList = null;
-		DataBase db = new DataBase();
 		
-		
-		invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
-		for(int i = 0; i<invoiceList.size(); i++) {
-			for(Item item:invoiceList.get(i).getItems()) {
-			venderCodes = venderCodes + item.getVenderCode() + "/ ";
-			venderCodeCount++;
-			}
+		if(quantity.equals(""))	{
+			quantity="0";
 		}
-		if(venderCodeCount>1) {
-			result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";	
-			if(requestCount) {
-				invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
-			}
-			requestCount = true;
-		}
-		
-		if(invoiceList.size() == 0) {
-			result = "{ \"searchResult\":\"No such item\"}";			
+		if(requestVenderCode.equals(venderCode) & requestItemName.equals(itemName) & requestQuantity==Integer.parseInt(quantity)) {
+			result = "{ \"searchResult\":\"Repeated search\"}";
 		}else {
-			if(invoiceList.size() == 1) {
-				if(quantity=="")	quantity="0";
-				
-				for(Item item : invoiceList.get(0).getItems()){
-				
-					if(item.getQunatity()>Integer.parseInt(quantity)) {
-						result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
-					}else {
-						result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";		
+			
+			int venderCodeCount=0;
+			
+			String venderCodes = "";
+			List<Invoice> invoiceList = null;
+			DataBase db = new DataBase();
+			
+			invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
+			System.out.println(invoiceList +"////////////////invoiceList ");
+			for(int i = 0; i<invoiceList.size(); i++) {
+				for(Item item:invoiceList.get(i).getItems()) {
+					if(item.getItemName().equals(itemName)) {
+						venderCodes = venderCodes + item.getVenderCode() + "/ ";
+						venderCodeCount++;
 					}
 				}
-				requestCount = false;
 			}
+			requestQuantity =Integer.parseInt(quantity);    
+			System.out.println(venderCodes+"////////////////venderCodes"); System.out.println(!requestVenderCode.equals(venderCode));
+			
+			if(venderCodeCount>1) {			
+				if(isRequest & !requestVenderCode.equals(venderCode)) {
+					invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
+				}else {
+					result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";
+					isRequest = true;
+				}
+			}
+			
+			if(invoiceList.size() == 0) {
+				result = "{ \"searchResult\":\"No such item\"}";			
+			}else {
+				if(invoiceList.size() == 1) {
+					for(Item item : invoiceList.get(0).getItems()){
+						if(item.getVenderCode().equals(venderCode) || item.getItemName().equals(itemName)) {
+							requestVenderCode =item.getVenderCode();     System.out.println("requestVenderCode =" + requestVenderCode );
+							requestItemName =item.getItemName();		System.out.println( "requestItemName =" + requestItemName);  System.out.println( "requestQuantity =" + requestQuantity);
+							if(item.getQunatity()>Integer.parseInt(quantity)) {
+								result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
+								
+								
+							}else {
+								result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";		
+							}
+						}
+					}
+					isRequest = false;
+				}
+			}
+			
 		}
 		response.getWriter().println(result);   
 	}

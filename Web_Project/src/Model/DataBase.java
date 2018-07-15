@@ -2,9 +2,10 @@ package Model;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-
-
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -110,34 +111,46 @@ public class DataBase {
 	
 	
 	public List<Invoice> searchInDB(SessionFactory sf,String propertyName ,String property) {
-		List<Invoice> invoiceList = new ArrayList<>();;
-		Session session = sf.openSession();
-		Criteria c = session.createCriteria(Invoice.class);
+		List<Invoice> invoiceList = new ArrayList<>();
+		
 		
 		if(propertyName.equals("invoiceNo")){
-		Criterion cr = Restrictions.eq(propertyName, property);
+			Session session = sf.openSession();
+			Criteria c = session.createCriteria(Invoice.class);
+			Criterion cr = Restrictions.eq(propertyName, property);
 			c.add(cr);
 			Invoice invoice = (Invoice) c.uniqueResult();
 			if(invoice!=null){
+			Set<Item> items = new HashSet<>();
+			for(Item item:invoice.getItems()) {
+			  items.add(item);
+			}
+			invoice.setItems(items);
 				invoiceList.add(invoice);
 			}
 			session.close();
 		}else {
-			invoiceList = (List<Invoice>) c.list();  
-			for(Invoice invoice : invoiceList) {
+			List<Invoice> list = new ArrayList<>();
+			Session session = sf.openSession();
+			Criteria c = session.createCriteria(Invoice.class);
+			List<Invoice> invoice_List = (List<Invoice>) c.list();  
+			for(Invoice invoice : invoice_List) {
 				for(Item item :invoice.getItems()) {
-					if(item.getItemName().equals(propertyName)||item.getVenderCode().equals(propertyName)) {
-						invoiceList.add(invoice);
+					if(item.getItemName().equals(property)||item.getVenderCode().equals(property)) {
+						list.add(invoice);
 					}
 				}
 			}
-			
-			System.out.println(property);
-			System.out.println("Item recived");
-			System.out.println(invoiceList);
+			invoiceList.addAll(list);
 			session.close();
 		}
-	return invoiceList;
+																									System.out.println(invoiceList+"-------------------------------------------");
+																									for (Invoice invoice : invoiceList) {
+																										for(Item item:invoice.getItems()) {
+																											System.out.println(item.getItemName()+"*/-/-*-*/");
+																										}
+																									}
+		return invoiceList;
 	}
 	
 

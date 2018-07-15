@@ -45,9 +45,9 @@ public class StatisticsServlet extends HttpServlet {
 			
 			for (Invoice invoice : list) {
 				for(Item item:invoice.getItems())
-				
-				result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + invoice.getInvoiceNo() + "\",\"vender\":\"" + invoice.getVender() + "\",\"currancy\":\"" + invoice.getCurrancy() + "\",\"date\":\"" + invoice.getDate() +"\"},";                
-				
+					if(item.getItemName().equals(argValue1)||item.getVenderCode().equals(argValue1)||invoice.getInvoiceNo().equals(argValue1)) {
+					result =result +"{ \"itemName\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"quantity\":\"" + item.getQunatity() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" +item.getPrice() + "\",\"invoiceNo\":\"" + invoice.getInvoiceNo() + "\",\"vender\":\"" + invoice.getVender() + "\",\"currancy\":\"" + invoice.getCurrancy() + "\",\"date\":\"" + invoice.getDate() +"\"},";                
+				}
 			}
 			
 		}else {

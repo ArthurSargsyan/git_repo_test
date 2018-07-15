@@ -122,15 +122,20 @@
 							}else{
 								if(item.searchResult === "More than one Item"){
 									document.getElementById("toshopvendercode").disabled = false;
-									document.getElementById("toshopvendercode").value="";
+									//document.getElementById("toshopvendercode").value="";
 									window.alert("More than one Item. Choose vender code!! \n" +item.venderCodes);
 								}else{
-									oldVenderCode = item.venderCode;
-									document.getElementById("toshopdescription").value = item.description;
-									document.getElementById("toshopcategory").value = item.category; 
-									document.getElementById("toshopvendercode").value = item.venderCode; 
-									document.getElementById("toshopunit").value = item.unit;
-									document.getElementById("toshopprice").value = item.price;
+									if(item.searchResult === "Repeated search"){
+										window.alert("Repeated search!!");
+									}else{
+										oldVenderCode = item.venderCode;
+										document.getElementById("toshopdescription").value = item.description;
+										document.getElementById("toshopcategory").value = item.category; 
+										document.getElementById("toshopvendercode").value = item.venderCode; 
+										document.getElementById("toshopunit").value = item.unit;
+										document.getElementById("toshopprice").value = item.price;
+								
+									}
 								}
 							}
 						}
@@ -159,19 +164,28 @@
 				argValue1=document.getElementById("Statistic date from").value;
 				argName2="dateTo";
 				argValue2=document.getElementById("Statistic date to").value;
-				if(document.getElementById("Statistic date from").value=="" && document.getElementById("Statistic date to").value==""){
+				if(argValue1=="" || argValue2==""){
 					window.alert("Fill in dates");
 				}
 			}else if(document.getElementById("div vender code").style.display!=="none"){
 				console.log(document.getElementById("div vender code").style.display!=="none");
 				argName1="venderCode";
 				argValue1=document.getElementById("Statistic vender code").value;
+				if(argValue1==""){
+					window.alert("Fill in Vender Code");
+				}
 			}else if(document.getElementById("div invoice no").style.display!=="none"){
 				argName1="invoiceNo";
 				argValue1=document.getElementById("Statistic invoice no").value;
+				if(argValue1==""){
+					window.alert("Fill in Invoice Name");
+				}
 			}else if(document.getElementById("div item name").style.display!=="none"){
 				argName1="itemName";
 				argValue1=document.getElementById("Statistic item name").value;
+				if(argValue1==""){
+					window.alert("Fill in Item Name");
+				}
 			}
 			
 			//concatate request
@@ -186,7 +200,7 @@
 						console.log(searchReq.status)
 						console.log(searchReq.responseText)
 						var respJSON = JSON.parse(searchReq.responseText);
-						document.getElementById("statisticForm").reset();
+						//document.getElementById("statisticForm").reset();
 						document.getElementById("statisticsTable").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Invoice No.</th><th scope="col">Vender</th><th scope="col">Vender Code</th><th scope="col">Category</th><th scope="col">Quantity</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Currency</th><th scope="col">Description</th></tr></thead>';
 						for(var i in respJSON.SearchResult){
 							var rowNumber = parseInt(i) + 1;
