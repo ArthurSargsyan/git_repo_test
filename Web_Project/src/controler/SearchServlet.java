@@ -65,17 +65,21 @@ public class SearchServlet extends HttpServlet {
 					}
 				}
 			}
-			requestQuantity =Integer.parseInt(quantity);    
-			System.out.println(venderCodes+"////////////////venderCodes"); System.out.println(!requestVenderCode.equals(venderCode));
+			   
+			
+			System.out.println(venderCodes+"////////////////venderCodes");
+			System.out.println(!requestVenderCode.equals(venderCode)+"****");
+			System.out.println(requestQuantity!=Integer.parseInt(quantity));
 			
 			if(venderCodeCount>1) {			
-				if(isRequest & !requestVenderCode.equals(venderCode)) {
+				if(isRequest & (!requestVenderCode.equals(venderCode)||requestQuantity!=Integer.parseInt(quantity))) { 
 					invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 				}else {
 					result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";
 					isRequest = true;
 				}
 			}
+			requestQuantity =Integer.parseInt(quantity);
 			
 			if(invoiceList.size() == 0) {
 				result = "{ \"searchResult\":\"No such item\"}";			
@@ -85,7 +89,7 @@ public class SearchServlet extends HttpServlet {
 						if(item.getVenderCode().equals(venderCode) || item.getItemName().equals(itemName)) {
 							requestVenderCode =item.getVenderCode();     System.out.println("requestVenderCode =" + requestVenderCode );
 							requestItemName =item.getItemName();		System.out.println( "requestItemName =" + requestItemName);  System.out.println( "requestQuantity =" + requestQuantity);
-							if(item.getQunatity()>Integer.parseInt(quantity)) {
+							if(item.getQunatity()>=Integer.parseInt(quantity)) {
 								result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
 								
 								
@@ -94,7 +98,7 @@ public class SearchServlet extends HttpServlet {
 							}
 						}
 					}
-					isRequest = false;
+					//isRequest = false;
 				}
 			}
 			
