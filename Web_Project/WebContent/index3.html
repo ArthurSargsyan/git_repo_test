@@ -80,8 +80,6 @@
 						}
 					}
 				}
-				//incomeSubReq.open("GET", "http://localhost:8080/Web_Project/ControlServlet?incomeDate=" + incomeDate + "&invoiceNo=" + invoiceNo + "&incomeCurrency=" + incomeCurrency + "&vender=" + vender + "&venderCode=" + venderCode + "&itemName=" + itemName + "&quantity=" + quantity + "&unit=" + unit + "&price=" + price + "&description=" + description + "&itemCategory=" + itemCategory, true);
-				//incomeSubReq.send();
 				
 				incomeSubReq.open("POST", "http://localhost:8080/Web_Project/ControlServlet", true);
 				incomeSubReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -109,7 +107,6 @@
 					if (searchReq.status === 200) {
 						console.log(searchReq.status);
 						
-						
 						var item = JSON.parse(searchReq.responseText);
 						console.log(item);
 						
@@ -122,13 +119,11 @@
 							}else{
 								if(item.searchResult === "More than one Item"){
 									document.getElementById("toshopvendercode").disabled = false;
-									//document.getElementById("toshopvendercode").value="";
 									window.alert("More than one Item. Choose vender code!! \n" +item.venderCodes);
 								}else{
 									if(item.searchResult === "Repeated search"){
 										window.alert("Repeated search!!");
 									}else{
-										//oldVenderCode = item.venderCode;
 										document.getElementById("toshopdescription").value = item.description;
 										document.getElementById("toshopcategory").value = item.category; 
 										document.getElementById("toshopvendercode").value = item.venderCode; 
@@ -142,8 +137,6 @@
 					}
 				}
 			}
-			//searchReq.open("GET", "http://localhost:8080/Web_Project/SearchServlet?itemName=" + itemName + "&quantity=" + quantity, true);
-			//searchReq.send();
 			
 			searchReq.open("POST", "http://localhost:8080/Web_Project/SearchServlet", true);
 			searchReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -152,7 +145,7 @@
 			}
 		
 	
-		function searchInStatistic(){				//////////////////////////////////////////////////////////
+		function searchInStatistic(){				
 			var argName1="";
 			var argValue1="";
 			var argName2="";

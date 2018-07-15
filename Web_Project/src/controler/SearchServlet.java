@@ -1,6 +1,7 @@
 package controler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.buf.CharChunk;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -48,39 +50,48 @@ public class SearchServlet extends HttpServlet {
 		if(requestVenderCode.equals(venderCode) & requestItemName.equals(itemName) & requestQuantity==Integer.parseInt(quantity)) {
 			result = "{ \"searchResult\":\"Repeated search\"}";
 		}else {
-			
 			int venderCodeCount=0;
-			
 			String venderCodes = "";
 			List<Invoice> invoiceList = null;
+			List<String> venderCodeList= new ArrayList<>();
 			DataBase db = new DataBase();
 			
 			invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
 			System.out.println(invoiceList +"////////////////invoiceList ");
 			for(int i = 0; i<invoiceList.size(); i++) {
 				for(Item item:invoiceList.get(i).getItems()) {
+					boolean checkAvalability=false;
 					if(item.getItemName().equals(itemName)) {
-						venderCodes = venderCodes + item.getVenderCode() + "/ ";
+						for(String vendercode:venderCodeList) {
+							if(item.getVenderCode().equals(vendercode)) {
+								checkAvalability=true;
+							}
+						}
+						if(checkAvalability==false) {
+						venderCodeList.add(item.getVenderCode());
+						}
 						venderCodeCount++;
 					}
 				}
 			}
-			   
-			
-			System.out.println(venderCodes+"////////////////venderCodes");
-			System.out.println(!requestVenderCode.equals(venderCode)+"****");
-			System.out.println(requestQuantity!=Integer.parseInt(quantity));
+//			System.out.println(venderCodes+"////////////////venderCodes");
+//			System.out.println(!requestVenderCode.equals(venderCode)+"****");
+//			System.out.println(requestQuantity!=Integer.parseInt(quantity));
 			
 			if(venderCodeCount>1) {			
 				if(isRequest & (!requestVenderCode.equals(venderCode)||requestQuantity!=Integer.parseInt(quantity))) { 
 					invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 				}else {
+					for(String vender_Code:venderCodeList) {
+					venderCodes = venderCodes + vender_Code + "/ ";
+					}
+					
+					
 					result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";
 					isRequest = true;
 				}
 			}
 			requestQuantity =Integer.parseInt(quantity);
-			
 			if(invoiceList.size() == 0) {
 				result = "{ \"searchResult\":\"No such item\"}";			
 			}else {
@@ -91,8 +102,6 @@ public class SearchServlet extends HttpServlet {
 							requestItemName =item.getItemName();		System.out.println( "requestItemName =" + requestItemName);  System.out.println( "requestQuantity =" + requestQuantity);
 							if(item.getQunatity()>=Integer.parseInt(quantity)) {
 								result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() + "\"" + ",\"venderCodes\":\"" + venderCodes +"\"}";                
-								
-								
 							}else {
 								result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";		
 							}
