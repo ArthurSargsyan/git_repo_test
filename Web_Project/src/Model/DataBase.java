@@ -12,11 +12,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import beans.Invoice;
 import beans.Item;
-import beans.ItemInShop;
+import beans.ItemsInShop;
+import beans.ItemsInStore;
 
 public class DataBase {
 	
@@ -60,24 +62,28 @@ public class DataBase {
 	
 	}
 	
-	public void addItemForShopToDB(SessionFactory sessionFactory, ItemInShop itemInShop) {
+	public void addItemForShopToDB(SessionFactory sessionFactory, ItemsInShop itemInShop) {
 		
 		Session session = sessionFactory.openSession();
 		Transaction t = session.beginTransaction();
 		
-		Query query= session.createQuery("from Item where vendercode =\'" + itemInShop.getVenderCode() +"\'");
-		Item fetchedItem = (Item) query.uniqueResult();
+		Query query= session.createQuery("from ItemsInStore where vendercode =\'" + itemInShop.getVenderCode() +"\'");
+		
+		
+		
+		
+		ItemsInStore fetchedItem = (ItemsInStore) query.getSingleResult();
 		int updatedQuantity=fetchedItem.getQunatity()-itemInShop.getQunatity();
 		Query query1= session.createQuery("update Item set qunatity=\'" + updatedQuantity + "\' where itemID =\'" + fetchedItem.getItemID()+"\'");
 		query1.executeUpdate();
 		
 		
-		Query query2= session.createQuery("from ItemInShop where vendercode =\'" + itemInShop.getVenderCode() +"\'");
-		ItemInShop fetchedItemInShop = (ItemInShop) query2.uniqueResult();
+		Query query2= session.createQuery ("from ItemsInShop where vendercode =\'" + itemInShop.getVenderCode() +"\'");
+		ItemsInShop fetchedItemInShop = (ItemsInShop) query2.getSingleResult();
 		if(!(fetchedItemInShop==null)) {
 			int updatedQuantityItemInShop=fetchedItemInShop.getQunatity()+itemInShop.getQunatity();
 			
-			Query query3= session.createQuery("update ItemInShop set qunatity=\'" + updatedQuantityItemInShop + "\' where itemID =\'" + fetchedItemInShop.getItemID()+"\'");
+			Query query3= session.createQuery("update ItemsInShop set qunatity=\'" + updatedQuantityItemInShop + "\' where itemID =\'" + fetchedItemInShop.getItemID()+"\'");
 			query3.executeUpdate();
 		}else {		
 			session.save(itemInShop);
@@ -144,14 +150,83 @@ public class DataBase {
 			invoiceList.addAll(list);
 			session.close();
 		}
-																									System.out.println(invoiceList+"-------------------------------------------");
-																									for (Invoice invoice : invoiceList) {
-																										for(Item item:invoice.getItems()) {
-																											System.out.println(item.getItemName()+"*/-/-*-*/");
-																										}
-																									}
+//																									System.out.println(invoiceList+"-------------------------------------------");
+//																									for (Invoice invoice : invoiceList) {
+//																										for(Item item:invoice.getItems()) {
+//																											System.out.println(item.getItemName()+"*/-/-*-*/");
+//																										}
+//																									}
 		return invoiceList;
 	}
 	
-
+	public String checkAvalableItemQuantity(List<Invoice> invoiceList,String itemName,int quantity) {
+		String result = "";
+		for(Item item:invoiceList.get(0).getItems()) {
+			if(item.getItemName().equals(itemName)) {
+				if(item.getQuantity()>quantity) {
+					result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() +"\"}"; 
+					
+				}else {
+					result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";
+				}
+			}
+		}
+		return result;
+	}
+	
+	
+	public Invoice getOldestInvoice(List<Invoice> invoiceList) {
+		String fetchedDate = invoiceList.get(0).getDate();
+		Invoice oldestInvoice = invoiceList.get(0);
+		for(Invoice invoice:invoiceList) {
+			
+			if(Integer.parseInt(invoice.getDate().substring(0,4)) < Integer.parseInt(fetchedDate.substring(0,4))){
+				if(Integer.parseInt(invoice.getDate().substring(5,7)) < Integer.parseInt(fetchedDate.substring(5,7))) {
+					if(Integer.parseInt(invoice.getDate().substring(8,10)) < Integer.parseInt(fetchedDate.substring(8,10))) {
+						oldestInvoice=invoice;
+					}
+				}
+			}
+		}
+		return oldestInvoice;
+	}
+	
+	public List<String> getVenderCodeList(List<Invoice> invoiceList,String itemName) {
+		List<String> venderCodeList = new ArrayList<>();
+		for(int i = 0; i<invoiceList.size(); i++) {
+			for(Item item:invoiceList.get(i).getItems()) {
+				boolean checkAvalability=false;
+				if(item.getItemName().equals(itemName)) {
+					for(String vendercode:venderCodeList) {
+						if(item.getVenderCode().equals(vendercode)) {
+							checkAvalability=true;
+						}
+					}
+					if(checkAvalability==false) {
+					venderCodeList.add(item.getVenderCode());
+					}
+				}
+			}
+		}
+		return venderCodeList;
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		
+		Configuration config = new Configuration();
+		config.configure("resources/hibernate.cfg.xml");
+		SessionFactory sf = config.buildSessionFactory();
+		DataBase db = new DataBase();
+		List list = db.searchInDB(sf, "venderCode", "EG-003");
+		System.out.println(list.size());
+		for (Object object : list) {
+			System.out.println(((Invoice)object).getInvoiceNo());
+		}
+	}
+	
+	
+	
 }

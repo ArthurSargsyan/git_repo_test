@@ -40,7 +40,7 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String itemName = request.getParameter("itemName");
-		String venderCode = request.getParameter("venderCode");			System.out.println("******"+venderCode+"/////");
+		String venderCode = request.getParameter("venderCode");
 		String quantity = request.getParameter("quantity");
 		String result = null;
 		String venderCodes = "";
@@ -52,35 +52,12 @@ public class SearchServlet extends HttpServlet {
 		if(venderCode.equals("")) {
 			invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
 			if(invoiceList.size()==1) {
-				for(Item item:invoiceList.get(0).getItems()) {
-					if(item.getItemName().equals(itemName)) {
-						if(item.getQuantity()>Integer.parseInt(quantity)) {
-							result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() +"\"}"; 
-							
-						}else {
-							result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";
-						}
-					}
-				}
+				result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
 			}else {
 				if(invoiceList.size()==0) {
 					result = "{ \"searchResult\":\"No such item\"}";
 				}else {
-					for(int i = 0; i<invoiceList.size(); i++) {
-						for(Item item:invoiceList.get(i).getItems()) {
-							boolean checkAvalability=false;
-							if(item.getItemName().equals(itemName)) {
-								for(String vendercode:venderCodeList) {
-									if(item.getVenderCode().equals(vendercode)) {
-										checkAvalability=true;
-									}
-								}
-								if(checkAvalability==false) {
-								venderCodeList.add(item.getVenderCode());
-								}
-							}
-						}
-					}
+					venderCodeList = db.getVenderCodeList(invoiceList, itemName);
 					for(String vender_Code:venderCodeList) {
 						venderCodes = venderCodes + vender_Code + "/ ";
 						}
@@ -91,44 +68,16 @@ public class SearchServlet extends HttpServlet {
 			invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 			
 			if(invoiceList.size()==1) {
-				for(Item item:invoiceList.get(0).getItems()) {
-					if(item.getItemName().equals(itemName)) {
-						if(item.getQuantity()>Integer.parseInt(quantity)) {
-							result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() +"\"}"; 
-							
-						}else {
-							result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";
-						}
-					}
-				}
+				result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
 			}else {
 				if(invoiceList.size()==0) {
 					result = "{ \"searchResult\":\"No such item\"}";
 				}else {
-					String fetchedDate = invoiceList.get(0).getDate();
-					Invoice oldestInvoice = invoiceList.get(0);
-					for(Invoice invoice:invoiceList) {
-						
-						if(Integer.parseInt(invoice.getDate().substring(0,4)) < Integer.parseInt(fetchedDate.substring(0,4))){
-							if(Integer.parseInt(invoice.getDate().substring(5,7)) < Integer.parseInt(fetchedDate.substring(5,7))) {
-								if(Integer.parseInt(invoice.getDate().substring(8,10)) < Integer.parseInt(fetchedDate.substring(8,10))) {
-									oldestInvoice=invoice;
-								}
-							}
-						}
-					}
+					Invoice oldestInvoice = null;
+					oldestInvoice = db.getOldestInvoice(invoiceList);
 					invoiceList.clear();
 					invoiceList.add(oldestInvoice);
-					for(Item item:invoiceList.get(0).getItems()) {
-						if(item.getItemName().equals(itemName)) {
-							if(item.getQuantity()>Integer.parseInt(quantity)) {
-								result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() +"\"}"; 
-								
-							}else {
-								result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";
-							}
-						}
-					}
+					result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
 				}
 			}
 		}
