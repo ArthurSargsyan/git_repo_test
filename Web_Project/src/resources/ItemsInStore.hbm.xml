@@ -1,0 +1,52 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    	<class name="beans.ItemsInStore" table="itemsInStore" schema="webproject">
+        	<id name="itemID" column="itemID">
+               <generator class="sequence">
+               		<param name="sequence">webproject.itemsInStore_sequence</param> 
+               </generator>
+	        </id>
+	        <property name="itemName" column="itemName"/>
+	        <property name="category" column="category"/>
+	        <property name="venderCode" column="venderCode"/>
+	        <property name="unit" column="unit"/>
+	        <property name="qunatity" column="qunatity"/>
+	        <property name="description" column="description"/>
+	        <property name="price" column="price"/>
+	        <!-- <one-to-one name="invoice" class="beans.Invoice"></one-to-one> --> 
+    	</class>
+        
+       <class name="beans.MoveToShopItems" table="MoveToShopItems" schema="webproject">
+	       <id name="itemID" column="itemID">
+	               <generator class="sequence">
+	               		<param name="sequence">webproject.MoveToShopItems_sequence</param> 
+	               </generator>
+	        </id>
+		    <property name="itemName" column="itemName"/>
+	        <property name="category" column="category"/>
+	        <property name="venderCode" column="venderCode"/>
+	        <property name="unit" column="unit"/>
+	        <property name="qunatity" column="qunatity"/>
+	        <property name="description" column="description"/>
+	        <property name="price" column="price"/>    
+	       <property name="moveToShopDate" column="incomedate"></property>
+       </class>
+       
+       <class name="beans.ItemsInShop" table="ItemsInShop" schema="webproject">
+	       <id name="itemID" column="itemID">
+	               <generator class="sequence">
+	               		<param name="sequence">webproject.ItemsInShop_sequence</param> 
+	               </generator>
+	        </id>
+	        <property name="itemName" column="itemName"/>
+	        <property name="category" column="category"/>
+	        <property name="venderCode" column="venderCode"/>
+	        <property name="unit" column="unit"/>
+	        <property name="qunatity" column="qunatity"/>
+	        <property name="description" column="description"/>
+	        <property name="price" column="price"/>
+       </class>
+    
+</hibernate-mapping>

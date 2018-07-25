@@ -52,23 +52,26 @@ public class SearchServlet extends HttpServlet {
 		if(venderCode.equals("")) {
 			invoiceList = db.searchInDB(MyContextListener.sf, "itemName", itemName);
 			if(invoiceList.size()==1) {
-				result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
+				result = db.checkAvalableItemQuantity(invoiceList, itemName);
 			}else {
 				if(invoiceList.size()==0) {
 					result = "{ \"searchResult\":\"No such item\"}";
 				}else {
 					venderCodeList = db.getVenderCodeList(invoiceList, itemName);
 					for(String vender_Code:venderCodeList) {
-						venderCodes = venderCodes + vender_Code + "/ ";
-						}
-					result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":\"" + venderCodes + "\"}";
+						venderCodes = venderCodes + "\"" + vender_Code + "\"" + ",";
+					}
+					venderCodes = venderCodes.substring(0, venderCodes.length()-1);
+					result = "{ \"searchResult\":\"More than one Item\",\"venderCodes\":[" + venderCodes + "]}";
+					
+					System.out.println(result);
 				}
 			}
 		}else {
 			invoiceList = db.searchInDB(MyContextListener.sf, "venderCode", venderCode);
 			
 			if(invoiceList.size()==1) {
-				result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
+				result = db.checkAvalableItemQuantity(invoiceList, itemName);
 			}else {
 				if(invoiceList.size()==0) {
 					result = "{ \"searchResult\":\"No such item\"}";
@@ -77,7 +80,7 @@ public class SearchServlet extends HttpServlet {
 					oldestInvoice = db.getOldestInvoice(invoiceList);
 					invoiceList.clear();
 					invoiceList.add(oldestInvoice);
-					result = db.checkAvalableItemQuantity(invoiceList, itemName, Integer.parseInt(quantity));
+					result = db.checkAvalableItemQuantity(invoiceList, itemName);
 				}
 			}
 		}

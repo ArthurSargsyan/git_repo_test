@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import Listeners.MyContextListener;
 import Model.DataBase;
-import beans.ItemInShop;
+import beans.ItemsInShop;
 
 
 @WebServlet("/SubmitToShop")
@@ -56,7 +56,7 @@ public class SubmitToShopServlet extends HttpServlet {
 				if(!quantity.equals("")) {
 					toshopquantity = Integer.parseInt(quantity);
 				}
-				toshopdate = resultArray.getJSONObject(i).getString("toshopdate");
+				//toshopdate = resultArray.getJSONObject(i).getString("toshopdate");
 				toshopdescription = resultArray.getJSONObject(i).getString("toshopdescription");
 				toshopcategory = resultArray.getJSONObject(i).getString("toshopcategory");
 				toshopvendercode = resultArray.getJSONObject(i).getString("toshopvendercode");
@@ -67,7 +67,7 @@ public class SubmitToShopServlet extends HttpServlet {
 					toshopprice = Double.parseDouble(resultArray.getJSONObject(i).getString("toshopprice"));
 				}
 			
-				ItemInShop itemInShop = new ItemInShop(toshopitemname, toshopcategory, toshopvendercode, toshopunit, toshopquantity, toshopdescription, toshopprice);
+				ItemsInShop itemInShop = new ItemsInShop(toshopitemname, toshopcategory, toshopvendercode, toshopunit, toshopquantity, toshopdescription, toshopprice);
 				
 				System.out.println("Requset recives for itemInShop");
 

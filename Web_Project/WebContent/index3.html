@@ -16,7 +16,7 @@
   	<body style="background-color: rgb(166, 166, 166);">
 
 	<script type="text/javascript">
-
+	
 		function selectClicked(){
 			var selectedValue = document.getElementById("search category").value;
 			if(selectedValue === "1"){
@@ -55,7 +55,7 @@
 			var incomeDate = document.getElementById("income date").value;
 			var invoiceNo = document.getElementById("invoice no").value;
 			var incomeCurrency = document.getElementById("income currency").value;
-			var vender = document.getElementById("vender").value;
+			var vender = document.getElementById("vender").value;852
 			var venderCode = document.getElementById("vender code").value;
 			var itemName = document.getElementById("item Name").value;
 			var quantity = document.getElementById("quantity").value;
@@ -76,7 +76,7 @@
 						if (incomeSubReq.status === 200) {
 							console.log(incomeSubReq.status);
 								console.log(incomeSubReq.responseText);
-								document.getElementById("income sub form").reset(); 
+								//document.getElementById("income sub form").reset(); 
 						}
 					}
 				}
@@ -88,15 +88,16 @@
 		}
 		
 		function searchInMoveToShop(){
-			
-			document.getElementById('toshopdate').valueAsDate = new Date();
-			
+			var addRow ="";
 			var itemName = document.getElementById("toshopitemname").value;
 			var quantity = document.getElementById("toshopquantity").value;
-			var venderCode = document.getElementById("toshopvendercode").value;
+			if(document.getElementById("toshopvendercode").style.display == "none"){
+				var venderCode = document.getElementById("toshopvendercode").value;
+			}else{
+				var venderCode = document.getElementById("toshopvendercodes").value;
+			}
 			
 			
-			var date = document.getElementById("toshopdate").value;
 			console.log("Vender Code= "+venderCode+";");
 			
 			var searchReq = new XMLHttpRequest();
@@ -118,19 +119,22 @@
 								window.alert("Item quantity not enough!! In stock "+item.quantity+" psc.");
 							}else{
 								if(item.searchResult === "More than one Item"){
-									document.getElementById("toshopvendercode").disabled = false;
-									window.alert("More than one Item. Choose vender code!! \n" +item.venderCodes);
-								}else{
-									if(item.searchResult === "Repeated search"){
-										window.alert("Repeated search!!");
-									}else{
-										document.getElementById("toshopdescription").value = item.description;
-										document.getElementById("toshopcategory").value = item.category; 
-										document.getElementById("toshopvendercode").value = item.venderCode; 
-										document.getElementById("toshopunit").value = item.unit;
-										document.getElementById("toshopprice").value = item.price;
-										window.alert("Unic result!!");
+									document.getElementById("toshopvendercodediv").style.display = "none";
+									document.getElementById("toshopvendercodesdiv").style.display = "inline-block";
+									
+									for(var i=0;i<item.venderCodes.length;i++){
+										addRow = addRow + "<option>" + item.venderCodes[i] +"</option>";
 									}
+									document.getElementById("toshopvendercodes").innerHTML = document.getElementById("toshopvendercodes").innerHTML + addRow;
+								}else{
+									document.getElementById("toshopvendercodediv").style.display = "inline-block";
+									document.getElementById("toshopvendercodesdiv").style.display = "none";
+									document.getElementById("toshopdescription").value = item.description;
+									document.getElementById("toshopcategory").value = item.category; 
+									document.getElementById("toshopvendercode").value = item.venderCode; 
+									document.getElementById("toshopunit").value = item.unit;
+									document.getElementById("toshopprice").value = item.price;
+									document.getElementById("toshopavailablequantity").value = item.quantity;
 								}
 							}
 						}
@@ -219,37 +223,41 @@
 			
 			var i = 0;
 			return function addToList(){
-			i++;
-			var toshopitemname = document.getElementById("toshopitemname").value;
-			var toshopvendercode = document.getElementById("toshopvendercode").value; 
-			var toshopquantity = document.getElementById("toshopquantity").value;
-			var toshopdate = document.getElementById("toshopdate").value;
-			var toshopdescription = document.getElementById("toshopdescription").value;
-			var toshopcategory = document.getElementById("toshopcategory").value; 
-			var toshopunit = document.getElementById("toshopunit").value;
-			var toshopprice = document.getElementById("toshopprice").value;
-			
-			if(toshopitemname==""||toshopvendercode==""||toshopquantity==""||toshopdate==""||toshopdescription==""||toshopcategory==""||toshopunit==""||toshopprice==""){
-				window.alert("Please fill in all fields");
-			}else{
 				
-				listFromShopTable.push(JSON.parse("{\"toshopitemname\":\"" + toshopitemname + 
-													"\",\"toshopquantity\":\"" + toshopquantity + 
-													"\",\"toshopdate\":\"" + toshopdate + 
-													"\",\"toshopdescription\":\"" + toshopdescription + 
-													"\",\"toshopcategory\":\"" + toshopcategory + 
-													"\",\"toshopvendercode\":\"" + toshopvendercode + 
-													"\",\"toshopunit\":\"" + toshopunit + 
-													"\",\"toshopprice\":\"" + toshopprice +
-													"\"}"));
-			
-				document.getElementById("toshopvendercode").disabled = true;
-				console.log("recived information");
-				var addRow = "<tr><th scope=\"row\">"+i +"</th><td>" + toshopitemname + "</td><td>" + toshopcategory  + "</td><td>" + toshopvendercode + "</td><td>" + toshopquantity + "</td><td>" + toshopunit + "</td><td>" + toshopprice + "</td><td>" + toshopprice*toshopquantity + "</td><td>" + toshopdescription +"</th><td>" + toshopdate + "</td></tr>";
-				console.log("try to add");
+				i++;
+				var toshopitemname = document.getElementById("toshopitemname").value;
+				var toshopvendercode = document.getElementById("toshopvendercode").value; 
+				var toshopquantity = document.getElementById("toshopquantity").value;
+				var toshopdescription = document.getElementById("toshopdescription").value;
+				var toshopcategory = document.getElementById("toshopcategory").value; 
+				var toshopunit = document.getElementById("toshopunit").value;
+				var toshopprice = document.getElementById("toshopprice").value;
+				var toshopavailablequantity = document.getElementById("toshopavailablequantity").value;
 				
-				document.getElementById("toshoptable").innerHTML = document.getElementById("toshoptable").innerHTML + addRow;
-				document.getElementById("search form").reset(); 
+				if(toshopitemname==""||toshopvendercode==""||toshopquantity==""||toshopavailablequantity==""||toshopdescription==""||toshopcategory==""||toshopunit==""||toshopprice==""){
+					window.alert("Please fill in all fields");
+				}else{	
+					if(parseInt(toshopavailablequantity)>parseInt(toshopquantity)){
+						document.getElementById("toshopavailablequantity").style.backgroundColor = "white";
+						listFromShopTable.push(JSON.parse("{\"toshopitemname\":\"" + toshopitemname + 
+															"\",\"toshopquantity\":\"" + toshopquantity + 
+															"\",\"toshopdescription\":\"" + toshopdescription + 
+															"\",\"toshopcategory\":\"" + toshopcategory + 
+															"\",\"toshopvendercode\":\"" + toshopvendercode + 
+															"\",\"toshopunit\":\"" + toshopunit + 
+															"\",\"toshopprice\":\"" + toshopprice +
+															"\"}"));
+					
+						document.getElementById("toshopvendercode").disabled = true;
+						console.log("recived information");
+						var addRow = "<tr><th scope=\"row\">"+i +"</th><td>" + toshopitemname + "</td><td>" + toshopcategory  + "</td><td>" + toshopvendercode + "</td><td>" + toshopquantity + "</td><td>" + toshopunit + "</td><td>" + toshopprice + "</td><td>" + toshopprice*toshopquantity + "</td><td>" + toshopdescription + "</td></tr>";
+						console.log("try to add");
+						
+						document.getElementById("toshoptable").innerHTML = document.getElementById("toshoptable").innerHTML + addRow;
+						document.getElementById("search form").reset(); 
+					}else{
+						document.getElementById("toshopavailablequantity").style.backgroundColor = "red";
+					}
 				}
 			}
 		})();
@@ -280,7 +288,9 @@
 			resultReq.send("result="+result);
 			
 		}
+	
 		
+
 		
 		</script>
   	
@@ -412,37 +422,43 @@
 							  <div class="tab-pane fade" id="nav-MoveToShop" role="tabpanel" aria-labelledby="nav-profile-tab">
 							  	<form id="search form" >
 							  		<div class="row">
-							  			<div class="form-group col-md-2">
+							  			<div class="form-group col-md-4">
 										    <label for="To Shop Item Name">Item Name</label>
 										    <input type="text" class="form-control" id="toshopitemname" placeholder="Item Name">
 										</div>
-										<div class="form-group col-md-2">
-										    <label for="To Shop Quantity">Quantity</label>
-										    <input type="text" class="form-control" id="toshopquantity" placeholder="Quantity">
+										<div class="form-group col-md-3" id="toshopvendercodediv">
+										    <label for="To Shop Vender Code">Vender Code</label>
+										    <input type="text" class="form-control" id="toshopvendercode" placeholder="Vender Code" disabled>
 										</div>
-										<div class="form-group col-md-3">
-										    <label for="toShopData">Date</label>
-										    <input type="date" class="form-control" id="toshopdate" placeholder="Data">
+										<div class="form-group col-md-3" id="toshopvendercodesdiv" style="display: none">
+										    <label for="toshopvendercodes">Vender Codes</label>
+											<select class="form-control" id="toshopvendercodes"onclick="searchInMoveToShop()">
+										    
+										   	</select>									  
 										</div>
 										<div class="form-group col-md-2">
 										    <label for="Category">Category</label>
 											<input type="text" class="form-control" id="toshopcategory" placeholder="Category" disabled>
 										</div>
-										<div class="form-group col-md-2">
-										    <label for="To Shop Vender Code">Vender Code</label>
-										    <input type="text" class="form-control" id="toshopvendercode" placeholder="Vender Code" disabled>
-										</div>
-								 		<div class="form-group col-md-1">
+										<div class="form-group col-md-1">
 										    <label for="to Shop Unit">Unit</label>
 											<input type="text" class="form-control" id="toshopunit" placeholder="Unit" disabled>
 										</div>
+										<div class="form-group col-md-1">
+										    <label for="To Shop Quantity">Available Q.</label>
+										    <input type="text" class="form-control" id="toshopavailablequantity" placeholder="Available Q." disabled>
+										</div>
+										<div class="form-group col-md-1">
+										    <label for="To Shop Quantity">Quantity</label>
+										    <input type="text" class="form-control" id="toshopquantity" placeholder="Quantity">
+										</div>
 									</div>
 									<div class="row">
-										<div class="form-group col-md-10">
+										<div class="form-group col-md-11">
 										    <label for="To Shop Description">Description</label>
 										    <input type="text" class="form-control" id="toshopdescription" placeholder="Description" disabled>
 										</div>
-										<div class="form-group col-md-2">
+										<div class="form-group col-md-1">
 										    <label for="To Shop Price">Price</label>
 										    <input type="text" class="form-control" id="toshopprice" placeholder="Price" disabled>
 										</div>
@@ -459,18 +475,18 @@
 									</form>
 									<hr>
 									<table class="table table-bordered" id="toshoptable">
+									
 									  <thead>
 									    <tr>
-									      <th scope="col">#</th>
-									      <th scope="col">Item Name</th>
-									      <th scope="col">Category</th>
-									      <th scope="col">Vender Code</th>
-									      <th scope="col">Quantity</th>
-									      <th scope="col">Unit</th>
-									      <th scope="col">Price/item</th>
-									      <th scope="col">Total Price</th>
-									      <th scope="col">Description</th>
-									      <th scope="col">Date</th>
+									      <th scope="col" style="width: 2%">#</th>
+									      <th scope="col" style="width: 20%">Item Name</th>
+									      <th scope="col" style="width: 15%">Category</th>
+									      <th scope="col" style="width: 10%">Vender Code</th>
+									      <th scope="col" style="width: 5%">Qty.</th>
+									      <th scope="col" style="width: 5%">Unit</th>
+									      <th scope="col" style="width: 5%">Price Item</th>
+									      <th scope="col" style="width: 5%">Price Total</th>
+									      <th scope="col" style="width: 20%">Description</th>
 									    </tr>
 									  </thead>
 									  <tbody>

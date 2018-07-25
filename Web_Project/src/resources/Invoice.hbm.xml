@@ -2,10 +2,10 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="beans.Invoice" table="invoicetable" schema="webproject">
-        <id name="invoiceID" column="invoiceID"> 
-             <generator class="sequence">
-               	<param name="sequence">invoice_sequence</param>
+    <class name="beans.Invoice" table="invoicetable" schema="webproject" >
+        <id name="invoiceID" column="invoiceID" > 
+             <generator class="sequence"  >
+               	<param name="sequence" >webproject.invoice_sequence</param>
              </generator>
               
              <!--   <generator class="foreign"> -->
@@ -18,7 +18,7 @@
         <property name="date" column="date"/> 
         <set name="items" cascade="all">
         	<key column="invoiceID"/>
-        	<one-to-many class="beans.Item"/>
+        	<one-to-many class="beans.ItemsInStore"/>
         </set>
         
         <!-- <one-to-one name="item" class="beans.Item" /> --> 

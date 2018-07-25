@@ -159,16 +159,11 @@ public class DataBase {
 		return invoiceList;
 	}
 	
-	public String checkAvalableItemQuantity(List<Invoice> invoiceList,String itemName,int quantity) {
+	public String checkAvalableItemQuantity(List<Invoice> invoiceList,String itemName) {
 		String result = "";
 		for(Item item:invoiceList.get(0).getItems()) {
 			if(item.getItemName().equals(itemName)) {
-				if(item.getQuantity()>quantity) {
-					result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription()+ "\",\"price\":\"" + item.getPrice() +"\"}"; 
-					
-				}else {
-					result = "{ \"searchResult\":\"Item quantity not enough\",\"quantity\":\""+item.getQunatity()+"\"}";
-				}
+					result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription() + "\",\"price\":\"" + item.getPrice() + "\",\"quantity\":\"" + item.getQuantity() +"\"}"; 
 			}
 		}
 		return result;
