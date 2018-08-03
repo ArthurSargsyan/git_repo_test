@@ -2,7 +2,9 @@ package controler;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,7 +47,7 @@ public class SearchServlet extends HttpServlet {
 		String result = null;
 		String venderCodes = "";
 		List<Invoice> invoiceList = null;
-		List<String> venderCodeList= new ArrayList<>();
+		Set<String> venderCodeList= new HashSet();
 		DataBase db = new DataBase();
 		
 		if(quantity.equals(""))	quantity="0";

@@ -186,20 +186,13 @@ public class DataBase {
 		return oldestInvoice;
 	}
 	
-	public List<String> getVenderCodeList(List<Invoice> invoiceList,String itemName) {
-		List<String> venderCodeList = new ArrayList<>();
+	public Set<String> getVenderCodeList(List<Invoice> invoiceList,String itemName) {
+		Set<String> venderCodeList = new HashSet<>();
 		for(int i = 0; i<invoiceList.size(); i++) {
 			for(Item item:invoiceList.get(i).getItems()) {
 				boolean checkAvalability=false;
 				if(item.getItemName().equals(itemName)) {
-					for(String vendercode:venderCodeList) {
-						if(item.getVenderCode().equals(vendercode)) {
-							checkAvalability=true;
-						}
-					}
-					if(checkAvalability==false) {
 					venderCodeList.add(item.getVenderCode());
-					}
 				}
 			}
 		}
