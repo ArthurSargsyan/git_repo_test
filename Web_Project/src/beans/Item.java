@@ -32,13 +32,7 @@ public class Item {
 	public void setItemCategory(String itemCategory) {
 		this.itemCategory = itemCategory;
 	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
+	
 	public int getItemID() {
 		return itemID;
 	}

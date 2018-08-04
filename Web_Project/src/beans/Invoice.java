@@ -11,24 +11,24 @@ public class Invoice {
 	private String vender="";
 	private String currancy="";
 	private String date=null;
-	private Set<Item> items=null;
+	private Set<ItemsInStore> items=null;
 	
 	
-	public Invoice( String invoiceNo, String vender, String currancy, String date, Set<Item> items) {
+	public Invoice( String invoiceNo, String vender, String currancy, String date, HashSet<ItemsInStore> itemsSet) {
 		this.invoiceNo = invoiceNo;
 		this.vender = vender;
 		this.currancy = currancy;
 		this.date = date;
-		this.items = items;
+		this.items = itemsSet;
 	}
 
 	public Invoice() {
 	}
 	
-	public Set<Item> getItems() {
+	public Set<ItemsInStore> getItems() {
 		return items;
 	}
-	public void setItems(Set<Item> items) {
+	public void setItems(Set<ItemsInStore> items) {
 		this.items = items;
 	}
 	public int getInvoiceID() {

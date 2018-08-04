@@ -17,6 +17,7 @@ import Listeners.MyContextListener;
 import Model.DataBase;
 import beans.Invoice;
 import beans.Item;
+import beans.ItemsInStore;
 
 /**
  * Servlet implementation class ControlServlet
@@ -58,8 +59,8 @@ public class ControlServlet extends HttpServlet {
 	 }else {
 		 price = Double.parseDouble(req.getParameter("price"));
 	 }
-	 Item item = new Item(itemName, itemCategory, venderCode, unit, quantity, description, price);
-	 HashSet<Item> itemsSet = new HashSet<>();
+	 ItemsInStore item = new ItemsInStore(itemName, itemCategory, venderCode, unit, quantity, description, price);
+	 HashSet<ItemsInStore> itemsSet = new HashSet<>();
 	 itemsSet.add(item);
 	 Invoice invoice = new Invoice(invoiceNo, vender, incomeCurrency, incomeDate, itemsSet);
 	 	

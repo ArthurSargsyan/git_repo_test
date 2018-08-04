@@ -119,6 +119,11 @@
 								window.alert("Item quantity not enough!! In stock "+item.quantity+" psc.");
 							}else{
 								if(item.searchResult === "More than one Item"){
+									
+									console.log("item.venderCodes.length -"+item.venderCodes.length);
+									
+									
+									
 									document.getElementById("toshopvendercodediv").style.display = "none";
 									document.getElementById("toshopvendercodesdiv").style.display = "inline-block";
 									
@@ -250,7 +255,8 @@
 					
 						document.getElementById("toshopvendercode").disabled = true;
 						console.log("recived information");
-						var addRow = "<tr><th scope=\"row\">"+i +"</th><td>" + toshopitemname + "</td><td>" + toshopcategory  + "</td><td>" + toshopvendercode + "</td><td>" + toshopquantity + "</td><td>" + toshopunit + "</td><td>" + toshopprice + "</td><td>" + toshopprice*toshopquantity + "</td><td>" + toshopdescription + "</td></tr>";
+						var toshopdate =new Date();
+						var addRow = "<tr><th scope=\"row\">"+i +"</th><td>" + toshopitemname + "</td><td>" + toshopcategory  + "</td><td>" + toshopvendercode + "</td><td>" + toshopquantity + "</td><td>" + toshopunit + "</td><td>" + toshopprice + "</td><td>" + toshopprice*toshopquantity + "</td><td>" + toshopdescription + "</td><td>" + toshopdate.toDateString() + "</td></tr>";
 						console.log("try to add");
 						
 						document.getElementById("toshoptable").innerHTML = document.getElementById("toshoptable").innerHTML + addRow;
@@ -487,6 +493,7 @@
 									      <th scope="col" style="width: 5%">Price Item</th>
 									      <th scope="col" style="width: 5%">Price Total</th>
 									      <th scope="col" style="width: 20%">Description</th>
+									      <th scope="col" style="width: 18%">Date</th>
 									    </tr>
 									  </thead>
 									  <tbody>

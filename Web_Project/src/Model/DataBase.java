@@ -2,10 +2,13 @@ package Model;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -19,6 +22,7 @@ import beans.Invoice;
 import beans.Item;
 import beans.ItemsInShop;
 import beans.ItemsInStore;
+import beans.MoveToShopItems;
 
 public class DataBase {
 	
@@ -66,33 +70,61 @@ public class DataBase {
 		
 		Session session = sessionFactory.openSession();
 		Transaction t = session.beginTransaction();
+			
+		List<Invoice> fetchedInvoiceList = new ArrayList<>();
+		List<Invoice> fetchedItems = this.returnInvoices(session);
+		for(Invoice invoice:fetchedItems) {
+			
+			for(ItemsInStore item:invoice.getItems()) {
+				if(item.getVenderCode().equals(itemInShop.getVenderCode())) {
+					fetchedInvoiceList.add(invoice);
+				}
+			}
+		}
+	
+		Invoice oldestInvoice= (Invoice) this.getOldestInvoice(fetchedInvoiceList);
+		ItemsInStore fetchedItem = this.getItemInStore(oldestInvoice, itemInShop.getVenderCode());
 		
-		Query query= session.createQuery("from ItemsInStore where vendercode =\'" + itemInShop.getVenderCode() +"\'");
 		
-		
-		
-		
-		ItemsInStore fetchedItem = (ItemsInStore) query.getSingleResult();
 		int updatedQuantity=fetchedItem.getQunatity()-itemInShop.getQunatity();
-		Query query1= session.createQuery("update Item set qunatity=\'" + updatedQuantity + "\' where itemID =\'" + fetchedItem.getItemID()+"\'");
+		Query query1= session.createQuery("update ItemsInStore set qunatity=\'" + updatedQuantity + "\' where itemID =\'" + fetchedItem.getItemID()+"\'");
 		query1.executeUpdate();
 		
 		
-		Query query2= session.createQuery ("from ItemsInShop where vendercode =\'" + itemInShop.getVenderCode() +"\'");
-		ItemsInShop fetchedItemInShop = (ItemsInShop) query2.getSingleResult();
-		if(!(fetchedItemInShop==null)) {
-			int updatedQuantityItemInShop=fetchedItemInShop.getQunatity()+itemInShop.getQunatity();
+		Query query2= session.createQuery ("from MoveToShopItems where vendercode =\'" + itemInShop.getVenderCode() +"\'");
+		
+		List<MoveToShopItems> fetchedMoveItemInShopItems = null;
+		
+		fetchedMoveItemInShopItems = query2.getResultList();
+		
+		
+		if(fetchedMoveItemInShopItems.size()!=0) {
+			int updatedQuantityItemInShop=fetchedMoveItemInShopItems.get(0).getQunatity()+itemInShop.getQunatity();
 			
-			Query query3= session.createQuery("update ItemsInShop set qunatity=\'" + updatedQuantityItemInShop + "\' where itemID =\'" + fetchedItemInShop.getItemID()+"\'");
+			Query query3= session.createQuery("update MoveToShopItems set qunatity=\'" + updatedQuantityItemInShop + "\' where itemID =\'" + fetchedMoveItemInShopItems.get(0).getItemID()+"\'");
 			query3.executeUpdate();
 		}else {		
-			session.save(itemInShop);
+			fetchedItem.setQunatity(itemInShop.getQunatity());
+			MoveToShopItems moveToShopItem = new MoveToShopItems(fetchedItem,new Date());
+			session.save(moveToShopItem);
 		}
 		t.commit();
 		session.close();
-	  /////////////
-		
 	}
+	
+	
+	public ItemsInStore getItemInStore(Invoice invoice,String venderCode) {
+		ItemsInStore itemInStore=null;
+		for(ItemsInStore item:invoice.getItems()) {
+			if(item.getVenderCode().equals(venderCode)) {
+				itemInStore = item;
+				break;
+			}
+		}
+		return itemInStore;
+	}
+	
+	
 	
 	public List<Invoice> returnItemsDepONIDs(Session session,ArrayList<Integer> iDs){
 		List<Invoice> invoiceList= new ArrayList<>();
@@ -127,8 +159,8 @@ public class DataBase {
 			c.add(cr);
 			Invoice invoice = (Invoice) c.uniqueResult();
 			if(invoice!=null){
-			Set<Item> items = new HashSet<>();
-			for(Item item:invoice.getItems()) {
+			Set<ItemsInStore> items = new HashSet<>();
+			for(ItemsInStore item:invoice.getItems()) {
 			  items.add(item);
 			}
 			invoice.setItems(items);
@@ -163,7 +195,7 @@ public class DataBase {
 		String result = "";
 		for(Item item:invoiceList.get(0).getItems()) {
 			if(item.getItemName().equals(itemName)) {
-					result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription() + "\",\"price\":\"" + item.getPrice() + "\",\"quantity\":\"" + item.getQuantity() +"\"}"; 
+					result = "{ \"searchResult\":\"" + item.getItemName() + "\",\"unit\":\"" + item.getUnit() + "\",\"category\":\"" + item.getCategory() + "\",\"venderCode\":\"" + item.getVenderCode() + "\",\"description\":\"" +item.getDescription() + "\",\"price\":\"" + item.getPrice() + "\",\"quantity\":\"" + item.getQunatity() +"\"}"; 
 			}
 		}
 		return result;
