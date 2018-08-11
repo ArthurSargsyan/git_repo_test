@@ -7,9 +7,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    
   
     <title>Web Project1</title>
   	</head>
@@ -17,233 +18,244 @@
 
 	<script type="text/javascript">
 	
+		
 		function selectClicked(){
-			var selectedValue = document.getElementById("search category").value;
+			var selectedValue = $("#searchcategory").val();
 			if(selectedValue === "1"){
-			    document.getElementById("div date from").style.display = "inline-block"; 
-			    document.getElementById("div date to").style.display = "inline-block"; 
-			    document.getElementById("div vender code").style.display = "none"; 
-			    document.getElementById("div invoice no").style.display = "none"; 
-			    document.getElementById("div item name").style.display = "none"; 
-		
+				$("#div_date_from").show(); 
+			    $("#div_date_to").show(); 
+			    $("#div_vender_code").hide(); 
+			    $("#div_invoice_no").hide(); 
+			    $("#div_item_name").hide();
 			}else if(selectedValue === "2"){
-				document.getElementById("div date from").style.display = "none"; 
-			    document.getElementById("div date to").style.display = "none"; 
-			    document.getElementById("div vender code").style.display = "none"; 
-			    document.getElementById("div invoice no").style.display = "none"; 
-			    document.getElementById("div item name").style.display = "inline-block"; 
-		
+				$("#div_date_from").hide(); 
+			    $("#div_date_to").hide(); 
+			    $("#div_vender_code").hide(); 
+			    $("#div_invoice_no").hide(); 
+			    $("#div_item_name").show();
 			}else if(selectedValue === "3"){
-				document.getElementById("div date from").style.display = "none"; 
-			    document.getElementById("div date to").style.display = "none"; 
-			    document.getElementById("div vender code").style.display = "inline-block"; 
-			    document.getElementById("div invoice no").style.display = "none"; 
-			    document.getElementById("div item name").style.display = "none"; 
-				
+				$("#div_date_from").hide(); 
+			    $("#div_date_to").hide(); 
+			    $("#div_vender_code").show(); 
+			    $("#div_invoice_no").hide(); 
+			    $("#div_item_name").hide();
 			}else if(selectedValue === "4"){
-				document.getElementById("div date from").style.display = "none"; 
-			    document.getElementById("div date to").style.display = "none"; 
-			    document.getElementById("div vender code").style.display = "none"; 
-			    document.getElementById("div item name").style.display = "none";
-			    document.getElementById("div invoice no").style.display = "inline-block"; 
+				$("#div_date_from").hide(); 
+			    $("#div_date_to").hide(); 
+			    $("#div_vender_code").hide(); 
+			    $("#div_invoice_no").show(); 
 			}
-		}
+		};
+	
 		
 		function incomeSubmit(){
 			
-			
-			var incomeDate = document.getElementById("income date").value;
-			var invoiceNo = document.getElementById("invoice no").value;
-			var incomeCurrency = document.getElementById("income currency").value;
-			var vender = document.getElementById("vender").value;852
-			var venderCode = document.getElementById("vender code").value;
-			var itemName = document.getElementById("item Name").value;
-			var quantity = document.getElementById("quantity").value;
-			var unit = document.getElementById("unit").value;
-			var price = document.getElementById("price").value;
-			var description = document.getElementById("description").value;
-			var itemCategory = document.getElementById("item category").value;
+			var incomeDate = $("#income_date").val();
+			var invoiceNo = $("#invoice_no").val();
+			var incomeCurrency = $("#income_currency").val();
+			var vender = $("#vender").val();
+			var venderCode = $("#vender_code").val();
+			var itemName = $("#item_name").val();
+			var quantity = $("#quantity").val();
+			var unit = $("#unit").val();
+			var price = $("#price").val();
+			var description = $("#description").val();
+			var itemCategory = $("#item_category").val();
 
 			if(incomeDate==""||invoiceNo==""||incomeCurrency==""||incomeCurrency==""||incomeCurrency==""||itemName==""||quantity==""||unit==""||price==""||description==""||itemCategory==""){
 				window.alert("Please fill in all fields");
 			}else{		
-						
-				var incomeSubReq = new XMLHttpRequest();
-				incomeSubReq.onreadystatechange = function (oEvent) {
-					console.log("OK1");
-					if (incomeSubReq.readyState === 4) {
-						console.log(incomeSubReq.readyState);
-						if (incomeSubReq.status === 200) {
-							console.log(incomeSubReq.status);
-								console.log(incomeSubReq.responseText);
-								//document.getElementById("income sub form").reset(); 
-						}
-					}
-				}
-				
-				incomeSubReq.open("POST", "http://localhost:8080/Web_Project/ControlServlet", true);
-				incomeSubReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				incomeSubReq.send("incomeDate=" + incomeDate + "&invoiceNo=" + invoiceNo + "&incomeCurrency=" + incomeCurrency + "&vender=" + vender + "&venderCode=" + venderCode + "&itemName=" + itemName + "&quantity=" + quantity + "&unit=" + unit + "&price=" + price + "&description=" + description + "&itemCategory=" + itemCategory);
+				/*$.post("http://localhost:8080/Web_Project/ControlServlet",
+			    		{
+						incomeDate: incomeDate,
+						invoiceNo: invoiceNo,
+						incomeCurrency: incomeCurrency,
+						vender: vender,
+						venderCode: venderCode,
+						itemName: itemName,
+						quantity: quantity,
+						unit: unit,
+						price: price, 
+						description: description, 
+						itemCategory: itemCategory
+						},
+			    		function(data,status){
+			    	        if(status=="success"){
+			    	        	$("#income_sub_form").trigger("reset");  //////////////////////////
+			    	        }else{
+			    	        	window.alert("Income Sumit Fail!!!");
+			    	        }
+			   	});*/
+				$.ajax({
+					method: 'POST',
+					url: "http://localhost:8080/Web_Project/ControlServlet",
+					data: {
+						incomeDate: incomeDate,
+						invoiceNo: invoiceNo,
+						incomeCurrency: incomeCurrency,
+						vender: vender,
+						venderCode: venderCode,
+						itemName: itemName,
+						quantity: quantity,
+						unit: unit,
+						price: price, 
+						description: description, 
+						itemCategory: itemCategory
+						},
+					success: function() {$("#income_sub_form").trigger("reset");}
+					
+				});
 			}
 		}
+		
 		
 		function searchInMoveToShop(){
 			var addRow ="";
-			var itemName = document.getElementById("toshopitemname").value;
-			var quantity = document.getElementById("toshopquantity").value;
-			if(document.getElementById("toshopvendercode").style.display == "none"){
-				var venderCode = document.getElementById("toshopvendercode").value;
+			var itemName = $("#toshopitemname").val();
+			var quantity = $("#toshopquantity").val();
+			if($("#toshopvendercode").css('display') == "none"){
+				var venderCode = $("#toshopvendercode").val();
 			}else{
-				var venderCode = document.getElementById("toshopvendercodes").value;
+				var venderCode = $("#toshopvendercodes").val();
 			}
 			
 			
-			console.log("Vender Code= "+venderCode+";");
+			console.log("vender_code= "+venderCode+";");
 			
-			var searchReq = new XMLHttpRequest();
-			searchReq.onreadystatechange = function (oEvent) {
-				console.log("OK2");
-				if (searchReq.readyState === 4) {
-					console.log(searchReq.readyState);
-					if (searchReq.status === 200) {
-						console.log(searchReq.status);
-						
-						var item = JSON.parse(searchReq.responseText);
-						console.log(item);
-						
-						if(item.searchResult === "No such item"){
-							console.log(item.itemName);
-							window.alert("Item Missing!!");
-						}else { 
-							if(item.searchResult==="Item quantity not enough"){
-								window.alert("Item quantity not enough!! In stock "+item.quantity+" psc.");
-							}else{
-								if(item.searchResult === "More than one Item"){
-									
-									console.log("item.venderCodes.length -"+item.venderCodes.length);
-									
-									
-									
-									document.getElementById("toshopvendercodediv").style.display = "none";
-									document.getElementById("toshopvendercodesdiv").style.display = "inline-block";
-									
-									for(var i=0;i<item.venderCodes.length;i++){
-										addRow = addRow + "<option>" + item.venderCodes[i] +"</option>";
+			$.ajax({
+					method:'POST',
+					url: 'http://localhost:8080/Web_Project/SearchServlet',
+					dataType: 'text',  //Why 'JSON' Type don't work. 
+					data:   {itemName:itemName,
+							quantity: quantity,
+							venderCode: venderCode
+							},
+					success: function(data,status){
+								console.log(data);
+								var item = $.parseJSON(data);
+								console.log(item);
+								
+								if(item.searchResult === "No such item"){
+									console.log(item.itemName);
+									window.alert("Item Missing!!");
+								}else { 
+									if(item.searchResult==="Item quantity not enough"){
+										window.alert("Item quantity not enough!! In stock "+item.quantity+" psc.");
+									}else{
+										if(item.searchResult === "More than one Item"){
+											
+											console.log("item.venderCodes.length -"+item.venderCodes.length);
+											
+											$("#toshopvendercodediv").hide();
+											$("#toshopvendercodesdiv").show();
+											
+											for(var i=0;i<item.venderCodes.length;i++){
+												addRow = addRow + "<option>" + item.venderCodes[i] +"</option>";
+											}
+											$("#toshopvendercodes").html(addRow);
+										}else{
+											$("#toshopvendercodediv").show();
+											$("#toshopvendercodesdiv").hide();
+											$("#toshopdescription").val(item.description);
+											$("#toshopcategory").val(item.category); 
+											$("#toshopvendercode").val(item.venderCode); 
+											$("#toshopunit").val(item.unit);
+											$("#toshopprice").val(item.price);
+											$("#toshopavailablequantity").val(item.quantity);
+										}
 									}
-									document.getElementById("toshopvendercodes").innerHTML = document.getElementById("toshopvendercodes").innerHTML + addRow;
-								}else{
-									document.getElementById("toshopvendercodediv").style.display = "inline-block";
-									document.getElementById("toshopvendercodesdiv").style.display = "none";
-									document.getElementById("toshopdescription").value = item.description;
-									document.getElementById("toshopcategory").value = item.category; 
-									document.getElementById("toshopvendercode").value = item.venderCode; 
-									document.getElementById("toshopunit").value = item.unit;
-									document.getElementById("toshopprice").value = item.price;
-									document.getElementById("toshopavailablequantity").value = item.quantity;
 								}
 							}
-						}
+					});
+		}
+			
+			
+			function searchInStatistic(){				
+				var argName1="";
+				var argValue1="";
+				var argName2="";
+				var argValue2="";
+				
+				//choose active filed value
+				if($("#div_date_from").css('display')!=="none" && $("#div_date_to").css('display')!=="none"){
+					argName1="dateFrom";
+					argValue1=$("#Statistic_date_from").val();
+					argName2="dateTo";
+					argValue2=$("#Statistic_date_to").val();
+					if(argValue1=="" || argValue2==""){
+						window.alert("Fill in dates");
+					}
+				}else if($("#div_vender_code").css('display')!=="none"){
+					console.log($("#div_vender_code").css('display')!=="none");
+					argName1="venderCode";
+					argValue1=$("#Statistic_vender_code").val();
+					if(argValue1==""){
+						window.alert("Fill in vender_code");
+					}
+				}else if($("#div_invoice_no").css('display')!=="none"){
+					argName1="invoiceNo";
+					argValue1=$("#Statistic_invoice_no").val();
+					if(argValue1==""){
+						window.alert("Fill in Invoice Name");
+					}
+				}else if($("#div_item_name").css('display')!=="none"){
+					argName1="itemName";
+					argValue1=$("#Statistic_item_name").val();
+					if(argValue1==""){
+						window.alert("Fill in item_name");
 					}
 				}
-			}
-			
-			searchReq.open("POST", "http://localhost:8080/Web_Project/SearchServlet", true);
-			searchReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			searchReq.send("itemName=" + itemName + "&quantity=" + quantity + "&venderCode=" + venderCode);
-			
-			}
-		
-	
-		function searchInStatistic(){				
-			var argName1="";
-			var argValue1="";
-			var argName2="";
-			var argValue2="";
-			
-			//choose active filed value
-			if(document.getElementById("div date from").style.display!=="none" && document.getElementById("div date to").style.display!=="none"){
-				argName1="dateFrom";
-				argValue1=document.getElementById("Statistic date from").value;
-				argName2="dateTo";
-				argValue2=document.getElementById("Statistic date to").value;
-				if(argValue1=="" || argValue2==""){
-					window.alert("Fill in dates");
-				}
-			}else if(document.getElementById("div vender code").style.display!=="none"){
-				console.log(document.getElementById("div vender code").style.display!=="none");
-				argName1="venderCode";
-				argValue1=document.getElementById("Statistic vender code").value;
-				if(argValue1==""){
-					window.alert("Fill in Vender Code");
-				}
-			}else if(document.getElementById("div invoice no").style.display!=="none"){
-				argName1="invoiceNo";
-				argValue1=document.getElementById("Statistic invoice no").value;
-				if(argValue1==""){
-					window.alert("Fill in Invoice Name");
-				}
-			}else if(document.getElementById("div item name").style.display!=="none"){
-				argName1="itemName";
-				argValue1=document.getElementById("Statistic item name").value;
-				if(argValue1==""){
-					window.alert("Fill in Item Name");
-				}
-			}
-			
-			//concatate request
-			var request ="argName1="+argName1+"&argValue1="+argValue1+"&argName2="+argName2+"&argValue2="+argValue2;
-			console.log(request);
-					
-			var searchReq = new XMLHttpRequest();
-			searchReq.onreadystatechange = function(){
-				if(searchReq.readyState === 4){
-					console.log(searchReq.readyState)
-					if(searchReq.status===200){
-						console.log(searchReq.status)
-						console.log(searchReq.responseText)
-						var respJSON = JSON.parse(searchReq.responseText);
-						//document.getElementById("statisticForm").reset();
-						document.getElementById("statisticsTable").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">Invoice No.</th><th scope="col">Vender</th><th scope="col">Vender Code</th><th scope="col">Category</th><th scope="col">Quantity</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Currency</th><th scope="col">Description</th></tr></thead>';
-						for(var i in respJSON.SearchResult){
-							var rowNumber = parseInt(i) + 1;
-							var addRow = "<tr><th scope=\"row\">"+ rowNumber +"</th><td>" + respJSON.SearchResult[i].date + "</td><td>" + respJSON.SearchResult[i].invoiceNo +"</td><td>" + respJSON.SearchResult[i].vender + "</td><td>" + respJSON.SearchResult[i].venderCode  + "</td><td>" + respJSON.SearchResult[i].category + "</td><td>" + respJSON.SearchResult[i].quantity + "</td><td>" + respJSON.SearchResult[i].unit + "</td><td>" + respJSON.SearchResult[i].price + "</td><td>" + respJSON.SearchResult[i].currancy + "</td><td>" + respJSON.SearchResult[i].description + "</td></tr>";
-							document.getElementById("statisticsTable").innerHTML = document.getElementById("statisticsTable").innerHTML + addRow;
-							console.log("row added"+i)
-						}
-					}	
-				}	
-			}
-		
-			searchReq.open("POST", "http://localhost:8080/Web_Project/StatisticsServlet", true);
-			searchReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			searchReq.send(request);
-			
+				
+				console.log("argName1="+argName1+"&argValue1="+argValue1+"&argName2="+argName2+"&argValue2="+argValue2);
+				
+				$.ajax({
+					method: 'POST',
+					url: 'http://localhost:8080/Web_Project/StatisticsServlet',
+					dataType: 'text',
+					data: {	argName1: argName1,
+							argValue1: argValue1,
+							argName2: argName2,
+							argValue2: argValue2
+						},
+					success: function(data,status){
+								var respJSON = $.parseJSON(data);
+								var addRow= "";
+								$("#statisticForm").trigger("reset");
+								for(var i in respJSON.SearchResult){
+									var rowNumber = parseInt(i) + 1;
+									addRow = addRow + "<tr><th scope=\"row\">"+ rowNumber +"</th><td>" + respJSON.SearchResult[i].date + "</td><td>" + respJSON.SearchResult[i].invoiceNo +"</td><td>" + respJSON.SearchResult[i].vender + "</td><td>" + respJSON.SearchResult[i].venderCode  + "</td><td>" + respJSON.SearchResult[i].category + "</td><td>" + respJSON.SearchResult[i].quantity + "</td><td>" + respJSON.SearchResult[i].unit + "</td><td>" + respJSON.SearchResult[i].price + "</td><td>" + respJSON.SearchResult[i].currancy + "</td><td>" + respJSON.SearchResult[i].description + "</td></tr>";
+									
+									console.log("row added"+i)
+								}
+								$("#statisticsTable").html('<thead><tr><th scope="col">#</th><th scope="col">Date</th><th scope="col">invoice_no.</th><th scope="col">Vender</th><th scope="col">vender_code</th><th scope="col">Category</th><th scope="col">Quantity</th><th scope="col">Unit</th><th scope="col">Price</th><th scope="col">Currency</th><th scope="col">Description</th></tr></thead>');
+								$("#statisticsTable").html($("#statisticsTable").html() + addRow);
+					}
+				});
 		}
+			
 		
 		
 		var listFromShopTable = [];
 		
 		var addToList = (function () {
-			
-			
 			var i = 0;
 			return function addToList(){
 				
 				i++;
-				var toshopitemname = document.getElementById("toshopitemname").value;
-				var toshopvendercode = document.getElementById("toshopvendercode").value; 
-				var toshopquantity = document.getElementById("toshopquantity").value;
-				var toshopdescription = document.getElementById("toshopdescription").value;
-				var toshopcategory = document.getElementById("toshopcategory").value; 
-				var toshopunit = document.getElementById("toshopunit").value;
-				var toshopprice = document.getElementById("toshopprice").value;
-				var toshopavailablequantity = document.getElementById("toshopavailablequantity").value;
+				var toshopitemname = $("#toshopitemname").val();
+				var toshopvendercode = $("#toshopvendercode").val(); 
+				var toshopquantity = $("#toshopquantity").val();
+				var toshopdescription = $("#toshopdescription").val();
+				var toshopcategory = $("#toshopcategory").val(); 
+				var toshopunit = $("#toshopunit").val();
+				var toshopprice = $("#toshopprice").val();
+				var toshopavailablequantity = $("#toshopavailablequantity").val();
 				
 				if(toshopitemname==""||toshopvendercode==""||toshopquantity==""||toshopavailablequantity==""||toshopdescription==""||toshopcategory==""||toshopunit==""||toshopprice==""){
 					window.alert("Please fill in all fields");
 				}else{	
 					if(parseInt(toshopavailablequantity)>parseInt(toshopquantity)){
-						document.getElementById("toshopavailablequantity").style.backgroundColor = "white";
+						$("#toshopavailablequantity").css('backgroundColor',"white");
 						listFromShopTable.push(JSON.parse("{\"toshopitemname\":\"" + toshopitemname + 
 															"\",\"toshopquantity\":\"" + toshopquantity + 
 															"\",\"toshopdescription\":\"" + toshopdescription + 
@@ -253,50 +265,41 @@
 															"\",\"toshopprice\":\"" + toshopprice +
 															"\"}"));
 					
-						document.getElementById("toshopvendercode").disabled = true;
+						$("#toshopvendercode").attr('disabled',true);
 						console.log("recived information");
 						var toshopdate =new Date();
 						var addRow = "<tr><th scope=\"row\">"+i +"</th><td>" + toshopitemname + "</td><td>" + toshopcategory  + "</td><td>" + toshopvendercode + "</td><td>" + toshopquantity + "</td><td>" + toshopunit + "</td><td>" + toshopprice + "</td><td>" + toshopprice*toshopquantity + "</td><td>" + toshopdescription + "</td><td>" + toshopdate.toDateString() + "</td></tr>";
 						console.log("try to add");
 						
-						document.getElementById("toshoptable").innerHTML = document.getElementById("toshoptable").innerHTML + addRow;
-						document.getElementById("search form").reset(); 
+						$("#toshoptable").html($("#toshoptable").html() + addRow);
+						$("#search_form").trigger("reset");   //how trigger() works 
 					}else{
-						document.getElementById("toshopavailablequantity").style.backgroundColor = "red";
+						$("#toshopavailablequantity").css('backgroundColor',"red");
 					}
 				}
 			}
 		})();
+	
+		
 		
 		function submitToShop(result){
 			
 			var resultJSON = { "itemnames":result };
 			var result = JSON.stringify(resultJSON);
-			console.log("result");
-			console.log(result);
+			console.log("result - " + result);
 			
-			var resultReq = new XMLHttpRequest();
-			resultReq.onreadystatechange = function (oEvent) {
-				if (resultReq.readyState === 4) {
-					console.log(resultReq.readyState);
-					if (resultReq.status === 200) {
-						console.log(resultReq.status);
-							console.log(resultReq.responseText);
-							
-								document.getElementById("toshoptable").innerHTML = "<thead><tr><th scope=\"col\">#</th><th scope=\"col\">Item Name</th><th scope=\"col\">Category</th> <th scope=\"col\">Vender Code</th> <th scope=\"col\">Quantity</th> <th scope=\"col\">Unit</th> <th scope=\"col\">Price/item</th> <th scope=\"col\">Total Price</th><th scope=\"col\">Description</th><th scope=\"col\">Date</th></tr></thead>";
-								listFromShopTable =[];
-						}
-					}
+			$.ajax({
+				method:'POST',
+				url: 'http://localhost:8080/Web_Project/SubmitToShop',
+				dataType: 'text',  //Why 'JSON' Type don't work. 
+				data:   {result: result},
+				success: function(data,status){
+					$("#toshoptable").html("<thead><tr><th scope=\"col\">#</th><th scope=\"col\">item_name</th><th scope=\"col\">Category</th> <th scope=\"col\">vender_code</th> <th scope=\"col\">Quantity</th> <th scope=\"col\">Unit</th> <th scope=\"col\">Price/item</th> <th scope=\"col\">Total Price</th><th scope=\"col\">Description</th><th scope=\"col\">Date</th></tr></thead>");
+					listFromShopTable =[];
 				}
-			
-			resultReq.open("POST", "http://localhost:8080/Web_Project/SubmitToShop", true);
-			resultReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			resultReq.send("result="+result);
-			
-		}
-	
+			});
+		}	
 		
-
 		
 		</script>
   	
@@ -352,19 +355,19 @@
 							</nav>
 							<div class="tab-content" id="nav-tabContent">
 							  <div class="tab-pane fade show active" id="nav-Income" role="tabpanel" aria-labelledby="nav-home-tab">
-							  	<form  id="income sub form" onsubmit="incomeSubmit();return false;">
+							  	<form  id="income_sub_form" onsubmit="incomeSubmit();return false;">
 							  		<div class="row">
 										<div class="form-group col-md-3">
-										    <label for="Income date">Date</label>
-										    <input type="date" class="form-control" id="income date" placeholder="Data" >
+										    <label for="Income_date">Date</label>
+										    <input type="date" class="form-control" id="income_date" placeholder="Data" >
 										</div>
 										<div class="form-group col-md-3">
-										    <label for="Invoice No">Invoice No.</label>
-										    <input type="text" class="form-control" id="invoice no" placeholder="Invoice No">
+										    <label for="invoice_no">Invoice No.</label>
+										    <input type="text" class="form-control" id="invoice_no" placeholder="Invoice No.">
 										</div>
 										<div class="form-group col-md-2">
 										    <label for="Currency">Currency</label>
-											<select class="form-control" id="income currency">
+											<select class="form-control" id="income_currency">
 										      <option>USD</option>
 										      <option>EUR</option>
 										      <option>RUB</option>
@@ -378,12 +381,12 @@
 										    <input type="text" class="form-control" id="vender" placeholder="Vender">
 										</div>
 										<div class="form-group col-md-2">
-										    <label for="Vender Code" >Vender Code</label>
-										    <input type="text" class="form-control" id="vender code" placeholder="Vender Code">
+										    <label for="vender_code" >Vender Code</label>
+										    <input type="text" class="form-control" id="vender_code" placeholder="Vender Code">
 										</div>
 										<div class="form-group col-md-3">
 										    <label for="Category">Category</label>
-											<select class="form-control" id="item category">
+											<select class="form-control" id="item_category">
 										    <option>Add Category</option>
 										    <option>Category 1</option>
 										    <option>Category 2</option>
@@ -393,8 +396,8 @@
 									</div>
 									<div class="row">
 								 		<div class="form-group col-md-4">
-										    <label for="Item Name">Item Name</label>
-										    <input type="text" class="form-control" id="item Name" placeholder="Item Name">
+										    <label for="item_name">Item Name</label>
+										    <input type="text" class="form-control" id="item_name" placeholder="Item Name">
 										</div>
 								 		<div class="form-group col-md-2">
 										    <label for="Quantity">Quantity</label>
@@ -426,18 +429,18 @@
 								</form>
 							  </div>
 							  <div class="tab-pane fade" id="nav-MoveToShop" role="tabpanel" aria-labelledby="nav-profile-tab">
-							  	<form id="search form" >
+							  	<form id="search_form" >
 							  		<div class="row">
 							  			<div class="form-group col-md-4">
-										    <label for="To Shop Item Name">Item Name</label>
+										    <label for="To Shop item_name">Item Name</label>
 										    <input type="text" class="form-control" id="toshopitemname" placeholder="Item Name">
 										</div>
 										<div class="form-group col-md-3" id="toshopvendercodediv">
-										    <label for="To Shop Vender Code">Vender Code</label>
+										    <label for="To Shop vender_code">Vender Code</label>
 										    <input type="text" class="form-control" id="toshopvendercode" placeholder="Vender Code" disabled>
 										</div>
 										<div class="form-group col-md-3" id="toshopvendercodesdiv" style="display: none">
-										    <label for="toshopvendercodes">Vender Codes</label>
+										    <label for="toshopvendercodes">vender_codes</label>
 											<select class="form-control" id="toshopvendercodes"onclick="searchInMoveToShop()">
 										    
 										   	</select>									  
@@ -485,9 +488,9 @@
 									  <thead>
 									    <tr>
 									      <th scope="col" style="width: 2%">#</th>
-									      <th scope="col" style="width: 20%">Item Name</th>
+									      <th scope="col" style="width: 20%">item_name</th>
 									      <th scope="col" style="width: 15%">Category</th>
-									      <th scope="col" style="width: 10%">Vender Code</th>
+									      <th scope="col" style="width: 10%">vender_code</th>
 									      <th scope="col" style="width: 5%">Qty.</th>
 									      <th scope="col" style="width: 5%">Unit</th>
 									      <th scope="col" style="width: 5%">Price Item</th>
@@ -508,46 +511,46 @@
 							 	<form onsubmit="searchInStatistic();return false;" id="statisticForm">
 							  		<div class="row">
 										<div class="form-group col-md-3">
-										    <label for="Search Category">Search Category</label>
-											<select class="form-control" id="search category" onclick="selectClicked()">
+										    <label for="searchcategory">searchcategory</label>
+											<select class="form-control" id="searchcategory" onclick="selectClicked();">
 										    	<option value="" hidden selected  disabled >Choose here</option>
 										    	<option value="1">Date Duration</option>
 										    	<option value="2">Item Name</option>
 										    	<option value="3">Vender Code</option>
-										    	<option value="4">Invoice No</option>
+										    	<option value="4">Invoice No.</option>
 										   	</select>									  
 										</div>
-										<div class="form-group col-md-3" id="div date from" style="display: none" >
-										    <label for="Income date from">Date From</label>
-										    <input type="date" class="form-control" id="Statistic date from" placeholder="Data Fromo">
+										<div class="form-group col-md-3" id="div_date_from" style="display: none" >
+										    <label for="Income_date from">Date From</label>
+										    <input type="date" class="form-control" id="Statistic_date_from" placeholder="Data Fromo">
 										</div>
-										<div class="form-group col-md-3" id="div date to" style="display: none" >
-										    <label for="Income date to">Date To</label>
-										    <input type="date" class="form-control" id="Statistic date to" placeholder="Data To">
+										<div class="form-group col-md-3" id="div_date_to" style="display: none" >
+										    <label for="Income_date to">Date To</label>
+										    <input type="date" class="form-control" id="Statistic_date_to" placeholder="Data To">
 										</div>
-										<div class="form-group col-md-2" id="div vender code" style="display: none">
-										    <label for="Vender Code">Vender Code</label>
-										    <input type="text" class="form-control" id="Statistic vender code" placeholder="Vender Code">
+										<div class="form-group col-md-2" id="div_vender_code" style="display: none">
+										    <label for="vender_code">Vender Code</label>
+										    <input type="text" class="form-control" id="Statistic_vender_code" placeholder="Vender Code">
 										</div>
-										<div class="form-group col-md-3" id="div invoice no" style="display: none">
-										    <label for="Invoice No">Invoice No</label>
-										    <input type="text" class="form-control" id="Statistic invoice no" placeholder="Invoice No">
+										<div class="form-group col-md-3" id="div_invoice_no" style="display: none">
+										    <label for="invoice_no">Invoice No.</label>
+										    <input type="text" class="form-control" id="Statistic_invoice_no" placeholder="Invoice No.">
 										</div>
-										<div class="form-group col-md-3" id="div item name" style="display: none">
-										    <label for="Item Name">Item Name</label>
-										    <input type="text" class="form-control" id="Statistic item name" placeholder="Item Name">
+										<div class="form-group col-md-3" id="div_item_name" style="display: none">
+										    <label for="item_name">Item Name</label>
+										    <input type="text" class="form-control" id="Statistic_item_name" placeholder="Item Name">
 										</div>
 									</div>	
-								 	<button class="btn btn-primary" type="submit">Filter</button>
+								 	<button class="btn btn-primary" type="submit" id="filter butten">Filter</button>
 									<hr>
 									<table class="table table-bordered" id="statisticsTable">
 									  <thead>
 									    <tr>
 									      <th scope="col">#</th>
 									      <th scope="col">Date</th>
-									      <th scope="col">Invoice No.</th>
+									      <th scope="col">invoice_no.</th>
 									      <th scope="col">Vender</th>
-									      <th scope="col">Vender Code</th>
+									      <th scope="col">vender_code</th>
 									      <th scope="col">Category</th>
 									      <th scope="col">Quantity</th>
 									      <th scope="col">Unit</th>
